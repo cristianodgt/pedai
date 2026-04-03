@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { supabaseAdmin } from "@/lib/supabase";
 import { verifyPassword, signToken } from "@/lib/auth";
 
 export async function POST(request: Request) {
@@ -13,12 +13,13 @@ export async function POST(request: Request) {
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: { tenant: true },
-    });
+    const { data: user, error: dbError } = await supabaseAdmin
+      .from("users")
+      .select("*, tenants(*)")
+      .eq("email", email)
+      .single();
 
-    if (!user || !user.active) {
+    if (dbError || !user || !user.active) {
       return NextResponse.json(
         { error: "Credenciais inválidas" },
         { status: 401 }
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
 
     const token = signToken({
       userId: user.id,
-      tenantId: user.tenantId,
+      tenantId: user.tenant_id,
       role: user.role,
     });
 
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
         name: user.name,
         email: user.email,
         role: user.role,
-        tenant: user.tenant.name,
+        tenant: user.tenants?.name,
       },
     });
 
@@ -60,7 +61,7 @@ export async function POST(request: Request) {
     return response;
   } catch (error) {
     const err = error instanceof Error ? error.message : String(error);
-    console.error("Login error:", err, "Name:", (error as Error)?.name, "Full:", JSON.stringify(error, Object.getOwnPropertyNames(error as object)));
+    console.error("Login error:", err);
     return NextResponse.json(
       { error: "Erro interno", detail: err },
       { status: 500 }

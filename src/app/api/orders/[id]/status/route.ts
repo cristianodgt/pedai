@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { supabaseAdmin } from "@/lib/supabase";
 import { getAuthUser } from "@/lib/auth";
 
 export async function PUT(
@@ -20,23 +20,30 @@ export async function PUT(
   }
 
   const timestampField: Record<string, string> = {
-    CONFIRMED: "confirmedAt",
-    PREPARING: "confirmedAt",
-    DELIVERED: "deliveredAt",
-    CANCELLED: "cancelledAt",
-    READY: "preparedAt",
+    CONFIRMED: "confirmed_at",
+    PREPARING: "confirmed_at",
+    DELIVERED: "delivered_at",
+    CANCELLED: "cancelled_at",
+    READY: "prepared_at",
   };
 
   const updateData: Record<string, unknown> = { status };
   const field = timestampField[status];
   if (field) {
-    updateData[field] = new Date();
+    updateData[field] = new Date().toISOString();
   }
 
-  const order = await prisma.order.update({
-    where: { id, tenantId: user.tenantId },
-    data: updateData,
-  });
+  const { data: order, error } = await supabaseAdmin
+    .from("orders")
+    .update(updateData)
+    .eq("id", id)
+    .eq("tenant_id", user.tenant_id)
+    .select()
+    .single();
+
+  if (error) {
+    return NextResponse.json({ error: "Erro ao atualizar" }, { status: 500 });
+  }
 
   return NextResponse.json({ order });
 }

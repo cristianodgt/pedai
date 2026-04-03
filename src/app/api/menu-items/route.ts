@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { supabaseAdmin } from "@/lib/supabase";
 import { getAuthUser } from "@/lib/auth";
 
 export async function POST(request: Request) {
@@ -18,31 +18,36 @@ export async function POST(request: Request) {
     );
   }
 
-  const category = await prisma.menuCategory.findFirst({
-    where: { id: categoryId, tenantId: user.tenantId },
-  });
+  // Get max order
+  const { data: maxRow } = await supabaseAdmin
+    .from("menu_items")
+    .select("order")
+    .eq("category_id", categoryId)
+    .order("order", { ascending: false })
+    .limit(1)
+    .single();
 
-  if (!category) {
-    return NextResponse.json({ error: "Categoria não encontrada" }, { status: 404 });
-  }
+  const nextOrder = (maxRow?.order ?? -1) + 1;
 
-  const maxOrder = await prisma.menuItem.aggregate({
-    where: { categoryId },
-    _max: { order: true },
-  });
-
-  const item = await prisma.menuItem.create({
-    data: {
-      tenantId: user.tenantId,
-      categoryId,
+  const { data: item, error } = await supabaseAdmin
+    .from("menu_items")
+    .insert({
+      tenant_id: user.tenant_id,
+      category_id: categoryId,
       name: name.trim(),
       description: description?.trim() || null,
       price,
       channels: channels || ["WHATSAPP", "PDV"],
-      options: options || undefined,
-      order: (maxOrder._max.order ?? -1) + 1,
-    },
-  });
+      options: options || null,
+      order: nextOrder,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Create item error:", error);
+    return NextResponse.json({ error: "Erro ao criar item" }, { status: 500 });
+  }
 
   return NextResponse.json({ item }, { status: 201 });
 }

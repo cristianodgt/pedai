@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { supabaseAdmin } from "@/lib/supabase";
 import { getAuthUser } from "@/lib/auth";
 
 export async function PUT(
@@ -14,29 +14,29 @@ export async function PUT(
   const { id } = await params;
   const body = await request.json();
 
-  const item = await prisma.menuItem.findFirst({
-    where: { id, tenantId: user.tenantId },
-  });
+  const updateData: Record<string, unknown> = {};
+  if (body.name !== undefined) updateData.name = body.name.trim();
+  if (body.description !== undefined) updateData.description = body.description?.trim() || null;
+  if (body.price !== undefined) updateData.price = body.price;
+  if (body.available !== undefined) updateData.available = body.available;
+  if (body.channels !== undefined) updateData.channels = body.channels;
+  if (body.options !== undefined) updateData.options = body.options;
+  if (body.categoryId !== undefined) updateData.category_id = body.categoryId;
+  if (body.order !== undefined) updateData.order = body.order;
 
-  if (!item) {
+  const { data: item, error } = await supabaseAdmin
+    .from("menu_items")
+    .update(updateData)
+    .eq("id", id)
+    .eq("tenant_id", user.tenant_id)
+    .select()
+    .single();
+
+  if (error) {
     return NextResponse.json({ error: "Item não encontrado" }, { status: 404 });
   }
 
-  const updated = await prisma.menuItem.update({
-    where: { id },
-    data: {
-      ...(body.name !== undefined && { name: body.name.trim() }),
-      ...(body.description !== undefined && { description: body.description?.trim() || null }),
-      ...(body.price !== undefined && { price: body.price }),
-      ...(body.available !== undefined && { available: body.available }),
-      ...(body.channels !== undefined && { channels: body.channels }),
-      ...(body.options !== undefined && { options: body.options }),
-      ...(body.categoryId !== undefined && { categoryId: body.categoryId }),
-      ...(body.order !== undefined && { order: body.order }),
-    },
-  });
-
-  return NextResponse.json({ item: updated });
+  return NextResponse.json({ item });
 }
 
 export async function DELETE(
@@ -50,15 +50,15 @@ export async function DELETE(
 
   const { id } = await params;
 
-  const item = await prisma.menuItem.findFirst({
-    where: { id, tenantId: user.tenantId },
-  });
+  const { error } = await supabaseAdmin
+    .from("menu_items")
+    .delete()
+    .eq("id", id)
+    .eq("tenant_id", user.tenant_id);
 
-  if (!item) {
-    return NextResponse.json({ error: "Item não encontrado" }, { status: 404 });
+  if (error) {
+    return NextResponse.json({ error: "Erro ao excluir" }, { status: 500 });
   }
-
-  await prisma.menuItem.delete({ where: { id } });
 
   return NextResponse.json({ ok: true });
 }

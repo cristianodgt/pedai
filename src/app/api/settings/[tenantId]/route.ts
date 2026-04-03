@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function GET(
   _request: Request,
@@ -7,20 +7,13 @@ export async function GET(
 ) {
   const { tenantId } = await params;
 
-  const tenant = await prisma.tenant.findUnique({
-    where: { id: tenantId },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      phone: true,
-      address: true,
-      timezone: true,
-      settings: true,
-    },
-  });
+  const { data: tenant, error } = await supabaseAdmin
+    .from("tenants")
+    .select("id, name, slug, phone, address, timezone, settings")
+    .eq("id", tenantId)
+    .single();
 
-  if (!tenant) {
+  if (error || !tenant) {
     return NextResponse.json({ error: "Tenant não encontrado" }, { status: 404 });
   }
 

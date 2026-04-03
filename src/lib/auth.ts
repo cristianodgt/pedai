@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { prisma } from "./prisma";
+import { supabaseAdmin } from "./supabase";
 
 const JWT_SECRET = process.env.JWT_SECRET || "pedai-secret-change-me";
 
@@ -36,10 +36,11 @@ export async function getAuthUser(request: Request) {
   const decoded = verifyToken(match[1]);
   if (!decoded) return null;
 
-  const user = await prisma.user.findUnique({
-    where: { id: decoded.userId },
-    include: { tenant: true },
-  });
+  const { data: user } = await supabaseAdmin
+    .from("users")
+    .select("*, tenants(*)")
+    .eq("id", decoded.userId)
+    .single();
 
   return user;
 }
