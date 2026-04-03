@@ -10,6 +10,9 @@ import {
   Eye,
   EyeOff,
   X,
+  Upload,
+  FileText,
+  Utensils,
 } from "lucide-react";
 
 interface MenuItem {
@@ -51,6 +54,14 @@ export default function CardapioPage() {
   const [itemChannels, setItemChannels] = useState<string[]>(["WHATSAPP", "PDV"]);
 
   const [saving, setSaving] = useState(false);
+
+  // Import modal
+  const [importModal, setImportModal] = useState(false);
+  const [importTab, setImportTab] = useState<"templates" | "text">("templates");
+  const [importText, setImportText] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [templates, setTemplates] = useState<{ id: string; name: string; description: string; categoriesCount: number; itemsCount: number }[]>([]);
+  const [clearExisting, setClearExisting] = useState(true);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -212,6 +223,72 @@ export default function CardapioPage() {
     );
   };
 
+  const openImport = async () => {
+    setImportModal(true);
+    setImportTab("templates");
+    setImportText("");
+    try {
+      const res = await fetch("/api/menu/templates");
+      if (res.ok) {
+        const data = await res.json();
+        setTemplates(data.templates || []);
+      }
+    } catch (e) {
+      console.error("Fetch templates error:", e);
+    }
+  };
+
+  const applyTemplate = async (templateId: string) => {
+    setImporting(true);
+    try {
+      const res = await fetch("/api/menu/templates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ templateId, clearExisting }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        alert(`${data.message} (${data.categories} categorias, ${data.items} itens)`);
+        setImportModal(false);
+        fetchCategories();
+      } else {
+        const err = await res.json();
+        alert(err.error || "Erro ao aplicar template");
+      }
+    } catch (e) {
+      console.error("Apply template error:", e);
+      alert("Erro ao aplicar template");
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const importFromText = async () => {
+    if (!importText.trim()) return;
+    setImporting(true);
+    try {
+      const res = await fetch("/api/menu/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: importText, clearExisting }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        alert(`${data.message} (${data.categories} categorias, ${data.items} itens)`);
+        setImportModal(false);
+        fetchCategories();
+      } else {
+        const err = await res.json();
+        alert(err.error || "Erro ao importar");
+      }
+    } catch (e) {
+      console.error("Import error:", e);
+      alert("Erro ao importar");
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const totalItems = categories.reduce((sum, c) => sum + c.items.length, 0);
 
   if (loading) {
@@ -231,13 +308,22 @@ export default function CardapioPage() {
             {categories.length} categorias, {totalItems} itens
           </p>
         </div>
-        <button
-          onClick={openNewCategory}
-          className="flex items-center gap-2 px-4 py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition text-sm font-medium"
-        >
-          <Plus size={18} />
-          Nova Categoria
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={openImport}
+            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-orange-300 text-orange-600 rounded-lg hover:bg-orange-50 transition text-sm font-medium"
+          >
+            <Upload size={18} />
+            Importar
+          </button>
+          <button
+            onClick={openNewCategory}
+            className="flex items-center gap-2 px-4 py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition text-sm font-medium"
+          >
+            <Plus size={18} />
+            Nova Categoria
+          </button>
+        </div>
       </div>
 
       {categories.length === 0 ? (
@@ -453,6 +539,104 @@ export default function CardapioPage() {
               >
                 {saving ? "Salvando..." : "Salvar"}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import Modal */}
+      {importModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4 max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <h2 className="text-lg font-semibold text-gray-900">Importar Cardapio</h2>
+              <button onClick={() => setImportModal(false)} className="text-gray-400 hover:text-gray-600">
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Tabs */}
+            <div className="flex border-b border-gray-100">
+              <button
+                onClick={() => setImportTab("templates")}
+                className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition ${
+                  importTab === "templates"
+                    ? "text-orange-600 border-b-2 border-orange-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <Utensils size={16} />
+                Templates Prontos
+              </button>
+              <button
+                onClick={() => setImportTab("text")}
+                className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition ${
+                  importTab === "text"
+                    ? "text-orange-600 border-b-2 border-orange-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <FileText size={16} />
+                Colar Texto
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-auto p-6">
+              {/* Clear existing toggle */}
+              <label className="flex items-center gap-2 mb-4 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={clearExisting}
+                  onChange={(e) => setClearExisting(e.target.checked)}
+                  className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                />
+                <span className="text-sm text-gray-600">Substituir cardapio existente</span>
+              </label>
+
+              {importTab === "templates" ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {templates.map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => applyTemplate(t.id)}
+                      disabled={importing}
+                      className="text-left border border-gray-200 rounded-lg p-4 hover:border-orange-400 hover:shadow-md transition disabled:opacity-50"
+                    >
+                      <h3 className="font-semibold text-gray-900">{t.name}</h3>
+                      <p className="text-xs text-gray-500 mt-1">{t.description}</p>
+                      <p className="text-xs text-orange-600 mt-2 font-medium">
+                        {t.categoriesCount} categorias, {t.itemsCount} itens
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Cole seu cardapio no formato texto. Use linhas em MAIUSCULAS ou com ":" para categorias.
+                    Cada item deve ter o preco (ex: R$ 25,00).
+                  </p>
+                  <textarea
+                    value={importText}
+                    onChange={(e) => setImportText(e.target.value)}
+                    rows={12}
+                    placeholder={`LANCHES:\nX-Burger R$ 18,00\nX-Salada R$ 20,00\nX-Bacon R$ 25,00\n\nBEBIDAS:\nCoca-Cola 350ml R$ 6,00\nSuco Natural R$ 8,00\nAgua R$ 4,00`}
+                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm font-mono"
+                  />
+                  <button
+                    onClick={importFromText}
+                    disabled={importing || !importText.trim()}
+                    className="mt-3 w-full py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 text-sm font-medium flex items-center justify-center gap-2"
+                  >
+                    {importing ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                    ) : (
+                      <Upload size={16} />
+                    )}
+                    {importing ? "Importando..." : "Importar Cardapio"}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
