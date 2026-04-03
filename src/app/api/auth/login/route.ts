@@ -59,9 +59,10 @@ export async function POST(request: Request) {
 
     return response;
   } catch (error) {
-    console.error("Login error:", error);
+    const err = error instanceof Error ? error.message : String(error);
+    console.error("Login error:", err, "Name:", (error as Error)?.name, "Full:", JSON.stringify(error, Object.getOwnPropertyNames(error as object)));
     return NextResponse.json(
-      { error: "Erro interno" },
+      { error: "Erro interno", detail: err },
       { status: 500 }
     );
   }
