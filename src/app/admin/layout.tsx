@@ -10,12 +10,14 @@ import {
   Settings,
   LogOut,
   Monitor,
+  MessageCircle,
 } from "lucide-react";
 
 const navItems = [
   { href: "/admin/pedidos", label: "Pedidos", icon: ClipboardList },
   { href: "/admin/pdv", label: "PDV", icon: Monitor },
   { href: "/admin/cardapio", label: "Cardápio", icon: UtensilsCrossed },
+  { href: "/admin/conversas", label: "Conversas", icon: MessageCircle },
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/config", label: "Configurações", icon: Settings },
 ];
