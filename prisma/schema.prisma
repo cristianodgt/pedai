@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  OPERATOR
+  KITCHEN
+}
+
+enum Channel {
+  WHATSAPP
+  PDV
+  IFOOD
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderType {
+  DELIVERY
+  PICKUP
+  DINE_IN
+}
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  phone     String?
+  address   String?
+  logo      String?
+  timezone  String   @default("America/Sao_Paulo")
+  settings  Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  users      User[]
+  categories MenuCategory[]
+  menuItems  MenuItem[]
+  orders     Order[]
+
+  @@map("tenants")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  tenantId  String   @map("tenant_id")
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(OPERATOR)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@map("users")
+}
+
+model MenuCategory {
+  id       String  @id @default(cuid())
+  tenantId String  @map("tenant_id")
+  name     String
+  order    Int     @default(0)
+  active   Boolean @default(true)
+
+  tenant Tenant     @relation(fields: [tenantId], references: [id])
+  items  MenuItem[]
+
+  @@map("menu_categories")
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  tenantId    String   @map("tenant_id")
+  categoryId  String   @map("category_id")
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  available   Boolean  @default(true)
+  channels    Channel[] @default([WHATSAPP, PDV])
+  options     Json?
+  image       String?
+  order       Int      @default(0)
+
+  tenant   Tenant       @relation(fields: [tenantId], references: [id])
+  category MenuCategory @relation(fields: [categoryId], references: [id])
+
+  @@map("menu_items")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  tenantId      String      @map("tenant_id")
+  code          String
+  channel       Channel
+  status        OrderStatus @default(PENDING)
+  type          OrderType   @default(DELIVERY)
+
+  customerName  String?     @map("customer_name")
+  customerPhone String?     @map("customer_phone")
+
+  address       String?
+  neighborhood  String?
+  complement    String?
+  deliveryFee   Decimal?    @map("delivery_fee") @db.Decimal(10, 2)
+  distanceKm    Decimal?    @map("distance_km") @db.Decimal(10, 2)
+
+  paymentMethod String?     @map("payment_method")
+  changeFor     Decimal?    @map("change_for") @db.Decimal(10, 2)
+
+  subtotal      Decimal     @db.Decimal(10, 2)
+  total         Decimal     @db.Decimal(10, 2)
+
+  operatorId    String?     @map("operator_id")
+
+  createdAt     DateTime    @default(now()) @map("created_at")
+  confirmedAt   DateTime?   @map("confirmed_at")
+  preparedAt    DateTime?   @map("prepared_at")
+  deliveredAt   DateTime?   @map("delivered_at")
+  cancelledAt   DateTime?   @map("cancelled_at")
+
+  tenant Tenant      @relation(fields: [tenantId], references: [id])
+  items  OrderItem[]
+
+  @@index([tenantId, status])
+  @@index([tenantId, createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String  @map("order_id")
+  name      String
+  quantity  Int
+  unitPrice Decimal @map("unit_price") @db.Decimal(10, 2)
+  total     Decimal @db.Decimal(10, 2)
+  details   Json?
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
