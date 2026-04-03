@@ -1,0 +1,1217 @@
+{
+  "name": "PedAI - WhatsApp Bot",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "connections": {
+    "Webhook WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Setup Entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup Entrada": {
+      "main": [
+        [
+          {
+            "node": "provider_message_id existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Adicionar Fila": {
+      "main": [
+        [
+          {
+            "node": "Redis: Definir TTL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Definir TTL": {
+      "main": [
+        [
+          {
+            "node": "Aguardar Agrupamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguardar Agrupamento": {
+      "main": [
+        [
+          {
+            "node": "Redis: Buscar Fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Buscar Fila": {
+      "main": [
+        [
+          {
+            "node": "Processar Fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Fila": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Skip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Resposta": {
+      "main": [
+        [
+          {
+            "node": "Preparar Salvar Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decisão de Envio": {
+      "main": [
+        [
+          {
+            "node": "Wait Escalate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "ENVIAR WHATSAPP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ENVIAR WHATSAPP": {
+      "main": [
+        [
+          {
+            "node": "Log Conversa",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notificar Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait Escalate": {
+      "main": [
+        [
+          {
+            "node": "ENVIAR WHATSAPP (Escalate)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ENVIAR WHATSAPP (Escalate)": {
+      "main": [
+        [
+          {
+            "node": "Notificar Admin (Escalação)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Skip": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Carregar Estado Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "provider_message_id existe?": {
+      "main": [
+        [
+          {
+            "node": "Redis - GET dedupe",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis: Adicionar Fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - GET dedupe": {
+      "main": [
+        [
+          {
+            "node": "IF - duplicada?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - duplicada?": {
+      "main": [
+        [
+          {
+            "node": "STOP - duplicada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Set": {
+      "main": [
+        [
+          {
+            "node": "Redis: Adicionar Fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Conversa": {
+      "main": [
+        [
+          {
+            "node": "Redis: Limpar Fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Admin (Escalação)": {
+      "main": [
+        [
+          {
+            "node": "Redis: Limpar Fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Carregar Estado Pedido": {
+      "main": [
+        [
+          {
+            "node": "Preparar Contexto Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Contexto Pedido": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Salvar Pedido": {
+      "main": [
+        [
+          {
+            "node": "Redis: Salvar Estado Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Salvar Estado Pedido": {
+      "main": [
+        [
+          {
+            "node": "Decisão de Envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Processar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Pedido": {
+      "main": [
+        [
+          {
+            "node": "Pedido Confirmado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedido Confirmado?": {
+      "main": [
+        [
+          {
+            "node": "Rotear Pedido Confirmado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Consultar Cardápio": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calcular_taxa_entrega": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rotear Pedido Confirmado": {
+      "main": [
+        [
+          {
+            "node": "Criar Pedido API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Criar Pedido API": {
+      "main": [
+        [
+          {
+            "node": "Notificar Admin (Pedido)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tropicana-whatsapp",
+        "options": {}
+      },
+      "id": "112bb692-976b-4aed-bb97-fb1fac8c98fd",
+      "name": "Webhook WhatsApp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        384
+      ],
+      "webhookId": "intervidros-webhook-id"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// SETUP ENTRADA v1.0 - uazapi\n// ============================================\ntry {\n    const body = $input.all()[0].json.body || $input.all()[0].json;\n\n    const msg  = body.message || {};\n    const chat = body.chat    || {};\n\n    // Filtrar mensagens enviadas pelo próprio bot\n    if (msg.fromMe === true || msg.fromMe === 'true') return [];\n    if (msg.wasSentByApi === true) return [];\n\n    // Ignorar grupos\n    if (msg.isGroup === true || chat.wa_isGroup === true) return [];\n    if ((msg.chatid || '').includes('@g.us')) return [];\n\n    // Telefone\n    const rawPhone = msg.sender_pn\n        || msg.chatid\n        || chat.wa_chatid\n        || chat.phone\n        || '';\n\n    const phone = rawPhone\n        .replace('@s.whatsapp.net', '')\n        .replace('@c.us', '')\n        .replace(/\\D/g, '');\n\n    if (!phone || phone.length < 10) return [];\n\n    // Deteccao de comando admin (/pause ou /resume)\n    const ADMIN_PHONE_CMD = '554598080945';\n    const isAdmin = phone === ADMIN_PHONE_CMD || phone === ADMIN_PHONE_CMD.replace('55', '');\n    if (isAdmin && messageText) {\n        const cmdMatch = messageText.match(/^\\/(pause|resume)\\s+(\\d{10,13})/i);\n        if (cmdMatch) {\n            return [{\n                json: {\n                    is_admin_command: true,\n                    command: cmdMatch[1].toLowerCase(),\n                    target_phone: cmdMatch[2].replace(/\\D/g, ''),\n                    client_id: phone,\n                    channel: 'whatsapp',\n                    timestamp: new Date().toISOString(),\n                }\n            }];\n        }\n    }\n\n\n    // Nome\n    const name = msg.senderName\n        || chat.name\n        || chat.wa_name\n        || 'Cliente';\n\n    // Tipo e conteúdo\n    const msgType      = msg.type        || msg.messageType || '';\n    const mediaType_raw = msg.mediaType  || '';\n\n    let mediaType   = 'text';\n    let messageText = '';\n\n    if (msgType === 'audio' || msgType === 'ptt' || mediaType_raw === 'audio') {\n        mediaType   = 'audio';\n        messageText = '[ÁUDIO]';\n    } else if (msgType === 'image' || mediaType_raw === 'image') {\n        mediaType   = 'image';\n        messageText = msg.content?.caption || msg.text || '[IMAGEM]';\n    } else if (msgType === 'video' || mediaType_raw === 'video') {\n        mediaType   = 'video';\n        messageText = msg.content?.caption || msg.text || '[VÍDEO]';\n    } else if (msgType === 'document' || mediaType_raw === 'document') {\n        mediaType   = 'document';\n        messageText = msg.content?.caption || msg.text || '[DOCUMENTO]';\n    } else if (msgType === 'sticker') {\n        mediaType   = 'sticker';\n        messageText = '[STICKER]';\n    } else {\n        messageText = msg.text\n            || msg.content?.text\n            || msg.content?.conversation\n            || '';\n    }\n\n    if (!messageText) return [];\n\n    const provider_message_id = msg.messageid || msg.id || null;\n    const queueKey = `msg_queue:${phone}`;\n    const msgId    = $execution.id + '-' + Math.random().toString(36).substr(2, 9);\n\n    const messageData = JSON.stringify({\n        text:               messageText,\n        name,\n        ts:                 Date.now(),\n        msg_id:             msgId,\n        provider_message_id: provider_message_id || null,\n    });\n\n    return [{\n        json: {\n            client_id:           phone,\n            client_name:         name,\n            message_text:        messageText,\n            media_type:          mediaType,\n            provider_message_id: provider_message_id,\n            channel:             'whatsapp',\n            timestamp:           new Date().toISOString(),\n            message_id:          msgId,\n            session_id:          `tropicana_${phone}`,\n            queue_key:           queueKey,\n            message_data:        messageData,\n            wa_provider:         'uazapi',\n        }\n    }];\n\n} catch (err) {\n    console.error('Setup Entrada uazapi:', err.message);\n    return [];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        384
+      ],
+      "id": "c9e00b52-8900-435f-9d94-2890640ea0cc",
+      "name": "Setup Entrada"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://peaceful-sailfish-14074.upstash.io/rpush/{{ encodeURIComponent($node[\"Setup Entrada\"].json.queue_key) }}/{{ encodeURIComponent($node[\"Setup Entrada\"].json.message_data) }}\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ATb6AAIncDFkNzcxNmI2MjYwMzc0OWIyYTE4Yzk1YjA4NjZkZDk2ZXAxMTQwNzQ"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2544,
+        400
+      ],
+      "id": "8e63769e-c95c-4990-80ce-af4315ddb1dc",
+      "name": "Redis: Adicionar Fila"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://peaceful-sailfish-14074.upstash.io/expire/{{ encodeURIComponent($json.queue_key) }}/60\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ATb6AAIncDFkNzcxNmI2MjYwMzc0OWIyYTE4Yzk1YjA4NjZkZDk2ZXAxMTQwNzQ"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2752,
+        400
+      ],
+      "id": "7855d611-06ce-429e-8e19-8cad3c40ef9d",
+      "name": "Redis: Definir TTL",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2960,
+        400
+      ],
+      "id": "cabe4952-df9e-44d4-a915-7a9520d4c5ea",
+      "name": "Aguardar Agrupamento",
+      "webhookId": "agrupador-wait"
+    },
+    {
+      "parameters": {
+        "url": "=https://peaceful-sailfish-14074.upstash.io/lrange/{{ encodeURIComponent($node[\"Setup Entrada\"].json.queue_key) }}/0/-1\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ATb6AAIncDFkNzcxNmI2MjYwMzc0OWIyYTE4Yzk1YjA4NjZkZDk2ZXAxMTQwNzQ"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3168,
+        400
+      ],
+      "id": "ba784dbb-1661-461c-8e56-b0fc55711741",
+      "name": "Redis: Buscar Fila",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// ============================================\n// AGRUPADOR: PROCESSAR FILA v7.3 - ROBUSTO\n// Compatível com Upstash via HTTP Request (result / body.result / data.result)\n// ============================================\n\ntry {\n  const setupData = $('Setup Entrada').first().json;\n\n  // O HTTP Request do n8n pode retornar direto ou dentro de \"body\" (Full Response)\n  const raw = $json;\n  const payload =\n    (raw && typeof raw === 'object' && raw.body && typeof raw.body === 'object') ? raw.body :\n    (raw && typeof raw === 'object' && raw.data && typeof raw.data === 'object') ? raw.data :\n    raw;\n\n  // Upstash LRANGE normalmente vem em payload.result\n  const resultArr =\n    Array.isArray(payload?.result) ? payload.result :\n    Array.isArray(raw?.result) ? raw.result :\n    Array.isArray(raw?.body?.result) ? raw.body.result :\n    Array.isArray(raw?.data?.result) ? raw.data.result :\n    [];\n\n  let messages = [];\n\n  for (const item of resultArr) {\n    // item pode vir como string JSON (\"{...}\") ou já como objeto\n    if (item && typeof item === 'object') {\n      // se já for objeto, tenta normalizar\n      messages.push({\n        text: item.text ?? item.message ?? String(item),\n        name: item.name ?? setupData.client_name,\n        ts: item.ts ?? Date.now(),\n        msg_id: item.msg_id ?? setupData.message_id,\n        provider_message_id: item.provider_message_id ?? setupData.provider_message_id\n      });\n      continue;\n    }\n\n    if (typeof item === 'string') {\n      try {\n        const parsed = JSON.parse(item);\n        messages.push(parsed);\n      } catch (e) {\n        // fallback: se não for JSON, guarda como texto puro\n        messages.push({\n          text: item,\n          name: setupData.client_name,\n          ts: Date.now(),\n          msg_id: setupData.message_id\n        });\n      }\n    }\n  }\n\n  if (messages.length === 0) {\n    // debug forte pra você enxergar o formato real\n    console.log('Processar Fila DEBUG: raw keys=', Object.keys(raw || {}));\n    console.log('Processar Fila DEBUG: payload keys=', Object.keys(payload || {}));\n    console.log('Processar Fila DEBUG: resultArr=', resultArr);\n\n    return { json: { skip: true, reason: 'no_messages' } };\n  }\n\n  // Ordenar por timestamp\n  messages.sort((a, b) => (a.ts ?? 0) - (b.ts ?? 0));\n\n  // Verificar dono da última mensagem (debounce/ownership)\n  const lastMessage = messages[messages.length - 1];\n  if (lastMessage.msg_id !== setupData.message_id) {\n    return { json: { skip: true, reason: 'not_owner' } };\n  }\n\n  // Consolidar\n  const consolidatedText = messages.map(m => m.text).join('\\n');\n  const clientName = messages[0].name || setupData.client_name;\n\n  return {\n    json: {\n      skip: false,\n      client_id: setupData.client_id,\n      client_name: clientName,\n      message_text: consolidatedText,\n      channel: \"whatsapp\",\n      timestamp: new Date().toISOString(),\n      message_id: setupData.message_id,\n      messages_count: messages.length,\n      session_id: `tropicana_${setupData.client_id}`,\n      queue_key: setupData.queue_key\n    }\n  };\n\n} catch (error) {\n  console.error('Processar Fila: Erro geral -', error.message);\n  return { json: { skip: true, reason: 'error', error_message: error.message } };\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3376,
+        400
+      ],
+      "id": "ecdbfc08-de2d-4ea9-aab8-d345f007facd",
+      "name": "Processar Fila"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://peaceful-sailfish-14074.upstash.io/del/{{ encodeURIComponent($node[\"Setup Entrada\"].json.queue_key) }}\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ATb6AAIncDFkNzcxNmI2MjYwMzc0OWIyYTE4Yzk1YjA4NjZkZDk2ZXAxMTQwNzQ"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6416,
+        416
+      ],
+      "id": "14ed8d42-4de6-4b42-9484-14324e823c1f",
+      "name": "Redis: Limpar Fila",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {
+          "maxTokens": 2000,
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4192,
+        656
+      ],
+      "id": "2ddb0599-7ea8-4230-bbba-5ff3f0a4f327",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Processar Fila').first().json.session_id + '_v2' }}",
+        "sessionTTL": 3600
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.3,
+      "position": [
+        4256,
+        896
+      ],
+      "id": "48acf25a-2b94-410d-9c40-3434cce4c04c",
+      "name": "Redis Chat Memory"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// ============================================\n// PROCESSAR RESPOSTA v11.0\n// ============================================\ntry {\n    const aiOutput = $json.output || $json.text || $json;\n    const inputData = $('Processar Fila').first().json;\n\n    let responseText = '';\n    let escalateHuman = false;\n    let intent = 'geral';\n    let confidence = 0.5;\n    let newOrderState = null;\n\n    let rawText = typeof aiOutput === 'string' ? aiOutput : JSON.stringify(aiOutput);\n\n    rawText = rawText\n        .replace(/```json/gi, '')\n        .replace(/```/gi, '')\n        .trim();\n\n    const jsonMatch = rawText.match(/\\{[\\s\\S]*\\}/);\n    if (jsonMatch) {\n        try {\n            const parsed = JSON.parse(jsonMatch[0]);\n            responseText  = parsed.response_text || '';\n            escalateHuman = parsed.escalate_human || false;\n            intent        = parsed.intent || 'geral';\n            confidence    = parsed.confidence || 0.5;\n            newOrderState = parsed.new_order_state || null;\n        } catch (e) {\n            const fallback = rawText.replace(/\\{[\\s\\S]*\\}/, '').trim();\n            responseText = (fallback && fallback.length > 3) ? fallback : 'Desculpe, tive um problema interno. Pode repetir? \\u{1F60A}';\n        }\n    } else {\n        responseText = rawText;\n    }\n\n    if (!responseText || responseText.length < 3) {\n        responseText = 'Desculpe, n\\u00e3o consegui processar sua mensagem. Pode repetir? \\u{1F60A}';\n    }\n\n    responseText = responseText\n        .replace(/```json/gi, '')\n        .replace(/```/g, '')\n        .trim();\n\n    // Gerar pedido_codigo aqui se fase = aguardando_confirmacao\n    // Assim o codigo real aparece na mensagem enviada ao cliente\n    if (newOrderState && newOrderState.phase === 'aguardando_confirmacao') {\n        if (!newOrderState.pedido_codigo) {\n            newOrderState.pedido_codigo = '#TRP' + String(Math.floor(Date.now() % 1000000)).padStart(6, '0');\n        }\n        const codigo = newOrderState.pedido_codigo;\n        // Substituir qualquer variacao do placeholder pelo codigo real\n        responseText = responseText\n            .replace(/#TRP\\[.*?\\]/g, codigo)\n            .replace(/#TRP\\{\\{.*?\\}\\}/g, codigo)\n            .replace(/\\{\\{\\s*pedido_codigo\\s*\\}\\}/g, codigo)\n            .replace(/\\[c\\u00f3digo\\]/g, codigo)\n            .replace(/\\[codigo\\]/g, codigo);\n    }\n\n    const clientId = inputData.client_id || '00';\n    const distributedDelay = parseInt(clientId.slice(-2), 10) % 10;\n    const waitSeconds = 2 + distributedDelay;\n\n    return {\n        json: {\n            client_id:       inputData.client_id,\n            client_name:     inputData.client_name,\n            response_text:   responseText,\n            escalate_human:  Boolean(escalateHuman),\n            intent:          intent,\n            confidence:      confidence,\n            session_id:      inputData.session_id,\n            timestamp:       new Date().toISOString(),\n            wait_seconds:    waitSeconds,\n            new_order_state: newOrderState ? JSON.stringify(newOrderState) : null\n        }\n    };\n\n} catch (error) {\n    console.error('Processar Resposta: Erro geral -', error.message);\n    const inputData = $('Processar Fila').first().json;\n    return {\n        json: {\n            client_id:       inputData.client_id,\n            client_name:     inputData.client_name,\n            response_text:   'Desculpe, tive um problema. Por favor, tente novamente.',\n            escalate_human:  true,\n            intent:          'error',\n            confidence:      0,\n            session_id:      inputData.session_id,\n            timestamp:       new Date().toISOString(),\n            wait_seconds:    3,\n            new_order_state: null\n        }\n    };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4688,
+        400
+      ],
+      "id": "0563c82c-c1eb-41eb-bd6f-05eac89bd9ed",
+      "name": "Processar Resposta"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "escalate-check",
+              "leftValue": "={{ $json.escalate_human }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        5328,
+        400
+      ],
+      "id": "d834a372-ed43-45c5-a0e0-3a98014fd0f5",
+      "name": "Decisão de Envio"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.wait_seconds || 3 }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5520,
+        160
+      ],
+      "id": "79de7de2-963b-49c4-8a32-2440d673c237",
+      "name": "Wait",
+      "webhookId": "bdba28a6-afd8-4bd5-bc2a-e417faf0593d"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://intervidros.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "c42f20ba-4fdb-45f4-8c1f-de7e4eb416e3"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.client_id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.response_text }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5712,
+        128
+      ],
+      "id": "882a5e5c-962e-4fc9-996f-a25dd8ebcfb2",
+      "name": "ENVIAR WHATSAPP",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.wait_seconds || 3 }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5520,
+        496
+      ],
+      "id": "cf3a86fd-25dd-4405-8b29-29e74230618b",
+      "name": "Wait Escalate",
+      "webhookId": "11b915c2-e9c4-4d72-ba42-2235a2ff1f58"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://intervidros.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "c42f20ba-4fdb-45f4-8c1f-de7e4eb416e3"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.client_id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.response_text }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5728,
+        496
+      ],
+      "id": "eae7a041-a9c5-4fea-b626-c0ce7b83d25f",
+      "name": "ENVIAR WHATSAPP (Escalate)",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "660b8d7a-5903-4a7d-a3b2-e16e9d88f01b",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3584,
+        400
+      ],
+      "id": "0cfcda8b-4524-4527-a9ea-78e4bf026c4e",
+      "name": "Filtrar Skip"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://intervidros.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "c42f20ba-4fdb-45f4-8c1f-de7e4eb416e3"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "554598080945"
+            },
+            {
+              "name": "text",
+              "value": "={{\n'🚨 *ESCALAÇÃO - ATENDIMENTO HUMANO*\\n\\n' +\n'👤 Cliente: ' + $('Processar Resposta').first().json.client_name + '\\n' +\n'📞 Telefone: ' + $('Processar Resposta').first().json.client_id + '\\n' +\n'🕒 Horário: ' + $('Processar Resposta').first().json.timestamp + '\\n\\n' +\n'💬 *última resposta do bot:*\\n' +\n$('Processar Resposta').first().json.response_text + '\\n\\n' +\n'⚠️ O cliente precisa de atendimento humano.'\n}}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5936,
+        496
+      ],
+      "id": "2d69e142-76b0-47a6-8462-3901164d9035",
+      "name": "Notificar Admin (Escalação)",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// ============================================\n// LOG DE CONVERSA v8.0 - Persistência via Redis\n// ============================================\n\nconst inputData = $('Processar Fila').first().json;\nconst responseData = $('Processar Resposta').first().json;\n\nconst logEntry = {\n    timestamp: new Date().toISOString(),\n    session_id: inputData.session_id,\n    client_id: inputData.client_id,\n    client_name: inputData.client_name,\n    messages_count: inputData.messages_count,\n    user_message: inputData.message_text,\n    bot_response: responseData.response_text,\n    intent: responseData.intent,\n    confidence: responseData.confidence,\n    escalated: responseData.escalate_human,\n    execution_id: $execution.id\n};\n\n// Persistir no Redis como lista (últimas 500 conversas)\ntry {\n    const logKey = 'tropicana_logs';\n    const logValue = encodeURIComponent(JSON.stringify(logEntry));\n\n    await this.helpers.httpRequest({\n        method: 'POST',\n        url: `https://peaceful-sailfish-14074.upstash.io/rpush/${logKey}/${logValue}`,\n        headers: {\n            'Authorization': 'Bearer ATb6AAIncDFkNzcxNmI2MjYwMzc0OWIyYTE4Yzk1YjA4NjZkZDk2ZXAxMTQwNzQ'\n        }\n    });\n\n    // Manter apenas os últimos 500 logs\n    await this.helpers.httpRequest({\n        method: 'POST',\n        url: `https://peaceful-sailfish-14074.upstash.io/ltrim/${logKey}/-500/-1`,\n        headers: {\n            'Authorization': 'Bearer ATb6AAIncDFkNzcxNmI2MjYwMzc0OWIyYTE4Yzk1YjA4NjZkZDk2ZXAxMTQwNzQ'\n        }\n    });\n} catch(e) {\n    console.error('Log persist error:', e.message);\n}\n\n// Manter console.log como backup\nconsole.log('CONVERSATION_LOG:', JSON.stringify(logEntry));\n\nreturn $json;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5936,
+        240
+      ],
+      "id": "73caa352-cca2-4a39-8e9d-1ac3e2fe2c48",
+      "name": "Log Conversa"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "95a4dab9-4046-435a-8955-55e50392b8b3",
+              "leftValue": "=={{ $json.provider_message_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1616,
+        384
+      ],
+      "id": "01c51b4e-cf83-4649-8e6e-833967e1e4ff",
+      "name": "provider_message_id existe?"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "=dedupe:{{$node[\"Setup Entrada\"].json.client_id}}:{{$node[\"Setup Entrada\"].json.provider_message_id}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        304
+      ],
+      "id": "7d6c57ba-8d21-43ca-8c32-db676e69e7a9",
+      "name": "Redis - GET dedupe"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "95a4dab9-4046-435a-8955-55e50392b8b3",
+              "leftValue": "=={{ $json.result }}",
+              "rightValue": "\"1\"",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2080,
+        304
+      ],
+      "id": "cb4d6454-b6f1-4812-b290-e6a3af6634fb",
+      "name": "IF - duplicada?"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2304,
+        160
+      ],
+      "id": "c263d940-3387-4dc7-bfdd-9924c44fbaf0",
+      "name": "STOP - duplicada"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=dedupe:{{$node[\"Setup Entrada\"].json.client_id}}:{{$node[\"Setup Entrada\"].json.provider_message_id}}",
+        "value": "1",
+        "expire": true,
+        "ttl": 3600
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2304,
+        304
+      ],
+      "id": "954db67f-d6a0-4511-a564-1c7d44339abf",
+      "name": "Redis Set"
+    },
+    {
+      "parameters": {
+        "url": "=https://peaceful-sailfish-14074.upstash.io/get/pedido_state:{{ $('Processar Fila').first().json.client_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ATb6AAIncDFkNzcxNmI2MjYwMzc0OWIyYTE4Yzk1YjA4NjZkZDk2ZXAxMTQwNzQ"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3824,
+        400
+      ],
+      "id": "b6fede6f-7f84-4b92-b1cc-1da19e962f3e",
+      "name": "Carregar Estado Pedido",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// demo_tenant: Configurar o tenantId correto para cada tenant\n// Este nó prepara o contexto do pedido para o AI Agent\n// ============================================\n// PREPARAR CONTEXTO PEDIDO v3.0 - COM HORARIO\n// ============================================\ntry {\n    const filaData = $('Processar Fila').first().json;\n    const redisResponse = $json;\n\n    // ?? HORARIO DE PEDIDOS (BRT = UTC-3) ??\n    const _now = new Date();\n    const _brtMs = _now.getTime() - (3 * 60 * 60 * 1000);\n    const _brt = new Date(_brtMs);\n    const _totalMin = _brt.getUTCHours() * 60 + _brt.getUTCMinutes();\n    const _janelas = [\n        { inicio: 11 * 60,       fim: 15 * 60 + 45, label: '11h ás 15h45' },\n        { inicio: 18 * 60,       fim: 21 * 60 + 45, label: '18h ás 21h45' },\n    ];\n    const aceitaPedidos = _janelas.some(j => _totalMin >= j.inicio && _totalMin <= j.fim);\n    let proximaJanela = '';\n    if (!aceitaPedidos) {\n        for (const j of _janelas) {\n            if (_totalMin < j.inicio) { proximaJanela = j.label; break; }\n        }\n        if (!proximaJanela) proximaJanela = _janelas[0].label + ' (amanhã)';\n    }\n\n    // ?? ESTADO DO PEDIDO ??\n    let orderState = null;\n    try {\n        if (redisResponse && redisResponse.result && redisResponse.result !== null) {\n            orderState = JSON.parse(redisResponse.result);\n        }\n    } catch(e) { orderState = null; }\n\n    if (!orderState) {\n        orderState = {\n            phase: \"idle\",\n            items: [],\n            nome_cliente: null,\n            endereco: null,\n            complemento: null,\n            bairro: null,\n            forma_pagamento: null,\n            troco_para: null,\n            total: 0,\n            confirmado: false\n        };\n    }\n\n    let orderSummary = \"\";\n    if (orderState.phase === \"idle\") {\n        orderSummary = \"Nenhum pedido em andamento.\";\n    } else if (orderState.phase === \"coletando\") {\n        const itensList = orderState.items.length > 0\n            ? orderState.items.map(i => `${i.nome} x${i.quantidade}`).join(\", \")\n            : \"nenhum ainda\";\n        orderSummary = `PEDIDO EM ANDAMENTO (coletando informações):\\n` +\n            `- Itens: ${itensList}\\n` +\n            `- Nome: ${orderState.nome_cliente || \"não informado\"}\\n` +\n            `- Endereço: ${orderState.endereco || \"não informado\"}\\n` +\n            `- Complemento: ${orderState.complemento || \"não informado\"}\\n` +\n            `- Bairro: ${orderState.bairro || \"não informado\"}\\n` +\n            `- Pagamento: ${orderState.forma_pagamento || \"não informado\"}\\n` +\n            `- Troco: ${orderState.troco_para ? \"R$ \" + orderState.troco_para : \"não necessário\"}\\n` +\n            `- Total parcial: R$ ${orderState.total}`;\n    } else if (orderState.phase === \"aguardando_confirmacao\") {\n        const itensList = orderState.items\n            .map(i => `  . ${i.nome} x${i.quantidade} - R$ ${i.preco_total}`)\n            .join(\"\\n\");\n        orderSummary = `PEDIDO AGUARDANDO CONFIRMAÇÃO DO CLIENTE:\\n` +\n            `${itensList}\\n` +\n            `- Nome: ${orderState.nome_cliente}\\n` +\n            `- Endereço: ${orderState.endereco}${orderState.complemento ? \", \" + orderState.complemento : \"\"} - ${orderState.bairro}\\n` +\n            `- Pagamento: ${orderState.forma_pagamento}\\n` +\n            `${orderState.troco_para ? \"- Troco para: R$ \" + orderState.troco_para + \"\\n\" : \"\"}` +\n            `- TOTAL: R$ ${orderState.total}`;\n    } else if (orderState.phase === \"finalizado\") {\n        orderSummary = \"Pedido finalizado e confirmado pelo cliente.\";\n    }\n\n    return [{\n        json: {\n            ...filaData,\n            order_state: JSON.stringify(orderState),\n            order_summary: orderSummary,\n            order_phase: orderState.phase,\n            aceita_pedidos: aceitaPedidos,\n            proxima_janela: proximaJanela,\n        }\n    }];\n\n} catch (error) {\n    console.error(\"Preparar Contexto Pedido: Erro -\", error.message);\n    const filaData = $('Processar Fila').first().json;\n    return [{\n        json: {\n            ...filaData,\n            order_state: JSON.stringify({ phase: \"idle\", items: [], total: 0, confirmado: false }),\n            order_summary: \"Nenhum pedido em andamento.\",\n            order_phase: \"idle\",\n            aceita_pedidos: true,\n            proxima_janela: \"\",\n        }\n    }];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4064,
+        400
+      ],
+      "id": "16ecf2b7-9c42-4193-8aa4-82d0ce1c8737",
+      "name": "Preparar Contexto Pedido"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// PREPARAR SALVAR PEDIDO v3.0 - injeta client_name e client_id\n// ============================================\ntry {\n    const responseData = $json;\n\n    if (responseData.new_order_state) {\n        const clientId = responseData.client_id;\n        let stateStr = typeof responseData.new_order_state === 'string'\n            ? responseData.new_order_state\n            : JSON.stringify(responseData.new_order_state);\n\n        try {\n            const stateObj = JSON.parse(stateStr);\n\n            // Gerar pedido_codigo no n8n (nunca deixar o AI gerar)\n            if (stateObj.phase === 'aguardando_confirmacao' && !stateObj.pedido_codigo) {\n                stateObj.pedido_codigo = '#TRP' + String(Math.floor(Date.now() % 1000000)).padStart(6, '0');\n            }\n\n            // Sempre injetar nome do cliente se o AI não incluiu\n            if (!stateObj.nome_cliente && responseData.client_name) {\n                stateObj.nome_cliente = responseData.client_name;\n            }\n\n            stateStr = JSON.stringify(stateObj);\n        } catch(e) {}\n\n        return [{\n            json: {\n                ...responseData,\n                redis_key: `pedido_state:${clientId}`,\n                redis_value: stateStr,\n                redis_ttl: 7200\n            }\n        }];\n    }\n\n    return [{\n        json: {\n            ...responseData,\n            redis_key: `pedido_noop`,\n            redis_value: '{}',\n            redis_ttl: 7200\n        }\n    }];\n} catch(error) {\n    console.error('Preparar Salvar Pedido: Erro -', error.message);\n    return [{ json: $json }];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4928,
+        400
+      ],
+      "id": "f13fc83f-2ee7-482c-9a21-fc82f0f07968",
+      "name": "Preparar Salvar Pedido"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// REDIS: SALVAR ESTADO PEDIDO v3.0\n// Não salva se não houver mudança de estado\n// ============================================\nconst key = $json.redis_key || '';\nconst value = $json.redis_value || '{}';\nconst ttl = $json.redis_ttl || 7200;\n\n// Não salvar se for noop\nif (!key || key === 'pedido_noop') {\n    return [{\n        json: {\n            client_id: $json.client_id,\n            client_name: $json.client_name,\n            response_text: $json.response_text,\n            escalate_human: $json.escalate_human,\n            intent: $json.intent,\n            confidence: $json.confidence,\n            session_id: $json.session_id,\n            timestamp: $json.timestamp,\n            wait_seconds: $json.wait_seconds,\n            new_order_state: $json.new_order_state\n        }\n    }];\n}\n\ntry {\n    const encodedValue = encodeURIComponent(value);\n    await this.helpers.httpRequest({\n        method: 'POST',\n        url: `https://peaceful-sailfish-14074.upstash.io/set/${key}/${encodedValue}/EX/${ttl}`,\n        headers: {\n            'Authorization': 'Bearer ATb6AAIncDFkNzcxNmI2MjYwMzc0OWIyYTE4Yzk1YjA4NjZkZDk2ZXAxMTQwNzQ'\n        }\n    });\n} catch(e) {\n    console.error('Redis save error:', e.message);\n}\n\nreturn [{\n    json: {\n        client_id: $json.client_id,\n        client_name: $json.client_name,\n        response_text: $json.response_text,\n        escalate_human: $json.escalate_human,\n        intent: $json.intent,\n        confidence: $json.confidence,\n        session_id: $json.session_id,\n        timestamp: $json.timestamp,\n        wait_seconds: $json.wait_seconds,\n        new_order_state: $json.new_order_state\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5120,
+        400
+      ],
+      "id": "fdfac341-321b-4f15-8747-749389364849",
+      "name": "Redis: Salvar Estado Pedido"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message_text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Você é um atendente humanizado da Churrascaria Tropicana, Foz do Iguaçu.\n\nCLIENTE: {{ $('Preparar Contexto Pedido').first().json.client_name }}\n\nESTADO ATUAL DO PEDIDO:\n{{ $('Preparar Contexto Pedido').first().json.order_summary }}\n\n====================================================\nPERSONALIDADE (OBRIGATÓRIO)\n====================================================\n- Seja cordial, atencioso e profissional.\n- Tom de conversa natural - proibido: \"menu\", \"selecione\", \"digite 1/2/3\".\n- Responda APENAS o que foi perguntado.\n- NÃO despeje informações sem necessidade.\n- Mensagens curtas e claras (prefira quebras de linha).\n- Se precisar perguntar algo, faça 1 pergunta direta por mensagem.\n\n====================================================\nABERTURA (OBRIGATÓRIO)\n====================================================\nQuando o cliente mandar apenas saudação (\"Oi\", \"Olá\", \"Bom dia\", \"Boa tarde\", \"Boa noite\"), responda SEMPRE:\n\n\"Olá! Bem-vindo à *Churrascaria Tropicana* 🍖🔥\n\nPosso te ajudar com:\n\n. Informações sobre o *salão* (almoço e jantar)\n. Pedido de *marmitas* via WhatsApp\n. *Cardápio digital*\n\nComo posso ajudar?\"\n\nNADA MAIS. Espere o cliente responder.\n\n====================================================\nREGRA CRÍTICA - HORÁRIO DE PEDIDOS\n====================================================\nACEITA_PEDIDOS_AGORA: {{ $('Preparar Contexto Pedido').first().json.aceita_pedidos }}\nproxima_janela: {{ $('Preparar Contexto Pedido').first().json.proxima_janela }}\n\nIMPORTANTE: Leia o valor de ACEITA_PEDIDOS_AGORA acima.\n\nSe ACEITA_PEDIDOS_AGORA = true:\n→ Aceite pedidos normalmente\n→ Pergunte o que o cliente deseja pedir\n→ NUNCA diga que não está aceitando pedidos\n\nSe ACEITA_PEDIDOS_AGORA = false:\n====================================================\nREGRA CRÍTICA - SALÃO = APENAS INFORMATIVO\n====================================================\nPerguntas sobre SALÃO (almoço, jantar, rodízio, buffet, reservas):\n→ SEMPRE use a tool com query \"salao\" antes de responder. NUNCA responda sem consultar a tool.\n→ Responda de forma clara, educada e receptiva com as informações retornadas.\n❌ NUNCA tente tirar pedido de salão pelo WhatsApp.\n? Para reservas: informe o telefone (45) 98218-226.\n→ Ofereça o link do cardápio digital APENAS se o cliente pedir mais detalhes ou perguntar sobre o cardápio completo.\n\n====================================================\nREGRA CRÍTICA - PEDIDOS VIA WHATSAPP\n====================================================\nItens disponíveis para ENTREGA via WhatsApp:\n. Marmitas (todos os tipos)\n. Combos Família\n. Porções de carne\n. Bebidas\n\nA la Carte e Guarnições avulsas são servidos apenas no salão físico - não fazemos entrega desses itens.\n\nSe o cliente perguntar sobre preços ou opções do salão: informe normalmente.\nSe o cliente quiser PEDIR A la Carte ou Guarnições via WhatsApp: explique que esses itens são servidos apenas no salão, e ofereça as opções de entrega.\n\nORDEM OBRIGATÓRIA para pedidos:\n1. Cliente informa a CATEGORIA do pedido de ENTREGA (marmita ou combo) ? use a tool imediatamente e liste TODAS as opções dessa categoria com preços, depois pergunte qual deseja\n2. Cliente escolhe o produto ? confirme e pergunte APENAS a quantidade\n3. Cliente informa quantidade ? pergunte APENAS: retirada ou delivery?\n4. Se delivery ? peça: rua + número + bairro + complemento (se tiver)\n5. Se delivery → use OBRIGATORIAMENTE a tool \"calcular_taxa_entrega\" passando o endereço completo → informe a taxa ao cliente: \"🚚 *Taxa de entrega:* R$ [taxa] ([distancia] km)\"\n6. Se retirada ? pule para pagamento\n7. Pergunte APENAS a forma de pagamento\n8. Se dinheiro ? \"Precisa de troco? Se sim, troco pra quanto?\"\n9. Gere o código do pedido e envie o RESUMO completo pedindo confirmação\n\n====================================================\nREGRA CRÍTICA: UM PASSO POR MENSAGEM (OBRIGATÓRIO)\n====================================================\nNUNCA faça duas perguntas na mesma mensagem.\nCada mensagem = uma única pergunta ou informação.\nEXCEÇÃO: no passo 1, liste as opções E pergunte qual deseja - isso ê permitido pois faz parte do mesmo passo.\n\n====================================================\nREGRA CRÍTICA: PREÇOS SEMPRE VISÍVEIS\n====================================================\nAo apresentar opções, mostre SEMPRE o preço ao lado.\nUse APENAS preços retornados pela tool - NUNCA invente.\n\n====================================================\nREGRA CRÍTICA: LINK CARDÁPIO DIGITAL\n====================================================\nEnvie o link https://churrascariatropicana.saipos.com/home SOMENTE quando:\n? Cliente pedir explicitamente: \"cardápio\", \"menu\", \"quero ver tudo\", \"manda o cardápio\"\n? Cliente pedir mais detalhes após já ter recebido uma resposta informativa\n\nPROIBIDO enviar o link em:\n? Respostas sobre preços\n? Respostas sobre horários\n? Respostas sobre rodízio, buffet ou salão\n? Qualquer resposta onde o cliente não pediu o link explicitamente\n\nREGRA: se você consegue responder com as informações da tool, responda. Ponto final. Sem link.\n\n====================================================\nREGRA CRÍTICA: ANTI-ALUCINAÇÃO (UNIVERSO FECHADO)\n====================================================\nPROIBIDO inventar: preços, produtos, horários, parcelamento.\nSe não souber: \"Não tenho essa informação. Vou encaminhar para o atendimento 🙏\"\ne defina escalate_human: true\n\n====================================================\nREGRA CRÍTICA: NÃO TRAVAR EM SAUDAÇÃO\n====================================================\nSe cliente fizer pergunta junto com a saudação, responda direto.\n\n====================================================\nREGRA ANTI-LOOP\n====================================================\n- Nunca repita a mesma pergunta 2x.\n- Interprete respostas curtas pelo CONTEXTO da última pergunta.\n- Se ambíguo: \"Só pra confirmar: (A) ou (B)?\"\n\n====================================================\nQUANDO ESCALAR (escalate_human: true)\n====================================================\n- Reclamações / cliente irritado / palavras: \"reclamação\", \"atraso\", \"frio\", \"cabelo\", \"procon\", \"gerente\"\n- Endereço fora da área de entrega (>11km)\n- Parcelamento, taxa de cartão, bandeiras\n- Cliente insistindo em informação não disponível\n\n====================================================\n? MÓDULO DELIVERY\n====================================================\n\"Me informa por favor:\n\n. Rua + número\n. Bairro\n. Complemento (se tiver) 📍\"\n\nApós receber o endereço ? use OBRIGATORIAMENTE a tool \"calcular_taxa_entrega\".\nSe a tool retornar erro ? informe que a taxa será confirmada e escale para humano.\n\n====================================================\n? TAXA DE ENTREGA\n====================================================\nApós calcular via tool, informe ao cliente:\n\"🚚 *Taxa de entrega:* R$ [taxa] ([distancia] km)\"\n\nAdicione taxa_entrega no new_order_state e some ao total do pedido.\nSe fora da área ? escale para humano.\n\n====================================================\n? FORMA DE PAGAMENTO\n====================================================\n\"Qual a forma de pagamento?\n\n. Pix\n. Cartão\n. Dinheiro 💵\"\n\nSe dinheiro: \"Precisa de troco? Se sim, troco pra quanto?\"\nSe Pix: após o cliente confirmar o pedido, envie SEMPRE:\n\n\"💳 *Pagamento via Pix*\n\n? *Chave:* Tropicanafoz01@gmail.com\n? *Valor:* R$ [total do pedido]\n\n⏳ Seu pedido ficará aguardando a confirmação do pagamento para entrar em preparo. ⌛\"\n\n====================================================\nCÓDIGO DO PEDIDO (OBRIGATÓRIO)\n====================================================\nO código do pedido é gerado automaticamente pelo sistema.\nInclua SEMPRE pedido_codigo: null no new_order_state.\nO sistema preencherá o código automaticamente.\nExiba no resumo como: 🧾 *Pedido:* {{ pedido_codigo }}\n\n====================================================\n⚠️ FORMATAÇÃO DE TEXTO (OBRIGATÓRIO - CRÍTICO)\n====================================================\n\nREGRAS DE FORMATAÇÃO PARA WHATSAPP:\n1. Use *negrito* para títulos e destaques (ex: *Total:*, *Entrega:*)\n2. Use . para listas de itens (NUNCA use -, --, # ou **)\n3. Use ? para sub-itens ou detalhes dentro de uma seção\n4. Separe SEÇÕES com uma linha em branco entre elas\n5. Mantenha cada linha curta (máx 50 caracteres quando possível)\n6. Use emojis como marcadores visuais de seção (1 por seção, no início)\n7. NUNCA use markdown de código (```)\n8. NUNCA use **, #, __ ou - para listas\n9. Quebre linhas com \\n para facilitar leitura\n10. Use ━━━━━━━━━━ como separador visual entre seções grandes\n\nEXEMPLO - LISTAR OPÇÕES DE CATEGORIA:\n\"📋 *Marmitas disponíveis*\n\n. Marmita Tradicional - R$ 20,00\n. Promo 2 Tradicionais - R$ 38,00\n. Executiva Frango - R$ 17,00\n. Executiva 750g - R$ 28,00\n. Executiva Contra Filê - R$ 34,00\n. Executiva Picanha - R$ 38,00\n\nQual você gostaria? 😊\"\n\nEXEMPLO - INFORMAÇÕES DO SALÃO:\n\"🍽️ *Salão - Almoço*\n🕒 Seg-Sáb: 11h ás 14h30 | Dom: 11h ás 15h\n\n. Buffet Livre - R$ 34,90/pessoa\n. Rodízio Completo - R$ 64,90/pessoa\n\n🌙 *Salão - Jantar*\n🕒 Ter-Sáb: 19h ás 23h\n\n. Rodízio + Pizzas - R$ 64,90/pessoa\n\n📞 Reservas: (45) 98218-226\"\n\n====================================================\nFORMATAÇÃO DO RESUMO DO PEDIDO (OBRIGATÓRIO)\n====================================================\n\n\"? *Resumo do Pedido*\n🧾 *Pedido:* #TRP[código]\n\n━━━━━━━━━━\n\n📝 *Itens*\n. [item] x[qtd] - R$ [total]\n. [item] x[qtd] - R$ [total]\n\n🚚 *Entrega*\n📦 Tipo: [Retirada / Delivery]\n📍 Endereço: [rua], [bairro]\n🚚 Taxa: R$ [taxa] ([km] km)\n\n💳 *Pagamento*\n💳 Forma: [pagamento]\n💵 Troco para: R$ [valor]\n\n━━━━━━━━━━\n\n💰 *Total: R$ [total]*\n\nConfirma pra eu registrar? 😊\"\n\nSe forma_pagamento = Pix, adicione APÓS a confirmação:\n\n\"💳 *Pagamento via Pix*\n\n? *Chave:* Tropicanafoz01@gmail.com\n? *Valor:* R$ [total]\n\n⏳ Aguardando confirmação do pagamento para entrar em preparo. ⌛\"\n\n====================================================\n⚠️ FORMATO DE SAÍDA - JSON OBRIGATÓRIO (CRÍTICO)\n====================================================\nResponda EXCLUSIVAMENTE com um objeto JSON válido.\nNUNCA coloque texto fora do JSON. NUNCA use blocos de código.\n\n{\n  \"intent\": \"geral|salao|marmita|alacarte|combo|cardapio|pagamento|humano\",\n  \"response_text\": \"Mensagem formatada para WhatsApp.\\nUse . para listas.\\nUse ? para sub-itens.\\nUse *negrito* para títulos.\\nSepare seções com linha em branco.\",\n  \"escalate_human\": false,\n  \"confidence\": 0.9,\n  \"new_order_state\": {\n    \"phase\": \"idle\",\n    \"pedido_codigo\": null,\n    \"items\": [\n      {\n        \"nome\": \"Marmita Tradicional\",\n        \"quantidade\": 1,\n        \"preco_unitario\": 20.00,\n        \"preco_total\": 20.00,\n        \"detalhes\": {}\n      }\n    ],\n    \"nome_cliente\": null,\n    \"endereco\": null,\n    \"complemento\": null,\n    \"bairro\": null,\n    \"forma_pagamento\": null,\n    \"troco_para\": null,\n    \"taxa_entrega\": 0.00,\n    \"distancia_km\": null,\n    \"total\": 20.00,\n    \"confirmado\": false\n  }\n}\n\nFASES:\n- \"idle\"                   ? nenhum pedido iniciado\n- \"coletando\"              ? coletando itens/quantidade\n- \"aguardando_entrega\"     ? itens definidos, perguntando retirada ou delivery\n- \"coletando_endereco\"     ? coletando endereço (só delivery)\n- \"calculando_taxa\"        ? endereço recebido, calculando taxa via tool\n- \"aguardando_pagamento\"   ? taxa informada, perguntando pagamento\n- \"aguardando_confirmacao\" ? resumo enviado, aguardando confirmação\n- \"finalizado\"             ? cliente confirmou\n\nREGRAS:\n- Atualize new_order_state a cada mensagem.\n- NUNCA retorne new_order_state null quando há pedido em andamento.\n- Gere pedido_codigo APENAS na fase \"aguardando_confirmacao\" e mantenha atê \"finalizado\".\n- Para perguntas informativas (salão, dúvidas), new_order_state.phase = \"idle\".\n- Qualquer resposta fora deste JSON causará falha no sistema."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        4288,
+        400
+      ],
+      "id": "2bf5458d-3860-4678-830e-cda1cc738528",
+      "name": "AI Agent",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// NOTIFICAR PEDIDO v3.0 - com taxa de entrega\n// ============================================\nconst responseData = $('Processar Resposta').first().json;\nconst rawState = responseData.new_order_state;\n\nif (!rawState) {\n  return { json: { ...responseData, admin_message: null } };\n}\n\nlet order;\ntry {\n  order = typeof rawState === 'string' ? JSON.parse(rawState) : rawState;\n} catch(e) {\n  return { json: { ...responseData, admin_message: null } };\n}\n\nif (!order || !order.items) {\n  return { json: { ...responseData, admin_message: null } };\n}\n\nconst codigo = order.pedido_codigo || '#TRP' + Date.now().toString().slice(-6);\n\nconst itens = order.items.map(i => {\n  let linha = '. ' + i.nome + ' x' + i.quantidade + ' - R$ ' + (i.preco_total || 0).toFixed(2);\n  if (i.detalhes?.sabores?.length)      linha += '\\n  Sabores: ' + i.detalhes.sabores.join(', ');\n  if (i.detalhes?.complementos?.length) linha += '\\n  Complementos: ' + i.detalhes.complementos.join(', ');\n  if (i.detalhes?.acompanhamento)       linha += '\\n  Acompanhamento: ' + i.detalhes.acompanhamento;\n  if (i.detalhes?.cobertura)            linha += '\\n  Cobertura: ' + i.detalhes.cobertura;\n  if (i.detalhes?.fruta)                linha += '\\n  Fruta: ' + i.detalhes.fruta;\n  return linha;\n}).join('\\n');\n\nconst entrega = order.bairro\n  ? 'Delivery\\n📍 ' + order.endereco + ', ' + order.bairro + (order.complemento ? ' - ' + order.complemento : '')\n  : 'Retirada no balcão';\n\nconst taxa = order.taxa_entrega && order.taxa_entrega > 0\n  ? '*Taxa de entrega:* R$ ' + parseFloat(order.taxa_entrega).toFixed(2) +\n    (order.distancia_km ? ' (' + order.distancia_km + ' km)' : '') + '\\n'\n  : '';\n\nconst pagamento = '*Pagamento:* ' + (order.forma_pagamento || '-') + '\\n' +\n  (order.troco_para ? '*Troco para:* R$ ' + order.troco_para + '\\n' : '');\n\nconst adminMessage =\n  '🔔 *NOVO PEDIDO CONFIRMADO*\\n\\n' +\n  '🏷️ *Código:* ' + codigo + '\\n' +\n  '👤 *Cliente:* ' + responseData.client_name + '\\n' +\n  '📞 *Telefone:* ' + responseData.client_id + '\\n\\n' +\n  '*Itens:*\\n' + itens + '\\n\\n' +\n  '*Entrega:* ' + entrega + '\\n' +\n  taxa +\n  pagamento +\n  '\\n*Total: R$ ' + (order.total || 0).toFixed(2) + '*';\n\nreturn {\n  json: {\n    ...responseData,\n    admin_message: adminMessage\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5968,
+        80
+      ],
+      "id": "2ddbca49-bd26-48aa-9ef5-9dd896c1effa",
+      "name": "Notificar Pedido"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// ============================================\n// VERIFICAR PEDIDO CONFIRMADO v2.0 - JSON parse seguro\n// ============================================\ntry {\n    const responseData = $('Processar Resposta').first().json;\n    const rawState = responseData.new_order_state;\n\n    if (!rawState) {\n        return { json: { ...responseData, is_confirmed: false } };\n    }\n\n    let order;\n    try {\n        order = typeof rawState === 'string' ? JSON.parse(rawState) : rawState;\n    } catch(e) {\n        return { json: { ...responseData, is_confirmed: false } };\n    }\n\n    const isConfirmed = order && order.phase === 'finalizado' && order.confirmado === true;\n\n    return {\n        json: {\n            ...responseData,\n            is_confirmed: isConfirmed,\n            admin_message: $json.admin_message || null\n        }\n    };\n} catch(err) {\n    console.error('Verificar Pedido Confirmado:', err.message);\n    return { json: { ...$json, is_confirmed: false } };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6208,
+        80
+      ],
+      "id": "67fda59b-001d-441c-8f59-038db4c48e09",
+      "name": "Pedido Confirmado?"
+    },
+    {
+      "parameters": {
+        "name": "consultar_cardapio",
+        "description": "Consulta o cardápio completo do restaurante. Use sempre que precisar de informações sobre itens, preços e disponibilidade. Retorna categorias com itens.",
+        "jsCode": "// ============================================================\n// TOOL: Consultar Cardápio - PedAI (API dinâmica)\n// demo_tenant: substituir pelo tenantId real\n// ============================================================\n\nconst https = require('https');\n\nconst TENANT_ID = 'demo_tenant';\nconst API_URL = 'https://pedai-rho.vercel.app/api/menu/' + TENANT_ID;\n\nfunction httpsGet(url) {\n  return new Promise((resolve, reject) => {\n    https.get(url, (res) => {\n      let data = '';\n      res.on('data', chunk => data += chunk);\n      res.on('end', () => {\n        try { resolve({ status: res.statusCode, body: JSON.parse(data) }); }\n        catch (e) { reject(new Error('JSON inválido: ' + data.substring(0, 200))); }\n      });\n    }).on('error', reject);\n  });\n}\n\ntry {\n  const res = await httpsGet(API_URL);\n\n  if (res.status !== 200) {\n    return 'Erro ao consultar cardápio: HTTP ' + res.status;\n  }\n\n  const { categories } = res.body;\n\n  if (!categories || categories.length === 0) {\n    return 'Cardápio não disponível no momento.';\n  }\n\n  let resposta = 'CARDÁPIO:\\n\\n';\n\n  for (const cat of categories) {\n    resposta += cat.name.toUpperCase() + ':\\n';\n    for (const item of cat.items) {\n      if (!item.available) continue;\n      resposta += '. ' + item.name + ' - R$ ' + parseFloat(item.price).toFixed(2);\n      if (item.description) resposta += '\\n  ' + item.description;\n      resposta += '\\n';\n    }\n    resposta += '\\n';\n  }\n\n  return resposta.trim();\n\n} catch (err) {\n  return 'Erro ao consultar cardápio: ' + err.message;\n}"
+      },
+      "id": "ff216f74-fa4f-4f43-8441-d70ec9a218b1",
+      "name": "Tool: Consultar Cardápio",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.1,
+      "position": [
+        4528,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Consulta a taxa de entrega com base no bairro do cliente. Passe o nome do bairro como query.",
+        "jsCode": "// ============================================================\n// TOOL: Calcular Taxa de Entrega - PedAI (API dinâmica)\n// demo_tenant: substituir pelo tenantId real\n// ============================================================\n\nconst https = require('https');\n\nconst TENANT_ID = 'demo_tenant';\nconst API_URL = 'https://pedai-rho.vercel.app/api/settings/' + TENANT_ID;\n\nfunction httpsGet(url) {\n  return new Promise((resolve, reject) => {\n    https.get(url, (res) => {\n      let data = '';\n      res.on('data', chunk => data += chunk);\n      res.on('end', () => {\n        try { resolve({ status: res.statusCode, body: JSON.parse(data) }); }\n        catch (e) { reject(new Error('JSON inválido: ' + data.substring(0, 200))); }\n      });\n    }).on('error', reject);\n  });\n}\n\nconst bairroCliente = (typeof query !== 'undefined' ? query : '').toString().trim().toLowerCase();\n\nif (!bairroCliente) {\n  return 'Bairro não informado. Solicite o bairro ao cliente.';\n}\n\ntry {\n  const res = await httpsGet(API_URL);\n\n  if (res.status !== 200) {\n    return 'Erro ao consultar configurações: HTTP ' + res.status;\n  }\n\n  const { settings } = res.body;\n  const zones = settings && settings.deliveryZones ? settings.deliveryZones : [];\n\n  if (zones.length === 0) {\n    return 'Nenhuma zona de entrega configurada. Informe o cliente que a entrega não está disponível no momento.';\n  }\n\n  const zona = zones.find(z => z.neighborhood.toLowerCase() === bairroCliente);\n\n  if (!zona) {\n    // Tenta busca parcial\n    const zonaPartial = zones.find(z =>\n      z.neighborhood.toLowerCase().includes(bairroCliente) ||\n      bairroCliente.includes(z.neighborhood.toLowerCase())\n    );\n\n    if (zonaPartial) {\n      return JSON.stringify({\n        bairro: zonaPartial.neighborhood,\n        taxa_entrega: zonaPartial.fee,\n        bairro_confirmado: zonaPartial.neighborhood\n      });\n    }\n\n    const bairrosDisponiveis = zones.map(z => z.neighborhood).join(', ');\n    return 'Bairro \"' + bairroCliente + '\" não encontrado nas zonas de entrega. Bairros disponíveis: ' + bairrosDisponiveis + '. Peça ao cliente para confirmar o bairro ou ofereça retirada no local.';\n  }\n\n  return JSON.stringify({\n    bairro: zona.neighborhood,\n    taxa_entrega: zona.fee,\n    bairro_confirmado: zona.neighborhood\n  });\n\n} catch (err) {\n  return 'Erro ao calcular taxa de entrega: ' + err.message;\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        4400,
+        912
+      ],
+      "id": "c5440c8a-43a7-4e95-b478-42c97de63fbd",
+      "name": "calcular_taxa_entrega"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "router-confirmed",
+              "leftValue": "={{ $json.is_confirmed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Rotear Pedido Confirmado",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        6400,
+        80
+      ],
+      "id": "2c4a1d6c-fa7b-4af0-9502-36bc2f0ab708"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://intervidros.uazapi.com/send/text",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "c42f20ba-4fdb-45f4-8c1f-de7e4eb416e3"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "554598080945"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.admin_message || '??? Pedido confirmado - sem detalhes disponíveis' }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "name": "Notificar Admin (Pedido)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        6640,
+        64
+      ],
+      "id": "220aab9f-3c16-4667-8e74-fe0530624586"
+    },
+    {
+      "id": "pedai-criar-pedido-001",
+      "name": "Criar Pedido API",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6640,
+        -100
+      ],
+      "parameters": {
+        "jsCode": "// ============================================\n// CRIAR PEDIDO VIA API - PedAI\n// demo_tenant: substituir pelo tenantId real\n// ============================================\nconst https = require('https');\n\nconst TENANT_ID = 'demo_tenant';\nconst API_URL = 'https://pedai-rho.vercel.app/api/orders';\n\nconst responseData = $json;\nlet order;\ntry {\n  const rawState = responseData.new_order_state || responseData.order_state;\n  order = typeof rawState === 'string' ? JSON.parse(rawState) : rawState;\n} catch(e) {\n  return [{ json: { ...responseData, api_order_error: 'Falha ao parsear order state' } }];\n}\n\nif (!order || !order.items || order.items.length === 0) {\n  return [{ json: { ...responseData, api_order_error: 'Pedido sem itens' } }];\n}\n\nconst payload = {\n  tenantId: TENANT_ID,\n  channel: 'WHATSAPP',\n  type: order.bairro ? 'DELIVERY' : 'PICKUP',\n  customerName: order.nome_cliente || responseData.client_name || '',\n  customerPhone: responseData.client_id || '',\n  address: order.endereco || '',\n  neighborhood: order.bairro || '',\n  deliveryFee: parseFloat(order.taxa_entrega) || 0,\n  paymentMethod: order.forma_pagamento || '',\n  items: order.items.map(i => ({\n    name: i.nome,\n    quantity: i.quantidade || 1,\n    unitPrice: i.preco_unitario || (i.preco_total / (i.quantidade || 1)),\n    total: i.preco_total || 0\n  }))\n};\n\nfunction httpsPost(url, body) {\n  return new Promise((resolve, reject) => {\n    const bodyStr = JSON.stringify(body);\n    const urlObj = new URL(url);\n    const opts = {\n      hostname: urlObj.hostname,\n      path: urlObj.pathname,\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(bodyStr) }\n    };\n    const req = https.request(opts, (res) => {\n      let data = '';\n      res.on('data', chunk => data += chunk);\n      res.on('end', () => {\n        try { resolve({ status: res.statusCode, body: JSON.parse(data) }); }\n        catch (e) { resolve({ status: res.statusCode, body: data }); }\n      });\n    });\n    req.on('error', reject);\n    req.write(bodyStr);\n    req.end();\n  });\n}\n\ntry {\n  const res = await httpsPost(API_URL, payload);\n  return [{ json: { ...responseData, api_order_status: res.status, api_order_response: res.body } }];\n} catch (err) {\n  return [{ json: { ...responseData, api_order_error: err.message } }];\n}"
+      }
+    }
+  ],
+  "tags": [],
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
