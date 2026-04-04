@@ -28,6 +28,7 @@ interface MenuItem {
   channels: string[];
   options: unknown;
   order: number;
+  image: string | null;
 }
 
 interface Category {
@@ -78,6 +79,7 @@ export default function CardapioPage() {
   const [itemDescription, setItemDescription] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [itemChannels, setItemChannels] = useState<string[]>(["WHATSAPP", "PDV"]);
+  const [itemImage, setItemImage] = useState("");
 
   const [saving, setSaving] = useState(false);
 
@@ -177,6 +179,7 @@ export default function CardapioPage() {
     setItemDescription("");
     setItemPrice("");
     setItemChannels(["WHATSAPP", "PDV"]);
+    setItemImage("");
     setItemModal(true);
   };
 
@@ -187,6 +190,7 @@ export default function CardapioPage() {
     setItemDescription(item.description || "");
     setItemPrice(String(item.price));
     setItemChannels(item.channels);
+    setItemImage(item.image || "");
     setItemModal(true);
   };
 
@@ -200,6 +204,7 @@ export default function CardapioPage() {
         description: itemDescription || null,
         price: parseFloat(itemPrice),
         channels: itemChannels,
+        image: itemImage || null,
       };
 
       if (editingItem) {
@@ -519,9 +524,17 @@ export default function CardapioPage() {
                           }`}
                         >
                           <div className="flex items-center gap-5 flex-1">
-                            {/* Image placeholder */}
+                            {/* Item image */}
                             <div className="w-16 h-16 rounded-xl bg-[#edeef0] overflow-hidden shrink-0 flex items-center justify-center">
-                              <Utensils size={22} className="text-[#5a4138] opacity-40" />
+                              {item.image ? (
+                                <img
+                                  src={item.image}
+                                  alt={item.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <Utensils size={22} className="text-[#5a4138] opacity-40" />
+                              )}
                             </div>
 
                             <div className="space-y-1">
@@ -923,6 +936,31 @@ export default function CardapioPage() {
                   placeholder="0.00"
                   className="w-full h-12 px-4 rounded-xl outline-none text-sm transition bg-[#e7e8ea] text-[#191c1e] border-b-2 border-b-transparent focus:border-b-[#a33900] placeholder:text-zinc-400"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2 text-[#5a4138]">
+                  Imagem (URL)
+                </label>
+                <div className="flex gap-3 items-center">
+                  <input
+                    type="url"
+                    value={itemImage}
+                    onChange={(e) => setItemImage(e.target.value)}
+                    placeholder="https://exemplo.com/foto-do-item.jpg"
+                    className="flex-1 h-12 px-4 rounded-xl outline-none text-sm transition bg-[#e7e8ea] text-[#191c1e] border-b-2 border-b-transparent focus:border-b-[#a33900] placeholder:text-zinc-400"
+                  />
+                  {itemImage && (
+                    <div className="w-12 h-12 rounded-xl bg-[#edeef0] overflow-hidden shrink-0">
+                      <img
+                        src={itemImage}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div>

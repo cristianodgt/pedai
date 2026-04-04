@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { categoryId, name, description, price, channels, options } = body;
+  const { categoryId, name, description, price, channels, options, image } = body;
 
   if (!categoryId || !name?.trim() || price === undefined) {
     return NextResponse.json(
@@ -39,6 +39,7 @@ export async function POST(request: Request) {
       price,
       channels: channels || ["WHATSAPP", "PDV"],
       options: options || null,
+      image: image || null,
       order: nextOrder,
     })
     .select()

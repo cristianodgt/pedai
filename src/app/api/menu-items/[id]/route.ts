@@ -23,6 +23,7 @@ export async function PUT(
   if (body.options !== undefined) updateData.options = body.options;
   if (body.categoryId !== undefined) updateData.category_id = body.categoryId;
   if (body.order !== undefined) updateData.order = body.order;
+  if (body.image !== undefined) updateData.image = body.image;
 
   const { data: item, error } = await supabaseAdmin
     .from("menu_items")
