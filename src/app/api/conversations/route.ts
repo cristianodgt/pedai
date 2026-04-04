@@ -2,32 +2,6 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getAuthUser } from "@/lib/auth";
 
-// Ensure conversations table exists
-async function ensureTable() {
-  await supabaseAdmin.rpc("exec_sql", {
-    sql: `
-      CREATE TABLE IF NOT EXISTS conversations (
-        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        tenant_id TEXT NOT NULL,
-        session_id TEXT,
-        customer_phone TEXT,
-        customer_name TEXT,
-        channel TEXT DEFAULT 'WHATSAPP',
-        messages JSONB DEFAULT '[]'::jsonb,
-        status TEXT DEFAULT 'active',
-        last_message_at TIMESTAMPTZ DEFAULT now(),
-        created_at TIMESTAMPTZ DEFAULT now(),
-        updated_at TIMESTAMPTZ DEFAULT now()
-      );
-      CREATE INDEX IF NOT EXISTS idx_conversations_tenant ON conversations(tenant_id);
-      CREATE INDEX IF NOT EXISTS idx_conversations_phone ON conversations(customer_phone);
-      CREATE INDEX IF NOT EXISTS idx_conversations_last_msg ON conversations(last_message_at DESC);
-    `,
-  }).catch(() => {
-    // Table might already exist or rpc not available - ignore
-  });
-}
-
 // GET - List conversations for tenant
 export async function GET(request: Request) {
   const user = await getAuthUser(request);
