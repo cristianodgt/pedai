@@ -13,6 +13,8 @@ import {
   Upload,
   FileText,
   Utensils,
+  Download,
+  MoreVertical,
 } from "lucide-react";
 
 interface MenuItem {
@@ -34,10 +36,32 @@ interface Category {
   items: MenuItem[];
 }
 
+const categoryEmojis: Record<string, string> = {
+  Lanches: "\uD83C\uDF54",
+  Bebidas: "\uD83E\uDD64",
+  Pizzas: "\uD83C\uDF55",
+  Combos: "\uD83C\uDF71",
+  Sobremesas: "\uD83C\uDF70",
+  Acai: "\uD83E\uDED0",
+  Massas: "\uD83C\uDF5D",
+  Salgados: "\uD83E\uDD5F",
+  Pratos: "\uD83C\uDF5B",
+  Marmitas: "\uD83C\uDF71",
+  Porções: "\uD83C\uDF5F",
+};
+
+function getCategoryEmoji(name: string): string {
+  for (const [key, emoji] of Object.entries(categoryEmojis)) {
+    if (name.toLowerCase().includes(key.toLowerCase())) return emoji;
+  }
+  return "\uD83C\uDF7D\uFE0F";
+}
+
 export default function CardapioPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [importDropdown, setImportDropdown] = useState(false);
 
   // Category modal
   const [catModal, setCatModal] = useState(false);
@@ -62,6 +86,9 @@ export default function CardapioPage() {
   const [importing, setImporting] = useState(false);
   const [templates, setTemplates] = useState<{ id: string; name: string; description: string; categoriesCount: number; itemsCount: number }[]>([]);
   const [clearExisting, setClearExisting] = useState(true);
+
+  // Item context menu
+  const [itemMenu, setItemMenu] = useState<string | null>(null);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -225,6 +252,7 @@ export default function CardapioPage() {
 
   const openImport = async () => {
     setImportModal(true);
+    setImportDropdown(false);
     setImportTab("templates");
     setImportText("");
     try {
@@ -294,110 +322,132 @@ export default function CardapioPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#A0522D]" />
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Cardapio</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Gestao de Cardapio</h1>
           <p className="text-sm text-gray-500 mt-1">
-            {categories.length} categorias, {totalItems} itens
+            Gerencie categorias, itens e canais de venda em tempo real.
           </p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={openImport}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-orange-300 text-orange-600 rounded-lg hover:bg-orange-50 transition text-sm font-medium"
-          >
-            <Upload size={18} />
-            Importar
-          </button>
+        <div className="flex gap-3">
+          {/* Import dropdown button */}
+          <div className="relative">
+            <button
+              onClick={() => setImportDropdown(!importDropdown)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-[#A0522D] rounded-xl hover:bg-gray-50 transition text-sm font-medium shadow-sm"
+            >
+              <Download size={16} />
+              Importar
+              <ChevronDown size={14} />
+            </button>
+            {importDropdown && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setImportDropdown(false)} />
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 z-20 py-1">
+                  <button
+                    onClick={openImport}
+                    className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                  >
+                    <Utensils size={14} />
+                    Templates Prontos
+                  </button>
+                  <button
+                    onClick={() => { setImportDropdown(false); setImportModal(true); setImportTab("text"); }}
+                    className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                  >
+                    <FileText size={14} />
+                    Colar Texto
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
           <button
             onClick={openNewCategory}
-            className="flex items-center gap-2 px-4 py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition text-sm font-medium"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#A0522D] text-white rounded-xl hover:bg-[#8B4726] transition text-sm font-medium shadow-sm"
           >
-            <Plus size={18} />
+            <Plus size={16} />
             Nova Categoria
           </button>
         </div>
       </div>
 
       {categories.length === 0 ? (
-        <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-          <p className="text-gray-400 text-lg mb-4">Nenhuma categoria criada</p>
+        <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+          <div className="w-16 h-16 bg-[#A0522D]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Utensils size={28} className="text-[#A0522D]" />
+          </div>
+          <p className="text-gray-500 text-lg mb-4">Nenhuma categoria criada</p>
           <button
             onClick={openNewCategory}
-            className="text-orange-600 hover:text-orange-700 font-medium"
+            className="text-[#A0522D] hover:text-[#8B4726] font-medium"
           >
             Criar primeira categoria
           </button>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {categories.map((cat) => (
             <div
               key={cat.id}
-              className={`bg-white rounded-lg border ${
-                cat.active ? "border-gray-200" : "border-gray-100 opacity-60"
+              className={`bg-white rounded-xl shadow-sm overflow-hidden ${
+                !cat.active ? "opacity-60" : ""
               }`}
             >
               {/* Category Header */}
-              <div className="flex items-center gap-3 px-4 py-3">
+              <div
+                className="flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-gray-50/50 transition"
+                onClick={() => toggleExpand(cat.id)}
+              >
+                {/* Category icon */}
+                <div className="w-10 h-10 bg-[#A0522D]/10 rounded-full flex items-center justify-center text-lg flex-shrink-0">
+                  {getCategoryEmoji(cat.name)}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-gray-900">{cat.name}</h3>
+                  <p className="text-xs text-gray-400">
+                    {cat.items.length} {cat.items.length === 1 ? "item" : "itens"}
+                  </p>
+                </div>
+
+                {/* Channel badges */}
+                <div className="flex items-center gap-1.5">
+                  {cat.items.some(i => i.channels.includes("WHATSAPP")) && (
+                    <span className="w-6 h-6 rounded-full bg-green-500 text-white text-[10px] font-bold flex items-center justify-center" title="WhatsApp">W</span>
+                  )}
+                  {cat.items.some(i => i.channels.includes("PDV")) && (
+                    <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center" title="PDV">P</span>
+                  )}
+                  {cat.items.some(i => i.channels.includes("IFOOD")) && (
+                    <span className="w-6 h-6 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center" title="iFood">i</span>
+                  )}
+                </div>
+
+                {/* Edit pencil */}
                 <button
-                  onClick={() => toggleExpand(cat.id)}
-                  className="text-gray-400 hover:text-gray-600"
+                  onClick={(e) => { e.stopPropagation(); openEditCategory(cat); }}
+                  className="p-1.5 text-gray-400 hover:text-[#A0522D] hover:bg-[#A0522D]/10 rounded-lg transition"
+                  title="Editar categoria"
                 >
+                  <Pencil size={16} />
+                </button>
+
+                {/* Expand/collapse chevron */}
+                <div className="text-gray-400">
                   {expanded.has(cat.id) ? (
                     <ChevronDown size={20} />
                   ) : (
                     <ChevronRight size={20} />
                   )}
-                </button>
-
-                <div className="flex-1">
-                  <span className="font-semibold text-gray-900">{cat.name}</span>
-                  <span className="text-xs text-gray-400 ml-2">
-                    {cat.items.length} {cat.items.length === 1 ? "item" : "itens"}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => openNewItem(cat.id)}
-                    className="p-1.5 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded"
-                    title="Adicionar item"
-                  >
-                    <Plus size={16} />
-                  </button>
-                  <button
-                    onClick={() => toggleCategoryActive(cat)}
-                    className={`p-1.5 rounded ${
-                      cat.active
-                        ? "text-gray-400 hover:text-yellow-600 hover:bg-yellow-50"
-                        : "text-yellow-600 hover:text-green-600 hover:bg-green-50"
-                    }`}
-                    title={cat.active ? "Desativar" : "Ativar"}
-                  >
-                    {cat.active ? <Eye size={16} /> : <EyeOff size={16} />}
-                  </button>
-                  <button
-                    onClick={() => openEditCategory(cat)}
-                    className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded"
-                    title="Editar"
-                  >
-                    <Pencil size={16} />
-                  </button>
-                  <button
-                    onClick={() => deleteCategory(cat)}
-                    className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded"
-                    title="Excluir"
-                  >
-                    <Trash2 size={16} />
-                  </button>
                 </div>
               </div>
 
@@ -405,86 +455,129 @@ export default function CardapioPage() {
               {expanded.has(cat.id) && (
                 <div className="border-t border-gray-100">
                   {cat.items.length === 0 ? (
-                    <div className="px-4 py-6 text-center">
-                      <p className="text-sm text-gray-400 mb-2">Nenhum item nesta categoria</p>
+                    <div className="px-5 py-8 text-center">
+                      <p className="text-sm text-gray-400 mb-3">Nenhum item nesta categoria</p>
                       <button
                         onClick={() => openNewItem(cat.id)}
-                        className="text-sm text-orange-600 hover:text-orange-700 font-medium"
+                        className="text-sm text-[#A0522D] hover:text-[#8B4726] font-medium"
                       >
-                        Adicionar item
+                        + Adicionar item
                       </button>
                     </div>
                   ) : (
-                    <div className="divide-y divide-gray-50">
+                    <div>
                       {cat.items.map((item) => (
                         <div
                           key={item.id}
-                          className={`flex items-center gap-4 px-4 py-3 pl-12 ${
+                          className={`px-5 py-4 border-b border-gray-50 last:border-b-0 ${
                             !item.available ? "opacity-50" : ""
                           }`}
                         >
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-gray-800 text-sm">
-                                {item.name}
-                              </span>
-                              <div className="flex gap-1">
-                                {item.channels.map((ch) => (
-                                  <span
-                                    key={ch}
-                                    className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                                      ch === "WHATSAPP"
-                                        ? "bg-green-100 text-green-700"
-                                        : ch === "PDV"
-                                        ? "bg-blue-100 text-blue-700"
-                                        : "bg-purple-100 text-purple-700"
-                                    }`}
-                                  >
-                                    {ch}
-                                  </span>
-                                ))}
-                              </div>
+                          <div className="flex items-center gap-4">
+                            {/* Image placeholder */}
+                            <div className="w-[60px] h-[60px] bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <Utensils size={20} className="text-gray-300" />
                             </div>
-                            {item.description && (
-                              <p className="text-xs text-gray-400 mt-0.5 truncate">
-                                {item.description}
+
+                            {/* Name + description */}
+                            <div className="flex-1 min-w-0">
+                              <p className="font-bold text-gray-900 text-sm">{item.name}</p>
+                              {item.description && (
+                                <p className="text-xs text-gray-400 mt-0.5 truncate">
+                                  {item.description}
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Price */}
+                            <div className="text-right flex-shrink-0">
+                              <p className="text-xs text-gray-400 uppercase tracking-wide">Preco unitario</p>
+                              <p className="font-bold text-gray-900 text-sm">
+                                R$ {Number(item.price).toFixed(2).replace(".", ",")}
                               </p>
-                            )}
-                          </div>
+                            </div>
 
-                          <span className="font-semibold text-gray-900 text-sm whitespace-nowrap">
-                            R$ {Number(item.price).toFixed(2)}
-                          </span>
-
-                          <div className="flex items-center gap-1">
+                            {/* Availability toggle */}
                             <button
                               onClick={() => toggleItemAvailable(item)}
-                              className={`p-1.5 rounded ${
-                                item.available
-                                  ? "text-gray-400 hover:text-yellow-600 hover:bg-yellow-50"
-                                  : "text-yellow-600 hover:text-green-600 hover:bg-green-50"
-                              }`}
-                              title={item.available ? "Indisponibilizar" : "Disponibilizar"}
+                              className="flex-shrink-0"
                             >
-                              {item.available ? <Eye size={14} /> : <EyeOff size={14} />}
+                              <div className={`relative w-12 h-6 rounded-full transition-colors ${
+                                item.available ? "bg-green-500" : "bg-gray-300"
+                              }`}>
+                                <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                                  item.available ? "translate-x-6" : "translate-x-0.5"
+                                }`} />
+                              </div>
+                              <p className={`text-[10px] font-medium mt-1 text-center ${
+                                item.available ? "text-green-600" : "text-gray-400"
+                              }`}>
+                                {item.available ? "DISPONIVEL" : "INDISPONIVEL"}
+                              </p>
                             </button>
-                            <button
-                              onClick={() => openEditItem(item, cat.id)}
-                              className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded"
-                              title="Editar"
-                            >
-                              <Pencil size={14} />
-                            </button>
-                            <button
-                              onClick={() => deleteItem(item)}
-                              className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded"
-                              title="Excluir"
-                            >
-                              <Trash2 size={14} />
-                            </button>
+
+                            {/* Three-dot menu */}
+                            <div className="relative flex-shrink-0">
+                              <button
+                                onClick={() => setItemMenu(itemMenu === item.id ? null : item.id)}
+                                className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition"
+                              >
+                                <MoreVertical size={16} />
+                              </button>
+                              {itemMenu === item.id && (
+                                <>
+                                  <div className="fixed inset-0 z-10" onClick={() => setItemMenu(null)} />
+                                  <div className="absolute right-0 mt-1 w-36 bg-white rounded-xl shadow-lg border border-gray-100 z-20 py-1">
+                                    <button
+                                      onClick={() => { setItemMenu(null); openEditItem(item, cat.id); }}
+                                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                    >
+                                      <Pencil size={14} />
+                                      Editar
+                                    </button>
+                                    <button
+                                      onClick={() => { setItemMenu(null); toggleCategoryActive(cat); }}
+                                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                    >
+                                      {cat.active ? <EyeOff size={14} /> : <Eye size={14} />}
+                                      {cat.active ? "Desativar" : "Ativar"}
+                                    </button>
+                                    <button
+                                      onClick={() => { setItemMenu(null); deleteItem(item); }}
+                                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                                    >
+                                      <Trash2 size={14} />
+                                      Excluir
+                                    </button>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Channel checkmarks */}
+                          <div className="flex items-center gap-4 mt-2 ml-[76px]">
+                            <span className={`text-xs ${item.channels.includes("WHATSAPP") ? "text-green-600" : "text-gray-300"}`}>
+                              {item.channels.includes("WHATSAPP") ? "\u2705" : "\u2B1C"} WhatsApp
+                            </span>
+                            <span className={`text-xs ${item.channels.includes("PDV") ? "text-blue-600" : "text-gray-300"}`}>
+                              {item.channels.includes("PDV") ? "\u2705" : "\u2B1C"} PDV
+                            </span>
+                            <span className={`text-xs ${item.channels.includes("IFOOD") ? "text-red-600" : "text-gray-300"}`}>
+                              {item.channels.includes("IFOOD") ? "\u2705" : "\u2B1C"} iFood
+                            </span>
                           </div>
                         </div>
                       ))}
+
+                      {/* Add item button */}
+                      <button
+                        onClick={() => openNewItem(cat.id)}
+                        className="w-full px-5 py-3 border-t border-dashed border-gray-200 text-[#A0522D] text-sm font-medium hover:bg-[#A0522D]/5 transition flex items-center justify-center gap-1"
+                      >
+                        <Plus size={16} />
+                        Adicionar Item
+                      </button>
                     </div>
                   )}
                 </div>
@@ -519,7 +612,7 @@ export default function CardapioPage() {
                 value={catName}
                 onChange={(e) => setCatName(e.target.value)}
                 placeholder="Ex: Marmitas, Bebidas, Combos..."
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D] outline-none text-sm"
                 autoFocus
                 onKeyDown={(e) => e.key === "Enter" && saveCategory()}
               />
@@ -535,7 +628,7 @@ export default function CardapioPage() {
               <button
                 onClick={saveCategory}
                 disabled={saving || !catName.trim()}
-                className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 text-sm font-medium"
+                className="px-4 py-2 bg-[#A0522D] text-white rounded-lg hover:bg-[#8B4726] disabled:opacity-50 text-sm font-medium"
               >
                 {saving ? "Salvando..." : "Salvar"}
               </button>
@@ -561,7 +654,7 @@ export default function CardapioPage() {
                 onClick={() => setImportTab("templates")}
                 className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition ${
                   importTab === "templates"
-                    ? "text-orange-600 border-b-2 border-orange-600"
+                    ? "text-[#A0522D] border-b-2 border-[#A0522D]"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -572,7 +665,7 @@ export default function CardapioPage() {
                 onClick={() => setImportTab("text")}
                 className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition ${
                   importTab === "text"
-                    ? "text-orange-600 border-b-2 border-orange-600"
+                    ? "text-[#A0522D] border-b-2 border-[#A0522D]"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -588,7 +681,7 @@ export default function CardapioPage() {
                   type="checkbox"
                   checked={clearExisting}
                   onChange={(e) => setClearExisting(e.target.checked)}
-                  className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                  className="rounded border-gray-300 text-[#A0522D] focus:ring-[#A0522D]"
                 />
                 <span className="text-sm text-gray-600">Substituir cardapio existente</span>
               </label>
@@ -600,11 +693,11 @@ export default function CardapioPage() {
                       key={t.id}
                       onClick={() => applyTemplate(t.id)}
                       disabled={importing}
-                      className="text-left border border-gray-200 rounded-lg p-4 hover:border-orange-400 hover:shadow-md transition disabled:opacity-50"
+                      className="text-left border border-gray-200 rounded-xl p-4 hover:border-[#A0522D] hover:shadow-md transition disabled:opacity-50"
                     >
                       <h3 className="font-semibold text-gray-900">{t.name}</h3>
                       <p className="text-xs text-gray-500 mt-1">{t.description}</p>
-                      <p className="text-xs text-orange-600 mt-2 font-medium">
+                      <p className="text-xs text-[#A0522D] mt-2 font-medium">
                         {t.categoriesCount} categorias, {t.itemsCount} itens
                       </p>
                     </button>
@@ -613,7 +706,7 @@ export default function CardapioPage() {
               ) : (
                 <div>
                   <p className="text-sm text-gray-500 mb-3">
-                    Cole seu cardapio no formato texto. Use linhas em MAIUSCULAS ou com ":" para categorias.
+                    Cole seu cardapio no formato texto. Use linhas em MAIUSCULAS ou com &quot;:&quot; para categorias.
                     Cada item deve ter o preco (ex: R$ 25,00).
                   </p>
                   <textarea
@@ -621,12 +714,12 @@ export default function CardapioPage() {
                     onChange={(e) => setImportText(e.target.value)}
                     rows={12}
                     placeholder={`LANCHES:\nX-Burger R$ 18,00\nX-Salada R$ 20,00\nX-Bacon R$ 25,00\n\nBEBIDAS:\nCoca-Cola 350ml R$ 6,00\nSuco Natural R$ 8,00\nAgua R$ 4,00`}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm font-mono"
+                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D] outline-none text-sm font-mono"
                   />
                   <button
                     onClick={importFromText}
                     disabled={importing || !importText.trim()}
-                    className="mt-3 w-full py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 text-sm font-medium flex items-center justify-center gap-2"
+                    className="mt-3 w-full py-2.5 bg-[#A0522D] text-white rounded-lg hover:bg-[#8B4726] disabled:opacity-50 text-sm font-medium flex items-center justify-center gap-2"
                   >
                     {importing ? (
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
@@ -668,7 +761,7 @@ export default function CardapioPage() {
                   value={itemName}
                   onChange={(e) => setItemName(e.target.value)}
                   placeholder="Ex: Marmita Tradicional"
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D] outline-none text-sm"
                   autoFocus
                 />
               </div>
@@ -682,7 +775,7 @@ export default function CardapioPage() {
                   value={itemDescription}
                   onChange={(e) => setItemDescription(e.target.value)}
                   placeholder="Arroz, feijao, carne..."
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D] outline-none text-sm"
                 />
               </div>
 
@@ -697,7 +790,7 @@ export default function CardapioPage() {
                   value={itemPrice}
                   onChange={(e) => setItemPrice(e.target.value)}
                   placeholder="0.00"
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D] outline-none text-sm"
                 />
               </div>
 
@@ -715,7 +808,7 @@ export default function CardapioPage() {
                         type="checkbox"
                         checked={itemChannels.includes(ch)}
                         onChange={() => toggleChannel(ch)}
-                        className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                        className="rounded border-gray-300 text-[#A0522D] focus:ring-[#A0522D]"
                       />
                       <span
                         className={`text-xs font-medium px-2 py-1 rounded ${
@@ -723,10 +816,10 @@ export default function CardapioPage() {
                             ? "bg-green-100 text-green-700"
                             : ch === "PDV"
                             ? "bg-blue-100 text-blue-700"
-                            : "bg-purple-100 text-purple-700"
+                            : "bg-red-100 text-red-700"
                         }`}
                       >
-                        {ch}
+                        {ch === "IFOOD" ? "iFood" : ch}
                       </span>
                     </label>
                   ))}
@@ -741,7 +834,7 @@ export default function CardapioPage() {
                   <select
                     value={itemCategoryId}
                     onChange={(e) => setItemCategoryId(e.target.value)}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm"
+                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D] outline-none text-sm"
                   >
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -763,7 +856,7 @@ export default function CardapioPage() {
               <button
                 onClick={saveItem}
                 disabled={saving || !itemName.trim() || !itemPrice}
-                className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 text-sm font-medium"
+                className="px-4 py-2 bg-[#A0522D] text-white rounded-lg hover:bg-[#8B4726] disabled:opacity-50 text-sm font-medium"
               >
                 {saving ? "Salvando..." : "Salvar"}
               </button>
