@@ -10,6 +10,9 @@ import {
   PieChart,
   Receipt,
 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -67,34 +70,24 @@ function KpiCard({
   iconBg: string;
 }) {
   return (
-    <div
-      className="flex items-center gap-4 px-5 py-4 flex-1 min-w-[180px]"
-      style={{
-        background: "#ffffff",
-        borderRadius: "0.75rem",
-      }}
-    >
-      <div
-        className="w-11 h-11 flex items-center justify-center shrink-0"
-        style={{
-          background: iconBg,
-          borderRadius: "50%",
-        }}
-      >
-        <Icon className="w-5 h-5 text-white" />
-      </div>
-      <div>
-        <p
-          className="text-xs font-medium uppercase tracking-wide"
-          style={{ color: "#5a4138" }}
+    <Card className="flex-1 min-w-[180px]">
+      <CardContent className="flex items-center gap-4 px-5 py-4 pt-4">
+        <div
+          className="w-11 h-11 flex items-center justify-center shrink-0 rounded-full"
+          style={{ background: iconBg }}
         >
-          {label}
-        </p>
-        <p className="text-xl font-bold" style={{ color: "#191c1e" }}>
-          {value}
-        </p>
-      </div>
-    </div>
+          <Icon className="w-5 h-5 text-white" />
+        </div>
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-[#5a4138]">
+            {label}
+          </p>
+          <p className="text-xl font-bold text-[#191c1e]">
+            {value}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -114,91 +107,51 @@ function TableCard({
   /* --- LIVRE ---------------------------------------------------- */
   if (status === "LIVRE") {
     return (
-      <div
-        className="flex flex-col items-center justify-center gap-3 min-h-[180px] p-5"
-        style={{
-          background: "#edeef0",
-          borderRadius: "0.75rem",
-          outline: "2px dashed rgba(226, 191, 178, 0.15)",
-          outlineOffset: "-2px",
-        }}
-      >
-        <span className="text-3xl font-bold" style={{ color: "#5a4138" }}>
-          {String(table.number).padStart(2, "0")}
-        </span>
-        <span
-          className="text-xs font-semibold tracking-widest"
-          style={{ color: "#5a4138" }}
-        >
-          LIVRE
-        </span>
-        <button
-          onClick={() => onAction(table.id, "abrir")}
-          className="mt-1 px-4 py-1.5 text-sm font-medium transition-colors"
-          style={{
-            borderRadius: "0.75rem",
-            background: "transparent",
-            color: "#a33900",
-            border: "2px solid rgba(226, 191, 178, 0.4)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#a33900";
-            e.currentTarget.style.color = "#ffffff";
-            e.currentTarget.style.borderColor = "#a33900";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "transparent";
-            e.currentTarget.style.color = "#a33900";
-            e.currentTarget.style.borderColor = "rgba(226, 191, 178, 0.4)";
-          }}
-        >
-          Abrir Mesa
-        </button>
-      </div>
+      <Card className="bg-[#edeef0] outline outline-2 -outline-offset-2 outline-[rgba(226,191,178,0.15)]">
+        <CardContent className="flex flex-col items-center justify-center gap-3 min-h-[180px] p-5 pt-5">
+          <span className="text-3xl font-bold text-[#5a4138]">
+            {String(table.number).padStart(2, "0")}
+          </span>
+          <Badge variant="outline">LIVRE</Badge>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onAction(table.id, "abrir")}
+            className="mt-1"
+          >
+            Abrir Mesa
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 
   /* --- OCUPADA -------------------------------------------------- */
   if (status === "OCUPADA") {
     return (
-      <div
-        className="flex flex-col items-center justify-center gap-2 text-white min-h-[180px] p-5"
-        style={{
-          background: "linear-gradient(135deg, #a33900, #cc4900)",
-          borderRadius: "0.75rem",
-        }}
-      >
-        <span className="text-3xl font-bold">
-          {String(table.number).padStart(2, "0")}
-        </span>
-        <span className="text-[10px] font-semibold tracking-widest opacity-80">
-          OCUPADA
-        </span>
-        <span className="text-lg font-bold">
-          {table.amount !== undefined ? currency(table.amount) : "\u2014"}
-        </span>
-        <span className="flex items-center gap-1 text-xs opacity-80">
-          <Clock className="w-3.5 h-3.5" />
-          {table.timer ?? "\u2014"}
-        </span>
-        <button
-          onClick={() => onAction(table.id, "comanda")}
-          className="mt-1 px-4 py-1.5 text-sm font-medium transition-colors"
-          style={{
-            borderRadius: "0.75rem",
-            background: "#ffffff",
-            color: "#a33900",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#edeef0";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "#ffffff";
-          }}
-        >
-          Ver Comanda
-        </button>
-      </div>
+      <Card className="bg-gradient-to-br from-[#a33900] to-[#cc4900] text-white">
+        <CardContent className="flex flex-col items-center justify-center gap-2 min-h-[180px] p-5 pt-5">
+          <span className="text-3xl font-bold">
+            {String(table.number).padStart(2, "0")}
+          </span>
+          <Badge variant="default" className="opacity-90">OCUPADA</Badge>
+          <span className="text-lg font-bold">
+            {table.amount !== undefined ? currency(table.amount) : "\u2014"}
+          </span>
+          <span className="flex items-center gap-1 text-xs opacity-80">
+            <Clock className="w-3.5 h-3.5" />
+            {table.timer ?? "\u2014"}
+          </span>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => onAction(table.id, "comanda")}
+            className="mt-1 bg-white text-[#a33900] hover:bg-[#edeef0]"
+          >
+            Ver Comanda
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -206,82 +159,52 @@ function TableCard({
   if (status === "FECHAMENTO") {
     const isPaid = table.paymentNote?.toLowerCase().includes("pago");
     return (
-      <div
-        className="flex flex-col items-center justify-center gap-2 min-h-[180px] p-5"
-        style={{
-          background: "rgba(204, 73, 0, 0.08)",
-          borderRadius: "0.75rem",
-        }}
-      >
-        <span className="text-3xl font-bold" style={{ color: "#191c1e" }}>
-          {String(table.number).padStart(2, "0")}
-        </span>
-        <span
-          className="text-[10px] font-semibold tracking-widest"
-          style={{ color: "#cc4900" }}
-        >
-          FECHAMENTO
-        </span>
-        <span className="text-lg font-bold" style={{ color: "#191c1e" }}>
-          {table.amount !== undefined ? currency(table.amount) : "\u2014"}
-        </span>
-        <span className="text-xs" style={{ color: "#5a4138" }}>
-          {table.paymentNote ?? "Aguardando"}
-        </span>
-        <button
-          onClick={() => onAction(table.id, isPaid ? "liberar" : "fechar")}
-          className="mt-1 px-4 py-1.5 text-sm font-medium transition-colors"
-          style={{
-            borderRadius: "0.75rem",
-            background: "#cc4900",
-            color: "#ffffff",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#a33900";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "#cc4900";
-          }}
-        >
-          {isPaid ? "Liberar Mesa" : "Fechar Conta"}
-        </button>
-      </div>
+      <Card className="bg-[rgba(204,73,0,0.08)]">
+        <CardContent className="flex flex-col items-center justify-center gap-2 min-h-[180px] p-5 pt-5">
+          <span className="text-3xl font-bold text-[#191c1e]">
+            {String(table.number).padStart(2, "0")}
+          </span>
+          <Badge variant="warning">FECHAMENTO</Badge>
+          <span className="text-lg font-bold text-[#191c1e]">
+            {table.amount !== undefined ? currency(table.amount) : "\u2014"}
+          </span>
+          <span className="text-xs text-[#5a4138]">
+            {table.paymentNote ?? "Aguardando"}
+          </span>
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => onAction(table.id, isPaid ? "liberar" : "fechar")}
+            className="mt-1"
+          >
+            {isPaid ? "Liberar Mesa" : "Fechar Conta"}
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 
   /* --- LIMPEZA -------------------------------------------------- */
   return (
-    <div
-      className="flex flex-col items-center justify-center gap-3 min-h-[180px] p-5"
-      style={{
-        background: "#edeef0",
-        borderRadius: "0.75rem",
-      }}
-    >
-      <span className="text-3xl font-bold" style={{ color: "#9ca3af" }}>
-        {String(table.number).padStart(2, "0")}
-      </span>
-      <span
-        className="text-[10px] font-semibold tracking-widest"
-        style={{ color: "#9ca3af" }}
-      >
-        LIMPEZA
-      </span>
-      <span className="text-xs" style={{ color: "#9ca3af" }}>
-        Em andamento
-      </span>
-      <button
-        disabled
-        className="mt-1 px-4 py-1.5 text-sm font-medium cursor-not-allowed"
-        style={{
-          borderRadius: "0.75rem",
-          background: "#dcdee0",
-          color: "#9ca3af",
-        }}
-      >
-        Aguarde
-      </button>
-    </div>
+    <Card className="bg-[#edeef0]">
+      <CardContent className="flex flex-col items-center justify-center gap-3 min-h-[180px] p-5 pt-5">
+        <span className="text-3xl font-bold text-[#9ca3af]">
+          {String(table.number).padStart(2, "0")}
+        </span>
+        <Badge variant="secondary">LIMPEZA</Badge>
+        <span className="text-xs text-[#9ca3af]">
+          Em andamento
+        </span>
+        <Button
+          variant="secondary"
+          size="sm"
+          disabled
+          className="mt-1"
+        >
+          Aguarde
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -293,10 +216,10 @@ function LegendDot({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-2">
       <span
-        className="w-3 h-3 inline-block"
-        style={{ background: color, borderRadius: "50%" }}
+        className="w-3 h-3 inline-block rounded-full"
+        style={{ background: color }}
       />
-      <span className="text-xs" style={{ color: "#5a4138" }}>
+      <span className="text-xs text-[#5a4138]">
         {label}
       </span>
     </div>
@@ -364,7 +287,7 @@ export default function MesasPage() {
   }
 
   return (
-    <div className="space-y-6" style={{ background: "#f8f9fb", minHeight: "100%" }}>
+    <div className="space-y-6 bg-[#f8f9fb] min-h-full">
       {/* KPI row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
@@ -394,15 +317,9 @@ export default function MesasPage() {
       </div>
 
       {/* Map header */}
-      <div
-        className="p-6"
-        style={{
-          background: "#edeef0",
-          borderRadius: "0.75rem",
-        }}
-      >
+      <div className="p-6 bg-[#edeef0] rounded-[0.75rem]">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-          <h2 className="text-lg font-bold" style={{ color: "#191c1e" }}>
+          <h2 className="text-lg font-bold text-[#191c1e]">
             Mapa de Mesas — Salao Principal
           </h2>
           <div className="flex items-center gap-4 flex-wrap">

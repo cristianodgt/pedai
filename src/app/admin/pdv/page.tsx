@@ -14,6 +14,10 @@ import {
   CreditCard,
   QrCode,
 } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type MenuItem = {
   id: string;
@@ -230,7 +234,7 @@ export default function PDVPage() {
       {/* Success overlay */}
       {success && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-[0.75rem] p-8 text-center">
+          <Card className="p-8 text-center">
             <div className="w-16 h-16 bg-[#edeef0] rounded-full flex items-center justify-center mx-auto mb-4">
               <Check size={32} className="text-green-600" />
             </div>
@@ -238,7 +242,7 @@ export default function PDVPage() {
               Pedido Registrado!
             </h2>
             <p className="text-3xl font-bold text-[#a33900]">{success}</p>
-          </div>
+          </Card>
         </div>
       )}
 
@@ -247,23 +251,15 @@ export default function PDVPage() {
         {/* Category tabs - horizontal scrollable pills */}
         <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
           {categories.map((cat) => (
-            <button
+            <Button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition flex items-center gap-2 ${
-                selectedCategory === cat.id
-                  ? "text-white"
-                  : "bg-[#edeef0] text-[#5a4138] hover:bg-[#e2e3e5]"
-              }`}
-              style={
-                selectedCategory === cat.id
-                  ? { background: "linear-gradient(135deg, #a33900, #cc4900)" }
-                  : undefined
-              }
+              variant={selectedCategory === cat.id ? "default" : "secondary"}
+              className="rounded-full whitespace-nowrap flex items-center gap-2"
             >
               <span>{getCategoryEmoji(cat.name)}</span>
               {cat.name}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -278,31 +274,25 @@ export default function PDVPage() {
               {pdvItems.map((item) => {
                 const inCart = cart.find((c) => c.menuItemId === item.id);
                 return (
-                  <div
+                  <Card
                     key={item.id}
-                    className="bg-white rounded-[0.75rem] text-left transition relative overflow-hidden"
-                    style={
-                      inCart
-                        ? { boxShadow: "inset 0 0 0 2px rgba(226,191,178,0.15)" }
-                        : undefined
-                    }
+                    className={`text-left transition relative overflow-hidden ${
+                      inCart ? "ring-2 ring-[rgba(226,191,178,0.15)]" : ""
+                    }`}
                   >
                     {/* Image placeholder */}
                     <div className="relative bg-[#edeef0] rounded-[0.75rem] mx-3 mt-3 h-40 flex items-center justify-center">
                       <Utensils size={40} className="text-[#5a4138] opacity-40" />
                       {/* Cart count badge */}
                       {inCart && (
-                        <span
-                          className="absolute top-2 right-2 w-7 h-7 text-white rounded-full text-xs flex items-center justify-center font-bold"
-                          style={{ background: "linear-gradient(135deg, #a33900, #cc4900)" }}
-                        >
+                        <Badge className="absolute top-2 right-2 w-7 h-7 text-xs font-bold">
                           {inCart.quantity}
-                        </span>
+                        </Badge>
                       )}
                     </div>
 
                     {/* Product info */}
-                    <div className="p-3">
+                    <CardContent className="p-3">
                       <h3 className="font-bold text-[#191c1e] text-sm mb-0.5 line-clamp-2">
                         {item.name}
                       </h3>
@@ -315,15 +305,17 @@ export default function PDVPage() {
                         <p className="text-base font-bold text-[#a33900]">
                           R$ {parseFloat(item.price).toFixed(2)}
                         </p>
-                        <button
+                        <Button
                           onClick={() => addToCart(item)}
-                          className="w-9 h-9 rounded-full bg-[#edeef0] text-[#a33900] flex items-center justify-center hover:opacity-80 transition"
+                          variant="secondary"
+                          size="icon-sm"
+                          className="rounded-full text-[#a33900]"
                         >
                           <Plus size={18} />
-                        </button>
+                        </Button>
                       </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 );
               })}
             </div>
@@ -332,59 +324,52 @@ export default function PDVPage() {
       </div>
 
       {/* Right: Cart sidebar */}
-      <div className="w-96 bg-white rounded-[0.75rem] flex flex-col">
+      <Card className="w-96 flex flex-col">
         {/* Cart header */}
-        <div className="p-5 flex items-center justify-between">
+        <CardHeader className="flex-row items-center justify-between space-y-0">
           <div className="flex items-center gap-2">
             <ShoppingCart size={20} className="text-[#a33900]" />
-            <h2 className="font-bold text-[#191c1e] text-lg">Carrinho</h2>
+            <CardTitle className="text-lg font-bold">Carrinho</CardTitle>
           </div>
           {cart.length > 0 && (
-            <button
+            <Button
               onClick={clearCart}
-              className="text-xs font-semibold text-[#a33900] hover:underline uppercase tracking-wide"
+              variant="link"
+              size="xs"
+              className="uppercase tracking-wide"
               title="Limpar (Esc)"
             >
               Limpar Tudo
-            </button>
+            </Button>
           )}
-        </div>
+        </CardHeader>
 
         {/* Order type - segmented control */}
         <div className="px-5 pt-2 pb-3">
           <div className="flex rounded-[0.75rem] bg-[#edeef0] p-1">
             {orderTypes.map((t) => (
-              <button
+              <Button
                 key={t.key}
                 onClick={() => setOrderType(t.key)}
-                className={`flex-1 py-2 text-xs font-semibold tracking-wide transition rounded-[0.5rem] ${
-                  orderType === t.key
-                    ? "text-white"
-                    : "text-[#5a4138] hover:text-[#191c1e]"
+                variant={orderType === t.key ? "default" : "ghost"}
+                className={`flex-1 py-2 text-xs font-semibold tracking-wide rounded-[0.5rem] ${
+                  orderType !== t.key ? "hover:bg-transparent hover:text-[#191c1e]" : ""
                 }`}
-                style={
-                  orderType === t.key
-                    ? { background: "linear-gradient(135deg, #a33900, #cc4900)" }
-                    : undefined
-                }
+                size="sm"
               >
                 {t.label}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
 
         {/* Customer name */}
         <div className="px-5 pt-1 pb-2">
-          <input
+          <Input
             type="text"
             placeholder="Nome do cliente (opcional)"
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
-            className="w-full px-3 py-2 bg-[#edeef0] rounded-[0.75rem] text-sm text-[#191c1e] placeholder-[#5a4138] border-none outline-none focus:border-b-2 focus:border-b-[#a33900] transition-all"
-            style={{ borderBottom: "2px solid transparent" }}
-            onFocus={(e) => (e.target.style.borderBottom = "2px solid #a33900")}
-            onBlur={(e) => (e.target.style.borderBottom = "2px solid transparent")}
           />
         </div>
 
@@ -416,33 +401,36 @@ export default function PDVPage() {
                 </div>
                 {/* Quantity controls */}
                 <div className="flex items-center gap-1.5">
-                  <button
+                  <Button
                     onClick={() => updateQuantity(item.menuItemId, -1)}
-                    className="w-7 h-7 rounded-[0.75rem] bg-[#edeef0] flex items-center justify-center hover:opacity-70 transition text-[#a33900]"
+                    variant="secondary"
+                    className="w-7 h-7 rounded-[0.75rem] p-0 text-[#a33900]"
                   >
                     <Minus size={14} />
-                  </button>
+                  </Button>
                   <span className="w-6 text-center text-sm font-bold text-[#191c1e]">
                     {item.quantity}
                   </span>
-                  <button
+                  <Button
                     onClick={() => updateQuantity(item.menuItemId, 1)}
-                    className="w-7 h-7 rounded-[0.75rem] bg-[#edeef0] flex items-center justify-center hover:opacity-70 transition text-[#a33900]"
+                    variant="secondary"
+                    className="w-7 h-7 rounded-[0.75rem] p-0 text-[#a33900]"
                   >
                     <Plus size={14} />
-                  </button>
+                  </Button>
                 </div>
                 {/* Trash */}
-                <button
+                <Button
                   onClick={() =>
                     setCart((prev) =>
                       prev.filter((c) => c.menuItemId !== item.menuItemId)
                     )
                   }
-                  className="text-[#5a4138] opacity-40 hover:text-red-500 hover:opacity-100 transition"
+                  variant="ghost"
+                  className="p-0 w-7 h-7 opacity-40 hover:text-red-500 hover:opacity-100"
                 >
                   <Trash2 size={16} />
-                </button>
+                </Button>
                 {/* Price */}
                 <span className="text-sm font-bold text-[#191c1e] w-20 text-right">
                   R$ {(item.unitPrice * item.quantity).toFixed(2)}
@@ -482,33 +470,26 @@ export default function PDVPage() {
               const Icon = pm.icon;
               const isSelected = paymentMethod === pm.key;
               return (
-                <button
+                <Button
                   key={pm.key}
                   onClick={() => setPaymentMethod(pm.key)}
-                  className={`flex flex-col items-center gap-1.5 py-3 rounded-[0.75rem] text-xs font-semibold transition ${
-                    isSelected
-                      ? "text-white"
-                      : "bg-[#edeef0] text-[#5a4138] hover:bg-[#e2e3e5]"
-                  }`}
-                  style={
-                    isSelected
-                      ? { background: "linear-gradient(135deg, #a33900, #cc4900)" }
-                      : undefined
-                  }
+                  variant={isSelected ? "default" : "secondary"}
+                  className="flex flex-col items-center gap-1.5 py-3 h-auto text-xs font-semibold"
                 >
                   <Icon size={18} />
                   {pm.label}
-                </button>
+                </Button>
               );
             })}
           </div>
 
           {/* Submit button */}
-          <button
+          <Button
             onClick={submitOrder}
             disabled={cart.length === 0 || submitting}
-            className="w-full py-4 text-white rounded-xl font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
-            style={{ background: "linear-gradient(135deg, #a33900, #cc4900)" }}
+            variant="default"
+            size="xl"
+            className="w-full py-4 h-auto font-bold"
           >
             {submitting ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
@@ -518,9 +499,9 @@ export default function PDVPage() {
                 Registrar Pedido (F9)
               </>
             )}
-          </button>
+          </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

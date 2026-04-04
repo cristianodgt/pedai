@@ -10,6 +10,14 @@ import {
   TrendingUp,
   Sparkles,
 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -46,73 +54,37 @@ export default function LoginPage() {
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center px-4"
-      style={{ backgroundColor: "#f8f9fb", fontFamily: "'Inter', sans-serif" }}
-    >
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-[#f8f9fb] font-[Inter,sans-serif]">
       {/* Logo + Title */}
       <div className="flex flex-col items-center mb-10">
-        <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
-          style={{ backgroundColor: "#8B2500" }}
-        >
+        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 bg-gradient-to-br from-[#a33900] to-[#cc4900]">
           <Utensils className="w-8 h-8 text-white" />
         </div>
-        <h1
-          className="text-4xl font-bold tracking-tight"
-          style={{ color: "#8B2500" }}
-        >
+        <h1 className="text-4xl font-bold tracking-tight text-[#EA580C]">
           PedAI
         </h1>
-        <p className="text-base mt-1" style={{ color: "#5a4138" }}>
+        <p className="text-base mt-1 text-[#5a4138]">
           O maestro da sua cozinha inteligente.
         </p>
       </div>
 
       {/* Card */}
-      <div
-        className="w-full max-w-md rounded-2xl overflow-hidden"
-        style={{
-          backgroundColor: "#ffffff",
-          borderTop: "4px solid #cc4900",
-          border: "1px solid rgba(226, 191, 178, 0.15)",
-          borderTopWidth: "4px",
-          borderTopColor: "#cc4900",
-        }}
-      >
-        <div className="p-8">
+      <Card className="w-full max-w-md border-t-4 border-t-[#cc4900] border-[rgba(226,191,178,0.15)] overflow-hidden">
+        <CardContent className="p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* E-mail */}
             <div>
-              <label
-                className="block text-sm font-medium mb-2"
-                style={{ color: "#191c1e" }}
-              >
+              <label className="block text-sm font-medium mb-2 text-[#191c1e]">
                 E-mail
               </label>
               <div className="relative">
-                <Mail
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5"
-                  style={{ color: "#8B2500" }}
-                />
-                <input
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#EA580C] z-10 pointer-events-none" />
+                <Input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="exemplo@restaurante.com"
-                  className="w-full pl-12 pr-4 py-3 rounded-xl text-sm outline-none transition-all"
-                  style={{
-                    backgroundColor: "#F0EEEB",
-                    color: "#191c1e",
-                    border: "none",
-                    borderBottom: "2px solid transparent",
-                  }}
-                  onFocus={(e) =>
-                    (e.currentTarget.style.borderBottomColor = "#a33900")
-                  }
-                  onBlur={(e) =>
-                    (e.currentTarget.style.borderBottomColor = "transparent")
-                  }
+                  className="pl-12"
                   required
                 />
               </div>
@@ -120,35 +92,17 @@ export default function LoginPage() {
 
             {/* Senha */}
             <div>
-              <label
-                className="block text-sm font-medium mb-2"
-                style={{ color: "#191c1e" }}
-              >
+              <label className="block text-sm font-medium mb-2 text-[#191c1e]">
                 Senha
               </label>
               <div className="relative">
-                <Lock
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5"
-                  style={{ color: "#8B2500" }}
-                />
-                <input
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#EA580C] z-10 pointer-events-none" />
+                <Input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-4 py-3 rounded-xl text-sm outline-none transition-all"
-                  style={{
-                    backgroundColor: "#F0EEEB",
-                    color: "#191c1e",
-                    border: "none",
-                    borderBottom: "2px solid transparent",
-                  }}
-                  onFocus={(e) =>
-                    (e.currentTarget.style.borderBottomColor = "#a33900")
-                  }
-                  onBlur={(e) =>
-                    (e.currentTarget.style.borderBottomColor = "transparent")
-                  }
+                  className="pl-12"
                   required
                 />
               </div>
@@ -161,17 +115,15 @@ export default function LoginPage() {
                   type="checkbox"
                   checked={remember}
                   onChange={(e) => setRemember(e.target.checked)}
-                  className="w-4 h-4 rounded"
-                  style={{ accentColor: "#a33900" }}
+                  className="w-4 h-4 rounded accent-[#a33900]"
                 />
-                <span className="text-sm" style={{ color: "#5a4138" }}>
+                <span className="text-sm text-[#5a4138]">
                   Lembrar de mim
                 </span>
               </label>
               <a
                 href="#"
-                className="text-sm font-semibold transition-colors hover:opacity-80"
-                style={{ color: "#C4501A" }}
+                className="text-sm font-semibold text-[#EA580C] hover:opacity-80 transition-colors"
               >
                 Esqueci minha senha
               </a>
@@ -179,94 +131,71 @@ export default function LoginPage() {
 
             {/* Error */}
             {error && (
-              <p
-                className="text-sm p-3 rounded-xl"
-                style={{
-                  color: "#943030",
-                  backgroundColor: "#fdf2f2",
-                }}
-              >
+              <Badge variant="danger" className="w-full justify-start px-3 py-2.5 text-sm rounded-xl">
                 {error}
-              </p>
+              </Badge>
             )}
 
             {/* Submit */}
-            <button
+            <Button
               type="submit"
+              variant="default"
+              size="xl"
               disabled={loading}
-              className="w-full text-white py-3.5 rounded-xl font-semibold text-base transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
-              style={{
-                background: "linear-gradient(135deg, #a33900, #cc4900)",
-              }}
+              className="w-full"
             >
               {loading ? "Entrando..." : "Entrar"}
               {!loading && <ArrowRight className="w-5 h-5" />}
-            </button>
+            </Button>
           </form>
 
           {/* Separator */}
-          <div
-            className="my-6"
-            style={{ borderTop: "1px solid #edeef0" }}
-          />
+          <div className="my-6 border-t border-[#edeef0]" />
 
           {/* Sign up */}
-          <p className="text-center text-sm" style={{ color: "#5a4138" }}>
+          <p className="text-center text-sm text-[#5a4138]">
             Ainda n&atilde;o tem uma conta?{" "}
             <a
               href="#"
-              className="font-semibold transition-colors hover:opacity-80"
-              style={{ color: "#C4501A" }}
+              className="font-semibold transition-colors hover:opacity-80 text-[#EA580C]"
             >
               Solicite acesso
             </a>
           </p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Footer badges */}
       <div className="mt-10 flex flex-col items-center gap-5">
         <div className="flex flex-wrap justify-center gap-8">
           <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: "#8B2500" }}
-            >
+            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#a33900] to-[#cc4900]">
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p
-                className="text-xs font-bold uppercase tracking-wider"
-                style={{ color: "#191c1e" }}
-              >
+              <p className="text-xs font-bold uppercase tracking-wider text-[#191c1e]">
                 Performance
               </p>
-              <p className="text-xs" style={{ color: "#5a4138" }}>
+              <p className="text-xs text-[#5a4138]">
                 Operacao Agil
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: "#8B2500" }}
-            >
+            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#a33900] to-[#cc4900]">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p
-                className="text-xs font-bold uppercase tracking-wider"
-                style={{ color: "#191c1e" }}
-              >
+              <p className="text-xs font-bold uppercase tracking-wider text-[#191c1e]">
                 IA Integrada
               </p>
-              <p className="text-xs" style={{ color: "#5a4138" }}>
+              <p className="text-xs text-[#5a4138]">
                 Gestao Inteligente
               </p>
             </div>
           </div>
         </div>
-        <p className="text-xs" style={{ color: "#5a4138", opacity: 0.6 }}>
+        <p className="text-xs text-[#5a4138] opacity-60">
           &copy; 2024 PedAI Culinary Systems.
         </p>
       </div>

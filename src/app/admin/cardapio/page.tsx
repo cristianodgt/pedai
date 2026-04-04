@@ -16,6 +16,10 @@ import {
   Download,
   MoreVertical,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 
 interface MenuItem {
   id: string;
@@ -322,67 +326,48 @@ export default function CardapioPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div
-          className="animate-spin rounded-full h-8 w-8"
-          style={{ borderBottom: "2px solid #a33900" }}
-        />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#a33900]" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6" style={{ background: "#f8f9fb" }}>
+    <div className="space-y-6 bg-[#f8f9fb]">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: "#191c1e" }}>
+          <h1 className="text-2xl font-bold text-[#191c1e]">
             Gestao de Cardapio
           </h1>
-          <p className="text-sm mt-1" style={{ color: "#5a4138" }}>
+          <p className="text-sm mt-1 text-[#5a4138]">
             Gerencie categorias, itens e canais de venda em tempo real.
           </p>
         </div>
         <div className="flex gap-3">
-          {/* Import dropdown button — ghost/tertiary style */}
+          {/* Import dropdown button */}
           <div className="relative">
-            <button
+            <Button
+              variant="outline"
               onClick={() => setImportDropdown(!importDropdown)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-[0.75rem] transition text-sm font-medium"
-              style={{
-                background: "transparent",
-                color: "#a33900",
-                border: "1px solid rgba(226,191,178,0.15)",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#edeef0")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
             >
               <Download size={16} />
               Importar
               <ChevronDown size={14} />
-            </button>
+            </Button>
             {importDropdown && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setImportDropdown(false)} />
-                <div
-                  className="absolute right-0 mt-2 w-48 rounded-[0.75rem] z-20 py-1"
-                  style={{ background: "#ffffff" }}
-                >
+                <div className="absolute right-0 mt-2 w-48 rounded-[0.75rem] z-20 py-1 bg-white">
                   <button
                     onClick={openImport}
-                    className="w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 transition"
-                    style={{ color: "#191c1e" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "#f8f9fb")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    className="w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 transition text-[#191c1e] hover:bg-[#f8f9fb]"
                   >
                     <Utensils size={14} />
                     Templates Prontos
                   </button>
                   <button
                     onClick={() => { setImportDropdown(false); setImportModal(true); setImportTab("text"); }}
-                    className="w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 transition"
-                    style={{ color: "#191c1e" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "#f8f9fb")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    className="w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 transition text-[#191c1e] hover:bg-[#f8f9fb]"
                   >
                     <FileText size={14} />
                     Colar Texto
@@ -391,124 +376,83 @@ export default function CardapioPage() {
               </>
             )}
           </div>
-          {/* Nova Categoria — gradient bg */}
-          <button
-            onClick={openNewCategory}
-            className="flex items-center gap-2 px-4 py-2.5 text-white rounded-[0.75rem] transition text-sm font-medium"
-            style={{ background: "linear-gradient(135deg, #a33900, #cc4900)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-          >
+          {/* Nova Categoria */}
+          <Button variant="default" onClick={openNewCategory}>
             <Plus size={16} />
             Nova Categoria
-          </button>
+          </Button>
         </div>
       </div>
 
       {categories.length === 0 ? (
-        <div
-          className="rounded-[0.75rem] p-12 text-center"
-          style={{ background: "#ffffff" }}
-        >
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-            style={{ background: "rgba(163,57,0,0.08)" }}
-          >
-            <Utensils size={28} style={{ color: "#a33900" }} />
+        <Card className="p-12 text-center">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[rgba(163,57,0,0.08)]">
+            <Utensils size={28} className="text-[#a33900]" />
           </div>
-          <p className="text-lg mb-4" style={{ color: "#5a4138" }}>
+          <p className="text-lg mb-4 text-[#5a4138]">
             Nenhuma categoria criada
           </p>
-          <button
-            onClick={openNewCategory}
-            className="font-medium transition"
-            style={{ color: "#a33900" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#cc4900")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#a33900")}
-          >
+          <Button variant="link" onClick={openNewCategory}>
             Criar primeira categoria
-          </button>
-        </div>
+          </Button>
+        </Card>
       ) : (
         <div className="space-y-4">
           {categories.map((cat) => (
-            <div
+            <Card
               key={cat.id}
-              className={`rounded-[0.75rem] overflow-hidden ${
-                !cat.active ? "opacity-60" : ""
-              }`}
-              style={{ background: "#ffffff" }}
+              className={`overflow-hidden ${!cat.active ? "opacity-60" : ""}`}
             >
-              {/* Category Header — white bg, no border, tonal separation */}
+              {/* Category Header */}
               <div
-                className="flex items-center gap-4 px-5 py-4 cursor-pointer transition"
-                style={{ background: "#ffffff" }}
+                className="flex items-center gap-4 px-5 py-4 cursor-pointer transition bg-white hover:bg-[#f8f9fb]"
                 onClick={() => toggleExpand(cat.id)}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#f8f9fb")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#ffffff")}
               >
                 {/* Category emoji in tonal circle */}
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-lg flex-shrink-0"
-                  style={{ background: "rgba(163,57,0,0.08)" }}
-                >
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg flex-shrink-0 bg-[rgba(163,57,0,0.08)]">
                   {getCategoryEmoji(cat.name)}
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold" style={{ color: "#191c1e" }}>
+                  <h3 className="font-bold text-[#191c1e]">
                     {cat.name}
                   </h3>
-                  <p className="text-xs" style={{ color: "#5a4138" }}>
+                  <p className="text-xs text-[#5a4138]">
                     {cat.items.length} {cat.items.length === 1 ? "item" : "itens"}
                   </p>
                 </div>
 
-                {/* Channel badges — tonal circles, small */}
+                {/* Channel badges */}
                 <div className="flex items-center gap-1.5">
                   {cat.items.some(i => i.channels.includes("WHATSAPP")) && (
-                    <span
-                      className="w-6 h-6 rounded-full text-[10px] font-bold flex items-center justify-center"
-                      style={{ background: "rgba(34,197,94,0.12)", color: "#15803d" }}
-                      title="WhatsApp"
-                    >W</span>
+                    <Badge variant="whatsapp" title="WhatsApp" className="w-6 h-6 rounded-full text-[10px] px-0">
+                      W
+                    </Badge>
                   )}
                   {cat.items.some(i => i.channels.includes("PDV")) && (
-                    <span
-                      className="w-6 h-6 rounded-full text-[10px] font-bold flex items-center justify-center"
-                      style={{ background: "rgba(59,130,246,0.12)", color: "#1d4ed8" }}
-                      title="PDV"
-                    >P</span>
+                    <Badge variant="pdv" title="PDV" className="w-6 h-6 rounded-full text-[10px] px-0">
+                      P
+                    </Badge>
                   )}
                   {cat.items.some(i => i.channels.includes("IFOOD")) && (
-                    <span
-                      className="w-6 h-6 rounded-full text-[10px] font-bold flex items-center justify-center"
-                      style={{ background: "rgba(239,68,68,0.12)", color: "#b91c1c" }}
-                      title="iFood"
-                    >i</span>
+                    <Badge variant="ifood" title="iFood" className="w-6 h-6 rounded-full text-[10px] px-0">
+                      i
+                    </Badge>
                   )}
                 </div>
 
                 {/* Edit pencil */}
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
                   onClick={(e) => { e.stopPropagation(); openEditCategory(cat); }}
-                  className="p-1.5 rounded-[0.75rem] transition"
-                  style={{ color: "#5a4138" }}
                   title="Editar categoria"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "#a33900";
-                    e.currentTarget.style.background = "rgba(163,57,0,0.08)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "#5a4138";
-                    e.currentTarget.style.background = "transparent";
-                  }}
                 >
                   <Pencil size={16} />
-                </button>
+                </Button>
 
                 {/* Expand/collapse chevron */}
-                <div style={{ color: "#5a4138" }}>
+                <div className="text-[#5a4138]">
                   {expanded.has(cat.id) ? (
                     <ChevronDown size={20} />
                   ) : (
@@ -517,23 +461,17 @@ export default function CardapioPage() {
                 </div>
               </div>
 
-              {/* Items — no divider lines, tonal separation */}
+              {/* Items */}
               {expanded.has(cat.id) && (
-                <div style={{ background: "#edeef0" }}>
+                <div className="bg-[#edeef0]">
                   {cat.items.length === 0 ? (
                     <div className="px-5 py-8 text-center">
-                      <p className="text-sm mb-3" style={{ color: "#5a4138" }}>
+                      <p className="text-sm mb-3 text-[#5a4138]">
                         Nenhum item nesta categoria
                       </p>
-                      <button
-                        onClick={() => openNewItem(cat.id)}
-                        className="text-sm font-medium transition"
-                        style={{ color: "#a33900" }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = "#cc4900")}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = "#a33900")}
-                      >
+                      <Button variant="link" onClick={() => openNewItem(cat.id)}>
                         + Adicionar item
-                      </button>
+                      </Button>
                     </div>
                   ) : (
                     <div>
@@ -542,74 +480,56 @@ export default function CardapioPage() {
                           key={item.id}
                           className={`px-5 py-4 ${
                             !item.available ? "opacity-50" : ""
-                          }`}
-                          style={{
-                            background: idx % 2 === 0 ? "#f8f9fb" : "#ffffff",
-                          }}
+                          } ${idx % 2 === 0 ? "bg-[#f8f9fb]" : "bg-white"}`}
                         >
                           <div className="flex items-center gap-4">
-                            {/* Image placeholder — bg #edeef0, rounded */}
-                            <div
-                              className="w-[60px] h-[60px] rounded-[0.75rem] flex items-center justify-center flex-shrink-0"
-                              style={{ background: "#edeef0" }}
-                            >
-                              <Utensils size={20} style={{ color: "#5a4138", opacity: 0.4 }} />
+                            {/* Image placeholder */}
+                            <div className="w-[60px] h-[60px] rounded-[0.75rem] flex items-center justify-center flex-shrink-0 bg-[#edeef0]">
+                              <Utensils size={20} className="text-[#5a4138] opacity-40" />
                             </div>
 
                             {/* Name + description */}
                             <div className="flex-1 min-w-0">
-                              <p className="font-bold text-sm" style={{ color: "#191c1e" }}>
+                              <p className="font-bold text-sm text-[#191c1e]">
                                 {item.name}
                               </p>
                               {item.description && (
-                                <p
-                                  className="text-xs mt-0.5 truncate"
-                                  style={{ color: "#5a4138" }}
-                                >
+                                <p className="text-xs mt-0.5 truncate text-[#5a4138]">
                                   {item.description}
                                 </p>
                               )}
                             </div>
 
-                            {/* Price — #191c1e, font-semibold */}
+                            {/* Price */}
                             <div className="text-right flex-shrink-0">
-                              <p
-                                className="text-xs uppercase tracking-wide"
-                                style={{ color: "#5a4138" }}
-                              >
+                              <p className="text-xs uppercase tracking-wide text-[#5a4138]">
                                 Preco unitario
                               </p>
-                              <p
-                                className="font-semibold text-sm"
-                                style={{ color: "#191c1e" }}
-                              >
+                              <p className="font-semibold text-sm text-[#191c1e]">
                                 R$ {Number(item.price).toFixed(2).replace(".", ",")}
                               </p>
                             </div>
 
-                            {/* Availability toggle — uses #cc4900 when active */}
+                            {/* Availability toggle */}
                             <button
                               onClick={() => toggleItemAvailable(item)}
                               className="flex-shrink-0"
                             >
                               <div
-                                className="relative w-12 h-6 rounded-full transition-colors"
-                                style={{
-                                  background: item.available ? "#cc4900" : "#edeef0",
-                                }}
+                                className={`relative w-12 h-6 rounded-full transition-colors ${
+                                  item.available ? "bg-[#cc4900]" : "bg-[#edeef0]"
+                                }`}
                               >
                                 <div
-                                  className={`absolute top-0.5 w-5 h-5 rounded-full transition-transform ${
+                                  className={`absolute top-0.5 w-5 h-5 rounded-full transition-transform bg-white ${
                                     item.available ? "translate-x-6" : "translate-x-0.5"
                                   }`}
-                                  style={{ background: "#ffffff" }}
                                 />
                               </div>
                               <p
-                                className="text-[10px] font-medium mt-1 text-center"
-                                style={{
-                                  color: item.available ? "#a33900" : "#5a4138",
-                                }}
+                                className={`text-[10px] font-medium mt-1 text-center ${
+                                  item.available ? "text-[#a33900]" : "text-[#5a4138]"
+                                }`}
                               >
                                 {item.available ? "DISPONIVEL" : "INDISPONIVEL"}
                               </p>
@@ -617,54 +537,34 @@ export default function CardapioPage() {
 
                             {/* Three-dot menu */}
                             <div className="relative flex-shrink-0">
-                              <button
+                              <Button
+                                variant="ghost"
+                                size="icon-sm"
                                 onClick={() => setItemMenu(itemMenu === item.id ? null : item.id)}
-                                className="p-1.5 rounded-[0.75rem] transition"
-                                style={{ color: "#5a4138" }}
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.color = "#191c1e";
-                                  e.currentTarget.style.background = "#edeef0";
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.color = "#5a4138";
-                                  e.currentTarget.style.background = "transparent";
-                                }}
                               >
                                 <MoreVertical size={16} />
-                              </button>
+                              </Button>
                               {itemMenu === item.id && (
                                 <>
                                   <div className="fixed inset-0 z-10" onClick={() => setItemMenu(null)} />
-                                  <div
-                                    className="absolute right-0 mt-1 w-36 rounded-[0.75rem] z-20 py-1"
-                                    style={{ background: "#ffffff" }}
-                                  >
+                                  <div className="absolute right-0 mt-1 w-36 rounded-[0.75rem] z-20 py-1 bg-white">
                                     <button
                                       onClick={() => { setItemMenu(null); openEditItem(item, cat.id); }}
-                                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition"
-                                      style={{ color: "#191c1e" }}
-                                      onMouseEnter={(e) => (e.currentTarget.style.background = "#f8f9fb")}
-                                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition text-[#191c1e] hover:bg-[#f8f9fb]"
                                     >
                                       <Pencil size={14} />
                                       Editar
                                     </button>
                                     <button
                                       onClick={() => { setItemMenu(null); toggleCategoryActive(cat); }}
-                                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition"
-                                      style={{ color: "#191c1e" }}
-                                      onMouseEnter={(e) => (e.currentTarget.style.background = "#f8f9fb")}
-                                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition text-[#191c1e] hover:bg-[#f8f9fb]"
                                     >
                                       {cat.active ? <EyeOff size={14} /> : <Eye size={14} />}
                                       {cat.active ? "Desativar" : "Ativar"}
                                     </button>
                                     <button
                                       onClick={() => { setItemMenu(null); deleteItem(item); }}
-                                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition"
-                                      style={{ color: "#b91c1c" }}
-                                      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.06)")}
-                                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition text-red-700 hover:bg-red-50"
                                     >
                                       <Trash2 size={14} />
                                       Excluir
@@ -678,26 +578,23 @@ export default function CardapioPage() {
                           {/* Channel checkmarks */}
                           <div className="flex items-center gap-4 mt-2 ml-[76px]">
                             <span
-                              className="text-xs"
-                              style={{
-                                color: item.channels.includes("WHATSAPP") ? "#15803d" : "rgba(90,65,56,0.35)",
-                              }}
+                              className={`text-xs ${
+                                item.channels.includes("WHATSAPP") ? "text-[#15803d]" : "text-[rgba(90,65,56,0.35)]"
+                              }`}
                             >
                               {item.channels.includes("WHATSAPP") ? "\u2705" : "\u2B1C"} WhatsApp
                             </span>
                             <span
-                              className="text-xs"
-                              style={{
-                                color: item.channels.includes("PDV") ? "#1d4ed8" : "rgba(90,65,56,0.35)",
-                              }}
+                              className={`text-xs ${
+                                item.channels.includes("PDV") ? "text-[#1d4ed8]" : "text-[rgba(90,65,56,0.35)]"
+                              }`}
                             >
                               {item.channels.includes("PDV") ? "\u2705" : "\u2B1C"} PDV
                             </span>
                             <span
-                              className="text-xs"
-                              style={{
-                                color: item.channels.includes("IFOOD") ? "#b91c1c" : "rgba(90,65,56,0.35)",
-                              }}
+                              className={`text-xs ${
+                                item.channels.includes("IFOOD") ? "text-[#b91c1c]" : "text-[rgba(90,65,56,0.35)]"
+                              }`}
                             >
                               {item.channels.includes("IFOOD") ? "\u2705" : "\u2B1C"} iFood
                             </span>
@@ -705,26 +602,20 @@ export default function CardapioPage() {
                         </div>
                       ))}
 
-                      {/* Add item button — dashed using ghost border color */}
-                      <button
+                      {/* Add item button */}
+                      <Button
+                        variant="link"
                         onClick={() => openNewItem(cat.id)}
-                        className="w-full px-5 py-3 text-sm font-medium transition flex items-center justify-center gap-1"
-                        style={{
-                          borderTop: "1px dashed #e2bfb2",
-                          color: "#a33900",
-                          background: "transparent",
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(163,57,0,0.04)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                        className="w-full py-3 flex items-center justify-center gap-1 rounded-none border-t border-dashed border-[#e2bfb2]"
                       >
                         <Plus size={16} />
                         Adicionar Item
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </div>
               )}
-            </div>
+            </Card>
           ))}
         </div>
       )}
@@ -732,124 +623,87 @@ export default function CardapioPage() {
       {/* Category Modal */}
       {catModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div
-            className="rounded-[0.75rem] w-full max-w-md mx-4"
-            style={{ background: "#ffffff" }}
-          >
-            <div
-              className="flex items-center justify-between px-6 py-4"
-              style={{ borderBottom: "1px solid #edeef0" }}
-            >
-              <h2 className="text-lg font-semibold" style={{ color: "#191c1e" }}>
+          <Card className="w-full max-w-md mx-4">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#edeef0]">
+              <h2 className="text-lg font-semibold text-[#191c1e]">
                 {editingCat ? "Editar Categoria" : "Nova Categoria"}
               </h2>
-              <button
+              <Button
+                variant="ghost"
+                size="icon-sm"
                 onClick={() => setCatModal(false)}
-                style={{ color: "#5a4138" }}
-                className="transition"
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#191c1e")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#5a4138")}
               >
                 <X size={20} />
-              </button>
+              </Button>
             </div>
 
             <div className="p-6">
-              <label
-                className="block text-sm font-medium mb-1"
-                style={{ color: "#5a4138" }}
-              >
+              <label className="block text-sm font-medium mb-1 text-[#5a4138]">
                 Nome da categoria
               </label>
-              <input
+              <Input
                 type="text"
                 value={catName}
                 onChange={(e) => setCatName(e.target.value)}
                 placeholder="Ex: Marmitas, Bebidas, Combos..."
-                className="w-full px-3 py-2.5 rounded-[0.75rem] outline-none text-sm transition"
-                style={{
-                  background: "#f8f9fb",
-                  color: "#191c1e",
-                  border: "none",
-                }}
-                onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #cc4900")}
-                onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
                 autoFocus
                 onKeyDown={(e) => e.key === "Enter" && saveCategory()}
               />
             </div>
 
-            <div
-              className="flex justify-end gap-3 px-6 py-4"
-              style={{ borderTop: "1px solid #edeef0" }}
-            >
-              <button
-                onClick={() => setCatModal(false)}
-                className="px-4 py-2 text-sm transition"
-                style={{ color: "#5a4138" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#191c1e")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#5a4138")}
-              >
+            <div className="flex justify-end gap-3 px-6 py-4 border-t border-[#edeef0]">
+              <Button variant="ghost" onClick={() => setCatModal(false)}>
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="default"
                 onClick={saveCategory}
                 disabled={saving || !catName.trim()}
-                className="px-4 py-2 text-white rounded-[0.75rem] disabled:opacity-50 text-sm font-medium transition"
-                style={{ background: "linear-gradient(135deg, #a33900, #cc4900)" }}
               >
                 {saving ? "Salvando..." : "Salvar"}
-              </button>
+              </Button>
             </div>
-          </div>
+          </Card>
         </div>
       )}
 
       {/* Import Modal */}
       {importModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div
-            className="rounded-[0.75rem] w-full max-w-2xl mx-4 max-h-[80vh] flex flex-col"
-            style={{ background: "#ffffff" }}
-          >
-            <div
-              className="flex items-center justify-between px-6 py-4"
-              style={{ borderBottom: "1px solid #edeef0" }}
-            >
-              <h2 className="text-lg font-semibold" style={{ color: "#191c1e" }}>
+          <Card className="w-full max-w-2xl mx-4 max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#edeef0]">
+              <h2 className="text-lg font-semibold text-[#191c1e]">
                 Importar Cardapio
               </h2>
-              <button
+              <Button
+                variant="ghost"
+                size="icon-sm"
                 onClick={() => setImportModal(false)}
-                style={{ color: "#5a4138" }}
-                className="transition"
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#191c1e")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#5a4138")}
               >
                 <X size={20} />
-              </button>
+              </Button>
             </div>
 
             {/* Tabs */}
-            <div className="flex" style={{ borderBottom: "1px solid #edeef0" }}>
+            <div className="flex border-b border-[#edeef0]">
               <button
                 onClick={() => setImportTab("templates")}
-                className="flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition"
-                style={{
-                  color: importTab === "templates" ? "#a33900" : "#5a4138",
-                  borderBottom: importTab === "templates" ? "2px solid #a33900" : "2px solid transparent",
-                }}
+                className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition border-b-2 ${
+                  importTab === "templates"
+                    ? "text-[#a33900] border-b-[#a33900]"
+                    : "text-[#5a4138] border-b-transparent"
+                }`}
               >
                 <Utensils size={16} />
                 Templates Prontos
               </button>
               <button
                 onClick={() => setImportTab("text")}
-                className="flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition"
-                style={{
-                  color: importTab === "text" ? "#a33900" : "#5a4138",
-                  borderBottom: importTab === "text" ? "2px solid #a33900" : "2px solid transparent",
-                }}
+                className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition border-b-2 ${
+                  importTab === "text"
+                    ? "text-[#a33900] border-b-[#a33900]"
+                    : "text-[#5a4138] border-b-transparent"
+                }`}
               >
                 <FileText size={16} />
                 Colar Texto
@@ -863,10 +717,9 @@ export default function CardapioPage() {
                   type="checkbox"
                   checked={clearExisting}
                   onChange={(e) => setClearExisting(e.target.checked)}
-                  className="rounded"
-                  style={{ accentColor: "#cc4900" }}
+                  className="rounded accent-[#cc4900]"
                 />
-                <span className="text-sm" style={{ color: "#5a4138" }}>
+                <span className="text-sm text-[#5a4138]">
                   Substituir cardapio existente
                 </span>
               </label>
@@ -874,37 +727,28 @@ export default function CardapioPage() {
               {importTab === "templates" ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {templates.map((t) => (
-                    <button
+                    <Card
                       key={t.id}
-                      onClick={() => applyTemplate(t.id)}
-                      disabled={importing}
-                      className="text-left rounded-[0.75rem] p-4 transition disabled:opacity-50"
-                      style={{
-                        background: "#f8f9fb",
-                        border: "none",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "#edeef0";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "#f8f9fb";
-                      }}
+                      className="cursor-pointer transition hover:bg-[#edeef0] bg-[#f8f9fb] disabled:opacity-50"
+                      onClick={() => !importing && applyTemplate(t.id)}
                     >
-                      <h3 className="font-semibold" style={{ color: "#191c1e" }}>
-                        {t.name}
-                      </h3>
-                      <p className="text-xs mt-1" style={{ color: "#5a4138" }}>
-                        {t.description}
-                      </p>
-                      <p className="text-xs mt-2 font-medium" style={{ color: "#a33900" }}>
-                        {t.categoriesCount} categorias, {t.itemsCount} itens
-                      </p>
-                    </button>
+                      <CardContent className="p-4 pt-4">
+                        <h3 className="font-semibold text-[#191c1e]">
+                          {t.name}
+                        </h3>
+                        <p className="text-xs mt-1 text-[#5a4138]">
+                          {t.description}
+                        </p>
+                        <p className="text-xs mt-2 font-medium text-[#a33900]">
+                          {t.categoriesCount} categorias, {t.itemsCount} itens
+                        </p>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               ) : (
                 <div>
-                  <p className="text-sm mb-3" style={{ color: "#5a4138" }}>
+                  <p className="text-sm mb-3 text-[#5a4138]">
                     Cole seu cardapio no formato texto. Use linhas em MAIUSCULAS ou com &quot;:&quot; para categorias.
                     Cada item deve ter o preco (ex: R$ 25,00).
                   </p>
@@ -913,141 +757,87 @@ export default function CardapioPage() {
                     onChange={(e) => setImportText(e.target.value)}
                     rows={12}
                     placeholder={`LANCHES:\nX-Burger R$ 18,00\nX-Salada R$ 20,00\nX-Bacon R$ 25,00\n\nBEBIDAS:\nCoca-Cola 350ml R$ 6,00\nSuco Natural R$ 8,00\nAgua R$ 4,00`}
-                    className="w-full px-3 py-2.5 rounded-[0.75rem] outline-none text-sm font-mono transition"
-                    style={{
-                      background: "#f8f9fb",
-                      color: "#191c1e",
-                      border: "none",
-                    }}
-                    onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #cc4900")}
-                    onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+                    className="w-full px-3 py-2.5 rounded-[0.75rem] outline-none text-sm font-mono transition bg-[#edeef0] text-[#191c1e] border-b-2 border-b-transparent focus:border-b-[#EA580C]"
                   />
-                  <button
+                  <Button
+                    variant="default"
                     onClick={importFromText}
                     disabled={importing || !importText.trim()}
-                    className="mt-3 w-full py-2.5 text-white rounded-[0.75rem] disabled:opacity-50 text-sm font-medium flex items-center justify-center gap-2 transition"
-                    style={{ background: "linear-gradient(135deg, #a33900, #cc4900)" }}
+                    className="mt-3 w-full"
                   >
                     {importing ? (
-                      <div
-                        className="animate-spin rounded-full h-4 w-4"
-                        style={{ borderBottom: "2px solid #ffffff" }}
-                      />
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
                     ) : (
                       <Upload size={16} />
                     )}
                     {importing ? "Importando..." : "Importar Cardapio"}
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
-          </div>
+          </Card>
         </div>
       )}
 
       {/* Item Modal */}
       {itemModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div
-            className="rounded-[0.75rem] w-full max-w-lg mx-4"
-            style={{ background: "#ffffff" }}
-          >
-            <div
-              className="flex items-center justify-between px-6 py-4"
-              style={{ borderBottom: "1px solid #edeef0" }}
-            >
-              <h2 className="text-lg font-semibold" style={{ color: "#191c1e" }}>
+          <Card className="w-full max-w-lg mx-4">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#edeef0]">
+              <h2 className="text-lg font-semibold text-[#191c1e]">
                 {editingItem ? "Editar Item" : "Novo Item"}
               </h2>
-              <button
+              <Button
+                variant="ghost"
+                size="icon-sm"
                 onClick={() => setItemModal(false)}
-                style={{ color: "#5a4138" }}
-                className="transition"
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#191c1e")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#5a4138")}
               >
                 <X size={20} />
-              </button>
+              </Button>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
-                <label
-                  className="block text-sm font-medium mb-1"
-                  style={{ color: "#5a4138" }}
-                >
+                <label className="block text-sm font-medium mb-1 text-[#5a4138]">
                   Nome
                 </label>
-                <input
+                <Input
                   type="text"
                   value={itemName}
                   onChange={(e) => setItemName(e.target.value)}
                   placeholder="Ex: Marmita Tradicional"
-                  className="w-full px-3 py-2.5 rounded-[0.75rem] outline-none text-sm transition"
-                  style={{
-                    background: "#f8f9fb",
-                    color: "#191c1e",
-                    border: "none",
-                  }}
-                  onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #cc4900")}
-                  onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
                   autoFocus
                 />
               </div>
 
               <div>
-                <label
-                  className="block text-sm font-medium mb-1"
-                  style={{ color: "#5a4138" }}
-                >
+                <label className="block text-sm font-medium mb-1 text-[#5a4138]">
                   Descricao (opcional)
                 </label>
-                <input
+                <Input
                   type="text"
                   value={itemDescription}
                   onChange={(e) => setItemDescription(e.target.value)}
                   placeholder="Arroz, feijao, carne..."
-                  className="w-full px-3 py-2.5 rounded-[0.75rem] outline-none text-sm transition"
-                  style={{
-                    background: "#f8f9fb",
-                    color: "#191c1e",
-                    border: "none",
-                  }}
-                  onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #cc4900")}
-                  onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
                 />
               </div>
 
               <div>
-                <label
-                  className="block text-sm font-medium mb-1"
-                  style={{ color: "#5a4138" }}
-                >
+                <label className="block text-sm font-medium mb-1 text-[#5a4138]">
                   Preco (R$)
                 </label>
-                <input
+                <Input
                   type="number"
                   step="0.01"
                   min="0"
                   value={itemPrice}
                   onChange={(e) => setItemPrice(e.target.value)}
                   placeholder="0.00"
-                  className="w-full px-3 py-2.5 rounded-[0.75rem] outline-none text-sm transition"
-                  style={{
-                    background: "#f8f9fb",
-                    color: "#191c1e",
-                    border: "none",
-                  }}
-                  onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #cc4900")}
-                  onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
                 />
               </div>
 
               <div>
-                <label
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: "#5a4138" }}
-                >
+                <label className="block text-sm font-medium mb-2 text-[#5a4138]">
                   Canais
                 </label>
                 <div className="flex gap-3">
@@ -1060,28 +850,19 @@ export default function CardapioPage() {
                         type="checkbox"
                         checked={itemChannels.includes(ch)}
                         onChange={() => toggleChannel(ch)}
-                        className="rounded"
-                        style={{ accentColor: "#cc4900" }}
+                        className="rounded accent-[#cc4900]"
                       />
-                      <span
-                        className="text-xs font-medium px-2 py-1 rounded-[0.75rem]"
-                        style={{
-                          background:
-                            ch === "WHATSAPP"
-                              ? "rgba(34,197,94,0.1)"
-                              : ch === "PDV"
-                              ? "rgba(59,130,246,0.1)"
-                              : "rgba(239,68,68,0.1)",
-                          color:
-                            ch === "WHATSAPP"
-                              ? "#15803d"
-                              : ch === "PDV"
-                              ? "#1d4ed8"
-                              : "#b91c1c",
-                        }}
+                      <Badge
+                        variant={
+                          ch === "WHATSAPP"
+                            ? "whatsapp"
+                            : ch === "PDV"
+                            ? "pdv"
+                            : "ifood"
+                        }
                       >
                         {ch === "IFOOD" ? "iFood" : ch}
-                      </span>
+                      </Badge>
                     </label>
                   ))}
                 </div>
@@ -1089,23 +870,13 @@ export default function CardapioPage() {
 
               {editingItem && (
                 <div>
-                  <label
-                    className="block text-sm font-medium mb-1"
-                    style={{ color: "#5a4138" }}
-                  >
+                  <label className="block text-sm font-medium mb-1 text-[#5a4138]">
                     Categoria
                   </label>
                   <select
                     value={itemCategoryId}
                     onChange={(e) => setItemCategoryId(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-[0.75rem] outline-none text-sm transition"
-                    style={{
-                      background: "#f8f9fb",
-                      color: "#191c1e",
-                      border: "none",
-                    }}
-                    onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #cc4900")}
-                    onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+                    className="w-full h-10 px-3.5 py-2 rounded-[0.75rem] outline-none text-sm transition bg-[#edeef0] text-[#191c1e] border-b-2 border-b-transparent focus:border-b-[#EA580C]"
                   >
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -1117,29 +888,19 @@ export default function CardapioPage() {
               )}
             </div>
 
-            <div
-              className="flex justify-end gap-3 px-6 py-4"
-              style={{ borderTop: "1px solid #edeef0" }}
-            >
-              <button
-                onClick={() => setItemModal(false)}
-                className="px-4 py-2 text-sm transition"
-                style={{ color: "#5a4138" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#191c1e")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#5a4138")}
-              >
+            <div className="flex justify-end gap-3 px-6 py-4 border-t border-[#edeef0]">
+              <Button variant="ghost" onClick={() => setItemModal(false)}>
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="default"
                 onClick={saveItem}
                 disabled={saving || !itemName.trim() || !itemPrice}
-                className="px-4 py-2 text-white rounded-[0.75rem] disabled:opacity-50 text-sm font-medium transition"
-                style={{ background: "linear-gradient(135deg, #a33900, #cc4900)" }}
               >
                 {saving ? "Salvando..." : "Salvar"}
-              </button>
+              </Button>
             </div>
-          </div>
+          </Card>
         </div>
       )}
     </div>
