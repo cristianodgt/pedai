@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   ClipboardList,
   Monitor,
@@ -10,6 +11,8 @@ import {
   Settings,
   LogOut,
   Bell,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 const navItems = [
@@ -26,31 +29,31 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [soundOn, setSoundOn] = useState(true);
 
   return (
-    <div className="flex h-screen bg-[#f8f9fb]">
+    <>
       {/* Sidebar */}
-      <aside className="w-64 flex flex-col bg-gray-100 border-r border-gray-200">
+      <aside className="fixed left-0 top-0 h-screen w-64 border-r-0 bg-gray-100 flex flex-col py-6 z-50">
         {/* Logo */}
-        <div className="px-6 py-5 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#a33900] to-[#cc4900]">
-            <UtensilsCrossed className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-xl font-bold text-[#191c1e]">PedAI</span>
+        <div className="px-6 mb-10">
+          <h1 className="text-2xl font-black text-orange-600 tracking-tighter">
+            PedAI
+          </h1>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 mt-2">
+        <nav className="flex-1">
           {navItems.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 py-3 px-6 text-sm transition-colors ${
+                className={`flex items-center gap-3 px-4 py-3 transition-colors ${
                   active
-                    ? "text-[#EA580C] font-semibold bg-orange-50 border-r-4 border-r-[#EA580C]"
-                    : "text-[#6b7280] hover:text-[#191c1e] hover:bg-gray-200/60"
+                    ? "text-orange-600 font-bold border-r-4 border-orange-600 bg-orange-50"
+                    : "text-zinc-500 font-medium hover:bg-gray-200"
                 }`}
               >
                 <item.icon size={20} />
@@ -61,13 +64,13 @@ export default function AdminLayout({
         </nav>
 
         {/* Sair */}
-        <div className="border-t border-gray-200">
+        <div>
           <button
             onClick={async () => {
               await fetch("/api/auth/logout", { method: "POST" });
               window.location.href = "/login";
             }}
-            className="flex items-center gap-3 py-3 px-6 text-sm text-[#6b7280] hover:text-[#191c1e] w-full transition-colors"
+            className="flex items-center gap-3 px-4 py-3 text-zinc-500 font-medium hover:bg-gray-200 w-full transition-colors"
           >
             <LogOut size={20} />
             Sair
@@ -75,47 +78,73 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top header bar */}
-        <header className="h-14 flex items-center justify-between px-6 bg-white border-b border-gray-100">
-          {/* Left: Ao vivo */}
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22c55e] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#22c55e]" />
-            </span>
-            <span className="text-sm font-semibold text-[#22c55e]">
-              Ao vivo
-            </span>
+      {/* Main content area */}
+      <div className="ml-64 min-h-screen flex flex-col">
+        {/* Header */}
+        <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-xl border-b border-gray-200/50 flex items-center justify-between px-8 py-4">
+          {/* Left side */}
+          <div className="flex items-center gap-4">
+            {/* Ao vivo indicator */}
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+              </span>
+              <span className="text-sm font-semibold text-green-600">
+                Ao vivo
+              </span>
+            </div>
+
+            {/* Som toggle pill */}
+            <button
+              onClick={() => setSoundOn(!soundOn)}
+              className="bg-gray-100 rounded-full px-4 py-1.5 flex items-center gap-2 transition-colors hover:bg-gray-200"
+            >
+              {soundOn ? (
+                <Volume2 size={16} className="text-zinc-600" />
+              ) : (
+                <VolumeX size={16} className="text-zinc-400" />
+              )}
+              <span className="text-sm text-zinc-600">
+                Som {soundOn ? "ativado" : "desativado"}
+              </span>
+              <div
+                className={`w-8 h-4 rounded-full relative transition-colors ${
+                  soundOn ? "bg-orange-500" : "bg-zinc-300"
+                }`}
+              >
+                <div
+                  className={`absolute top-0.5 w-3 h-3 rounded-full bg-white shadow transition-transform ${
+                    soundOn ? "translate-x-4" : "translate-x-0.5"
+                  }`}
+                />
+              </div>
+            </button>
           </div>
 
-          {/* Right: Bell + profile */}
+          {/* Right side */}
           <div className="flex items-center gap-4">
-            <button className="relative text-[#6b7280] hover:text-[#191c1e] transition-colors">
+            {/* Notifications bell */}
+            <button className="relative text-zinc-500 hover:text-zinc-800 transition-colors">
               <Bell size={20} />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#EA580C]" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500" />
             </button>
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col items-end">
-                <span className="text-sm font-semibold text-[#191c1e]">
-                  Cozinha Central
-                </span>
-                <span className="text-[10px] uppercase tracking-wider text-[#6b7280]">
-                  GERENTE
-                </span>
-              </div>
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#a33900] to-[#cc4900] flex items-center justify-center text-white text-sm font-medium">
+
+            {/* Profile section */}
+            <div className="flex items-center gap-3 border-l border-gray-200 pl-4">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center text-white text-sm font-bold">
                 C
               </div>
+              <Settings size={18} className="text-zinc-400" />
             </div>
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-6 bg-[#f8f9fb]">
+        {/* Page content */}
+        <main className="p-8 flex-1">
           {children}
         </main>
       </div>
-    </div>
+    </>
   );
 }
