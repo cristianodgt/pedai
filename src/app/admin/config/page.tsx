@@ -89,9 +89,9 @@ export default function ConfigPage() {
   const [saved, setSaved] = useState(false);
 
   // Restaurant info
-  const [name, setName] = useState("Sabor & Arte Restaurante");
-  const [phone, setPhone] = useState("(11) 98765-4321");
-  const [address, setAddress] = useState("Rua das Flores, 123 - Centro - São Paulo/SP");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
 
   // Schedule
   const [schedule, setSchedule] = useState(initialSchedule);
@@ -101,7 +101,7 @@ export default function ConfigPage() {
 
   // WhatsApp integration
   const [webhookUrl] = useState("https://n8n.pedai.com.br/webhook/abc123-whatsapp");
-  const [apiToken] = useState("pk_live_7f3a9c2d8e1b4a5f6c0d9e8a7b6c5d4e");
+  const [apiToken] = useState("");
   const [showToken, setShowToken] = useState(false);
   const [whatsappConnected] = useState(true);
 

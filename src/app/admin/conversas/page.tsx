@@ -13,6 +13,7 @@ import {
   Package,
   Smile,
   MessageSquare,
+  MessageCircle,
 } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -94,107 +95,6 @@ function apiToUI(c: ApiConversation): UIConversation {
   };
 }
 
-// ── Mock Fallback ─────────────────────────────────────────────────────────────
-
-const MOCK_CONVERSATIONS: UIConversation[] = [
-  {
-    id: "mock-1",
-    name: "Maria Silva",
-    phone: "+55 45 99901-2345",
-    avatar: "MS",
-    lastMessage: "Quero fazer um pedido de 2 pizzas grandes...",
-    time: "14:32",
-    status: "ai",
-    channel: "whatsapp",
-    online: true,
-    address: "Rua Marechal Deodoro, 1234\nCentro, Foz do Iguaçu - PR\nCEP 85851-000",
-    lastOrder: "#PED000001",
-    lastOrderStatus: "EM ROTA",
-    messages: [
-      { type: "text", sender: "customer", content: "Olá, boa tarde! Gostaria de fazer um pedido.", timestamp: "2024-01-01T14:20:00Z" },
-      { type: "text", sender: "bot", content: "Olá Maria! 😊 Bem-vinda ao PedAI! Ficarei feliz em ajudá-la com seu pedido. Temos diversas opções no nosso cardápio. O que você gostaria de pedir hoje?", timestamp: "2024-01-01T14:20:30Z" },
-      { type: "text", sender: "customer", content: "Quero fazer um pedido de 2 pizzas grandes, uma de calabresa e outra de margherita.", timestamp: "2024-01-01T14:25:00Z" },
-      { type: "text", sender: "bot", content: "Ótima escolha! 🍕 Vou adicionar ao seu pedido:\n\n• 1x Pizza Grande Calabresa - R$ 45,90\n• 1x Pizza Grande Margherita - R$ 42,90\n\nTotal parcial: R$ 88,80\n\nGostaria de adicionar alguma bebida ou sobremesa?", timestamp: "2024-01-01T14:25:30Z" },
-      { type: "text", sender: "customer", content: "Adiciona uma Coca-Cola 2L por favor", timestamp: "2024-01-01T14:30:00Z" },
-      { type: "text", sender: "bot", content: "Perfeito! Adicionei ao seu pedido:\n\n• 1x Coca-Cola 2L - R$ 12,00\n\nResumo do pedido:\n• 1x Pizza Grande Calabresa - R$ 45,90\n• 1x Pizza Grande Margherita - R$ 42,90\n• 1x Coca-Cola 2L - R$ 12,00\n\n💰 Total: R$ 100,80\n\nPosso confirmar o pedido para entrega no seu endereço cadastrado?", timestamp: "2024-01-01T14:31:00Z" },
-    ],
-  },
-  {
-    id: "mock-2",
-    name: "João Santos",
-    phone: "+55 45 99876-5432",
-    avatar: "JS",
-    lastMessage: "Meu pedido ainda não chegou...",
-    time: "14:15",
-    status: "waiting",
-    channel: "whatsapp",
-    online: true,
-    address: "Av. Brasil, 567\nJd. Central, Foz do Iguaçu - PR",
-    lastOrder: "#PED000042",
-    lastOrderStatus: "EM PREPARO",
-    messages: [
-      { type: "text", sender: "customer", content: "Meu pedido ainda não chegou, já faz 1 hora!", timestamp: "2024-01-01T14:10:00Z" },
-      { type: "text", sender: "bot", content: "Peço desculpas pela demora, João. Deixe-me verificar o status do seu pedido.", timestamp: "2024-01-01T14:10:30Z" },
-      { type: "text", sender: "customer", content: "Preciso falar com um atendente humano por favor", timestamp: "2024-01-01T14:15:00Z" },
-    ],
-  },
-  {
-    id: "mock-3",
-    name: "Ana Oliveira",
-    phone: "+55 45 99812-3456",
-    avatar: "AO",
-    lastMessage: "Obrigada! Vou aguardar então.",
-    time: "13:45",
-    status: "ai",
-    channel: "whatsapp",
-    online: false,
-    address: "Rua Santos Dumont, 890\nVila Portes, Foz do Iguaçu - PR",
-    lastOrder: "#PED000038",
-    lastOrderStatus: "ENTREGUE",
-    messages: [
-      { type: "text", sender: "customer", content: "Boa tarde, vocês tem promoção hoje?", timestamp: "2024-01-01T13:30:00Z" },
-      { type: "text", sender: "bot", content: "Boa tarde, Ana! Sim, hoje temos a promoção de terça: compre 2 pizzas e ganhe uma borda recheada grátis!", timestamp: "2024-01-01T13:31:00Z" },
-      { type: "text", sender: "customer", content: "Obrigada! Vou aguardar então.", timestamp: "2024-01-01T13:45:00Z" },
-    ],
-  },
-  {
-    id: "mock-4",
-    name: "Carlos Ferreira",
-    phone: "+55 45 99734-1122",
-    avatar: "CF",
-    lastMessage: "Qual o valor do frete para o Jardim Lancaster?",
-    time: "13:20",
-    status: "ai",
-    channel: "whatsapp",
-    online: false,
-    address: "",
-    lastOrder: "",
-    lastOrderStatus: "",
-    messages: [
-      { type: "text", sender: "customer", content: "Qual o valor do frete para o Jardim Lancaster?", timestamp: "2024-01-01T13:20:00Z" },
-    ],
-  },
-  {
-    id: "mock-5",
-    name: "Beatriz Lima",
-    phone: "+55 45 99655-7788",
-    avatar: "BL",
-    lastMessage: "Perfeito, confirma o pedido!",
-    time: "12:50",
-    status: "ai",
-    channel: "whatsapp",
-    online: true,
-    address: "Rua Jorge Sanwais, 345\nPorto Meira, Foz do Iguaçu - PR",
-    lastOrder: "#PED000035",
-    lastOrderStatus: "ENTREGUE",
-    messages: [
-      { type: "text", sender: "customer", content: "Oi! Quero repetir meu último pedido", timestamp: "2024-01-01T12:40:00Z" },
-      { type: "text", sender: "bot", content: "Olá Beatriz! Seu último pedido foi: 1x Pizza Média Portuguesa + 1x Guaraná 1L. Deseja repetir?", timestamp: "2024-01-01T12:41:00Z" },
-      { type: "text", sender: "customer", content: "Perfeito, confirma o pedido!", timestamp: "2024-01-01T12:50:00Z" },
-    ],
-  },
-];
-
 // WhatsApp SVG path (reusable)
 const WA_PATH =
   "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z";
@@ -202,9 +102,9 @@ const WA_PATH =
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function ConversasPage() {
-  const [conversations, setConversations] = useState<UIConversation[]>(MOCK_CONVERSATIONS);
+  const [conversations, setConversations] = useState<UIConversation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedId, setSelectedId] = useState<string>("mock-1");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [aiActive, setAiActive] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
@@ -224,9 +124,9 @@ export default function ConversasPage() {
           setConversations(mapped);
           setSelectedId(mapped[0].id);
         }
-        // If empty array, keep mock fallback as-is
+        // If empty array, leave conversations as [] and selectedId as null
       } catch {
-        // Network/parse error: keep mock fallback silently
+        // Network/parse error: leave state empty
       } finally {
         setLoading(false);
       }
@@ -240,8 +140,9 @@ export default function ConversasPage() {
   }, [selectedId, conversations]);
 
   // ── Derived state ─────────────────────────────────────────────────────────
-  const selected =
-    conversations.find((c) => c.id === selectedId) ?? conversations[0];
+  const selected = selectedId
+    ? conversations.find((c) => c.id === selectedId) ?? null
+    : null;
 
   const filtered = conversations.filter((c) =>
     c.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -363,10 +264,14 @@ export default function ConversasPage() {
             </div>
           ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-              <MessageSquare size={32} className="text-[#5a4138]/30 mb-3" />
-              <p className="text-sm font-semibold text-[#191c1e]/60">Nenhuma conversa encontrada</p>
+              <MessageCircle size={32} className="text-[#5a4138]/30 mb-3" />
+              <p className="text-sm font-semibold text-[#191c1e]/60">
+                {searchQuery ? "Nenhuma conversa encontrada" : "Nenhuma conversa ativa"}
+              </p>
               <p className="text-xs text-[#5a4138]/50 mt-1">
-                {searchQuery ? "Tente outro termo de busca." : "As conversas aparecerão aqui."}
+                {searchQuery
+                  ? "Tente outro termo de busca."
+                  : "As conversas do WhatsApp aparecerão aqui automaticamente"}
               </p>
             </div>
           ) : (
@@ -438,20 +343,33 @@ export default function ConversasPage() {
 
       {/* ═══════ CENTER PANEL ═══════ */}
       <div className="flex-1 flex flex-col bg-white min-w-0">
+        {/* No conversation selected */}
+        {!selected && !loading && (
+          <div className="flex-1 flex flex-col items-center justify-center text-center px-8">
+            <MessageCircle size={48} className="text-[#5a4138]/20 mb-4" />
+            <p className="text-base font-semibold text-[#191c1e]/50">Selecione uma conversa</p>
+            <p className="text-sm text-[#5a4138]/40 mt-1">
+              Escolha uma conversa na lista ao lado para começar a atender
+            </p>
+          </div>
+        )}
+
+        {/* Chat content: only shown when a conversation is selected */}
+        {selected && (<>
         {/* Chat Header */}
         <div className="flex items-center justify-between px-6 py-3 border-b border-[#edeef0]">
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-[#edeef0] flex items-center justify-center text-sm font-bold text-[#5a4138]">
-                {selected?.avatar ?? "?"}
+                {selected.avatar}
               </div>
-              {selected?.online && (
+              {selected.online && (
                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
               )}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-[#191c1e]">{selected?.name}</h3>
+                <h3 className="text-sm font-semibold text-[#191c1e]">{selected.name}</h3>
                 <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
                   <svg viewBox="0 0 24 24" className="w-3 h-3 fill-green-700">
                     <path d={WA_PATH} />
@@ -461,7 +379,7 @@ export default function ConversasPage() {
               </div>
               <p className="text-xs text-[#5a4138]/70 flex items-center gap-1">
                 <Phone size={11} />
-                {selected?.phone}
+                {selected.phone}
               </p>
             </div>
           </div>
@@ -553,6 +471,7 @@ export default function ConversasPage() {
             </button>
           </div>
         </div>
+        </>)}
       </div>
 
       {/* ═══════ RIGHT PANEL ═══════ */}
