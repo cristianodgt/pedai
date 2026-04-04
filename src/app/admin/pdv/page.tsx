@@ -220,24 +220,24 @@ export default function PDVPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#A0522D]" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#a33900]" />
       </div>
     );
   }
 
   return (
-    <div className="flex gap-6 h-[calc(100vh-5rem)]">
+    <div className="flex gap-6 h-[calc(100vh-5rem)] bg-[#f8f9fb]">
       {/* Success overlay */}
       {success && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 text-center shadow-2xl">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="bg-white rounded-[0.75rem] p-8 text-center">
+            <div className="w-16 h-16 bg-[#edeef0] rounded-full flex items-center justify-center mx-auto mb-4">
               <Check size={32} className="text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">
+            <h2 className="text-2xl font-bold text-[#191c1e] mb-1">
               Pedido Registrado!
             </h2>
-            <p className="text-3xl font-bold text-[#A0522D]">{success}</p>
+            <p className="text-3xl font-bold text-[#a33900]">{success}</p>
           </div>
         </div>
       )}
@@ -252,9 +252,14 @@ export default function PDVPage() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition flex items-center gap-2 ${
                 selectedCategory === cat.id
-                  ? "bg-[#A0522D] text-white shadow-md"
-                  : "bg-white text-gray-500 hover:bg-gray-50 border border-gray-200"
+                  ? "text-white"
+                  : "bg-[#edeef0] text-[#5a4138] hover:bg-[#e2e3e5]"
               }`}
+              style={
+                selectedCategory === cat.id
+                  ? { background: "linear-gradient(135deg, #a33900, #cc4900)" }
+                  : undefined
+              }
             >
               <span>{getCategoryEmoji(cat.name)}</span>
               {cat.name}
@@ -265,7 +270,7 @@ export default function PDVPage() {
         {/* Products grid */}
         <div className="flex-1 overflow-auto">
           {pdvItems.length === 0 ? (
-            <div className="flex items-center justify-center h-48 text-gray-400">
+            <div className="flex items-center justify-center h-48 text-[#5a4138]">
               Nenhum item disponivel nesta categoria
             </div>
           ) : (
@@ -275,18 +280,22 @@ export default function PDVPage() {
                 return (
                   <div
                     key={item.id}
-                    className={`bg-white rounded-xl border-2 text-left transition relative overflow-hidden ${
+                    className="bg-white rounded-[0.75rem] text-left transition relative overflow-hidden"
+                    style={
                       inCart
-                        ? "border-orange-400 shadow-md"
-                        : "border-gray-100 hover:shadow-md"
-                    }`}
+                        ? { boxShadow: "inset 0 0 0 2px rgba(226,191,178,0.15)" }
+                        : undefined
+                    }
                   >
                     {/* Image placeholder */}
-                    <div className="relative bg-gray-200 rounded-lg mx-3 mt-3 h-40 flex items-center justify-center">
-                      <Utensils size={40} className="text-gray-400" />
+                    <div className="relative bg-[#edeef0] rounded-[0.75rem] mx-3 mt-3 h-40 flex items-center justify-center">
+                      <Utensils size={40} className="text-[#5a4138] opacity-40" />
                       {/* Cart count badge */}
                       {inCart && (
-                        <span className="absolute top-2 right-2 w-7 h-7 bg-orange-500 text-white rounded-full text-xs flex items-center justify-center font-bold shadow">
+                        <span
+                          className="absolute top-2 right-2 w-7 h-7 text-white rounded-full text-xs flex items-center justify-center font-bold"
+                          style={{ background: "linear-gradient(135deg, #a33900, #cc4900)" }}
+                        >
                           {inCart.quantity}
                         </span>
                       )}
@@ -294,21 +303,21 @@ export default function PDVPage() {
 
                     {/* Product info */}
                     <div className="p-3">
-                      <h3 className="font-bold text-gray-900 text-sm mb-0.5 line-clamp-2">
+                      <h3 className="font-bold text-[#191c1e] text-sm mb-0.5 line-clamp-2">
                         {item.name}
                       </h3>
                       {item.description && (
-                        <p className="text-xs text-gray-400 mb-3 line-clamp-1">
+                        <p className="text-xs text-[#5a4138] mb-3 line-clamp-1">
                           {item.description}
                         </p>
                       )}
                       <div className="flex items-center justify-between">
-                        <p className="text-base font-bold text-[#A0522D]">
+                        <p className="text-base font-bold text-[#a33900]">
                           R$ {parseFloat(item.price).toFixed(2)}
                         </p>
                         <button
                           onClick={() => addToCart(item)}
-                          className="w-9 h-9 rounded-full border-2 border-[#A0522D] text-[#A0522D] flex items-center justify-center hover:bg-[#A0522D] hover:text-white transition"
+                          className="w-9 h-9 rounded-full bg-[#edeef0] text-[#a33900] flex items-center justify-center hover:opacity-80 transition"
                         >
                           <Plus size={18} />
                         </button>
@@ -323,17 +332,17 @@ export default function PDVPage() {
       </div>
 
       {/* Right: Cart sidebar */}
-      <div className="w-96 bg-white rounded-xl flex flex-col shadow-lg">
+      <div className="w-96 bg-white rounded-[0.75rem] flex flex-col">
         {/* Cart header */}
-        <div className="p-5 border-b border-gray-100 flex items-center justify-between">
+        <div className="p-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShoppingCart size={20} className="text-[#A0522D]" />
-            <h2 className="font-bold text-gray-900 text-lg">Carrinho</h2>
+            <ShoppingCart size={20} className="text-[#a33900]" />
+            <h2 className="font-bold text-[#191c1e] text-lg">Carrinho</h2>
           </div>
           {cart.length > 0 && (
             <button
               onClick={clearCart}
-              className="text-xs font-semibold text-[#A0522D] hover:underline uppercase tracking-wide"
+              className="text-xs font-semibold text-[#a33900] hover:underline uppercase tracking-wide"
               title="Limpar (Esc)"
             >
               Limpar Tudo
@@ -342,17 +351,22 @@ export default function PDVPage() {
         </div>
 
         {/* Order type - segmented control */}
-        <div className="px-5 pt-4 pb-2 border-b border-gray-100">
-          <div className="flex">
+        <div className="px-5 pt-2 pb-3">
+          <div className="flex rounded-[0.75rem] bg-[#edeef0] p-1">
             {orderTypes.map((t) => (
               <button
                 key={t.key}
                 onClick={() => setOrderType(t.key)}
-                className={`flex-1 py-2 text-xs font-semibold tracking-wide transition border-b-2 ${
+                className={`flex-1 py-2 text-xs font-semibold tracking-wide transition rounded-[0.5rem] ${
                   orderType === t.key
-                    ? "text-gray-900 border-[#A0522D]"
-                    : "text-gray-400 border-transparent hover:text-gray-600"
+                    ? "text-white"
+                    : "text-[#5a4138] hover:text-[#191c1e]"
                 }`}
+                style={
+                  orderType === t.key
+                    ? { background: "linear-gradient(135deg, #a33900, #cc4900)" }
+                    : undefined
+                }
               >
                 {t.label}
               </button>
@@ -361,20 +375,23 @@ export default function PDVPage() {
         </div>
 
         {/* Customer name */}
-        <div className="px-5 pt-3">
+        <div className="px-5 pt-1 pb-2">
           <input
             type="text"
             placeholder="Nome do cliente (opcional)"
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A0522D] focus:border-transparent"
+            className="w-full px-3 py-2 bg-[#edeef0] rounded-[0.75rem] text-sm text-[#191c1e] placeholder-[#5a4138] border-none outline-none focus:border-b-2 focus:border-b-[#a33900] transition-all"
+            style={{ borderBottom: "2px solid transparent" }}
+            onFocus={(e) => (e.target.style.borderBottom = "2px solid #a33900")}
+            onBlur={(e) => (e.target.style.borderBottom = "2px solid transparent")}
           />
         </div>
 
         {/* Cart items */}
-        <div className="flex-1 overflow-auto p-5 space-y-3">
+        <div className="flex-1 overflow-auto p-5 space-y-5">
           {cart.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-32 text-gray-400 text-sm">
+            <div className="flex flex-col items-center justify-center h-32 text-[#5a4138] text-sm">
               <ShoppingCart size={32} className="mb-2 opacity-30" />
               Carrinho vazio
             </div>
@@ -382,18 +399,18 @@ export default function PDVPage() {
             cart.map((item) => (
               <div
                 key={item.menuItemId}
-                className="flex items-center gap-3 py-2"
+                className="flex items-center gap-3"
               >
                 {/* Small product image placeholder */}
-                <div className="w-12 h-12 bg-gray-200 rounded-lg flex-shrink-0 flex items-center justify-center">
-                  <Utensils size={16} className="text-gray-400" />
+                <div className="w-12 h-12 bg-[#edeef0] rounded-[0.75rem] flex-shrink-0 flex items-center justify-center">
+                  <Utensils size={16} className="text-[#5a4138] opacity-40" />
                 </div>
                 {/* Name + description */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 truncate">
+                  <p className="text-sm font-semibold text-[#191c1e] truncate">
                     {item.name}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-[#5a4138]">
                     R$ {item.unitPrice.toFixed(2)} un.
                   </p>
                 </div>
@@ -401,16 +418,16 @@ export default function PDVPage() {
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => updateQuantity(item.menuItemId, -1)}
-                    className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-red-50 hover:border-red-300 transition text-gray-500"
+                    className="w-7 h-7 rounded-[0.75rem] bg-[#edeef0] flex items-center justify-center hover:opacity-70 transition text-[#a33900]"
                   >
                     <Minus size={14} />
                   </button>
-                  <span className="w-6 text-center text-sm font-bold text-gray-900">
+                  <span className="w-6 text-center text-sm font-bold text-[#191c1e]">
                     {item.quantity}
                   </span>
                   <button
                     onClick={() => updateQuantity(item.menuItemId, 1)}
-                    className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-green-50 hover:border-green-300 transition text-gray-500"
+                    className="w-7 h-7 rounded-[0.75rem] bg-[#edeef0] flex items-center justify-center hover:opacity-70 transition text-[#a33900]"
                   >
                     <Plus size={14} />
                   </button>
@@ -422,12 +439,12 @@ export default function PDVPage() {
                       prev.filter((c) => c.menuItemId !== item.menuItemId)
                     )
                   }
-                  className="text-gray-300 hover:text-red-500 transition"
+                  className="text-[#5a4138] opacity-40 hover:text-red-500 hover:opacity-100 transition"
                 >
                   <Trash2 size={16} />
                 </button>
                 {/* Price */}
-                <span className="text-sm font-bold text-gray-900 w-20 text-right">
+                <span className="text-sm font-bold text-[#191c1e] w-20 text-right">
                   R$ {(item.unitPrice * item.quantity).toFixed(2)}
                 </span>
               </div>
@@ -436,42 +453,48 @@ export default function PDVPage() {
         </div>
 
         {/* Subtotal, Service Tax, Total + Payment + Submit */}
-        <div className="border-t border-gray-100 px-5 pt-4 pb-5 space-y-4">
+        <div className="bg-[#edeef0]/40 px-5 pt-4 pb-5 space-y-3 rounded-b-[0.75rem]">
           {/* Subtotal */}
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-500">Subtotal</span>
-            <span className="text-gray-700 font-medium">
+            <span className="text-[#5a4138]">Subtotal</span>
+            <span className="text-[#191c1e] font-medium">
               R$ {subtotal.toFixed(2)}
             </span>
           </div>
           {/* Service tax */}
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-500">Taxa de Servico (10%)</span>
-            <span className="text-gray-700 font-medium">
+            <span className="text-[#5a4138]">Taxa de Servico (10%)</span>
+            <span className="text-[#191c1e] font-medium">
               R$ {serviceTax.toFixed(2)}
             </span>
           </div>
           {/* Total */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-            <span className="text-base font-bold text-gray-900">Total</span>
-            <span className="text-2xl font-bold text-[#A0522D]">
+          <div className="flex items-center justify-between pt-3">
+            <span className="text-base font-bold text-[#191c1e]">Total</span>
+            <span className="text-2xl font-bold text-[#a33900]">
               R$ {total.toFixed(2)}
             </span>
           </div>
 
           {/* Payment method - 3 equal boxes */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2 pt-1">
             {paymentMethods.map((pm) => {
               const Icon = pm.icon;
+              const isSelected = paymentMethod === pm.key;
               return (
                 <button
                   key={pm.key}
                   onClick={() => setPaymentMethod(pm.key)}
-                  className={`flex flex-col items-center gap-1.5 py-3 rounded-lg text-xs font-semibold transition border ${
-                    paymentMethod === pm.key
-                      ? "bg-[#A0522D] text-white border-[#A0522D]"
-                      : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+                  className={`flex flex-col items-center gap-1.5 py-3 rounded-[0.75rem] text-xs font-semibold transition ${
+                    isSelected
+                      ? "text-white"
+                      : "bg-[#edeef0] text-[#5a4138] hover:bg-[#e2e3e5]"
                   }`}
+                  style={
+                    isSelected
+                      ? { background: "linear-gradient(135deg, #a33900, #cc4900)" }
+                      : undefined
+                  }
                 >
                   <Icon size={18} />
                   {pm.label}
@@ -484,7 +507,8 @@ export default function PDVPage() {
           <button
             onClick={submitOrder}
             disabled={cart.length === 0 || submitting}
-            className="w-full py-4 bg-[#A0522D] text-white rounded-xl font-bold text-base hover:bg-[#8B4513] disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
+            className="w-full py-4 text-white rounded-xl font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
+            style={{ background: "linear-gradient(135deg, #a33900, #cc4900)" }}
           >
             {submitting ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />

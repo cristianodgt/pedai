@@ -35,27 +35,30 @@ const statusColumns = [
   {
     key: "PENDING",
     label: "PENDENTE",
-    badgeColor: "bg-orange-500",
-    emptyBorder: "border-orange-300",
+    badgeBg: "bg-[#ff9971]/20",
+    badgeText: "text-[#a33900]",
+    emptyBg: "bg-[#ff9971]/10",
   },
   {
     key: "PREPARING",
     label: "PREPARANDO",
-    badgeColor: "bg-blue-500",
-    emptyBorder: "border-blue-300",
+    badgeBg: "bg-[#c2e0f4]/40",
+    badgeText: "text-[#2b6a99]",
+    emptyBg: "bg-[#c2e0f4]/20",
   },
   {
     key: "READY",
     label: "PRONTO",
-    badgeColor: "bg-green-500",
-    emptyBorder: "border-green-300",
+    badgeBg: "bg-[#b8e6c8]/40",
+    badgeText: "text-[#2d7a4f]",
+    emptyBg: "bg-[#b8e6c8]/20",
   },
 ] as const;
 
 const channelConfig = {
-  WHATSAPP: { label: "WHATSAPP", color: "bg-green-500", icon: MessageCircle },
-  PDV: { label: "PDV", color: "bg-blue-500", icon: Monitor },
-  IFOOD: { label: "IFOOD", color: "bg-red-500", icon: Utensils },
+  WHATSAPP: { label: "WHATSAPP", bg: "bg-[#dcf5e3]", text: "text-[#1d6b38]", icon: MessageCircle },
+  PDV: { label: "PDV", bg: "bg-[#dce8f5]", text: "text-[#2b5a8a]", icon: Monitor },
+  IFOOD: { label: "IFOOD", bg: "bg-[#ff9971]/20", text: "text-[#a33900]", icon: Utensils },
 };
 
 const typeLabels: Record<string, string> = {
@@ -201,24 +204,38 @@ export default function PedidosPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600" />
+      <div className="flex items-center justify-center h-96 bg-[#f8f9fb]">
+        <div
+          className="animate-spin rounded-full h-8 w-8"
+          style={{
+            borderWidth: "2px",
+            borderStyle: "solid",
+            borderColor: "#e2bfb2",
+            borderTopColor: "#a33900",
+          }}
+        />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-[#f8f9fb]">
       {/* Header area */}
       <div className="flex items-center justify-between mb-4 px-1">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-sm font-semibold text-gray-700">AO VIVO</span>
+            <span
+              className="w-2.5 h-2.5 rounded-full animate-pulse"
+              style={{ backgroundColor: "#4caf50" }}
+            />
+            <span className="text-sm font-semibold tracking-wide uppercase" style={{ color: "#5a4138" }}>
+              AO VIVO
+            </span>
           </div>
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+            className="flex items-center gap-1.5 text-sm transition-colors"
+            style={{ color: "#5a4138" }}
             title={soundEnabled ? "Desativar som" : "Ativar som"}
           >
             {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
@@ -232,14 +249,21 @@ export default function PedidosPage() {
         {statusColumns.map((col) => {
           const colOrders = orders.filter((o) => o.status === col.key);
           return (
-            <div key={col.key} className="flex flex-col min-h-0">
+            <div
+              key={col.key}
+              className="flex flex-col min-h-0 rounded-[0.75rem] p-3"
+              style={{ backgroundColor: "#edeef0" }}
+            >
               {/* Column header */}
               <div className="flex items-center gap-2 mb-3">
-                <h2 className="text-sm font-bold text-gray-800 tracking-wide">
+                <h2
+                  className="text-xs font-bold tracking-widest uppercase"
+                  style={{ color: "#5a4138" }}
+                >
                   {col.label}
                 </h2>
                 <span
-                  className={`${col.badgeColor} text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[22px] text-center`}
+                  className={`${col.badgeBg} ${col.badgeText} text-xs font-bold px-2 py-0.5 rounded-full min-w-[22px] text-center`}
                 >
                   {colOrders.length}
                 </span>
@@ -249,7 +273,8 @@ export default function PedidosPage() {
               <div className="space-y-3 flex-1 overflow-y-auto pr-1">
                 {colOrders.length === 0 && (
                   <div
-                    className={`border-2 border-dashed ${col.emptyBorder} rounded-xl p-8 text-center text-gray-400 text-sm`}
+                    className={`${col.emptyBg} rounded-[0.75rem] p-8 text-center text-sm`}
+                    style={{ color: "#5a4138" }}
                   >
                     Nenhum pedido
                   </div>
@@ -260,10 +285,10 @@ export default function PedidosPage() {
                   const isExpanded = expandedOrder === order.id;
                   const items = order.order_items || [];
                   const minutesElapsed = getMinutesElapsed(order.created_at);
-                  const timerColor =
+                  const timerStyle =
                     col.key === "PENDING" && minutesElapsed > 5
-                      ? "text-red-500"
-                      : "text-blue-500";
+                      ? { color: "#a33900" }
+                      : { color: "#5a4138" };
 
                   // Check for observations in items
                   const itemsWithObs = items.filter(
@@ -276,15 +301,19 @@ export default function PedidosPage() {
                   return (
                     <div
                       key={order.id}
-                      className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-4"
+                      className="rounded-[0.75rem] p-4 transition-colors"
+                      style={{ backgroundColor: "#ffffff" }}
                     >
                       {/* Top row: code + channel */}
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-mono font-bold text-gray-900 text-sm">
+                        <span
+                          className="font-mono font-bold text-sm"
+                          style={{ color: "#191c1e" }}
+                        >
                           {order.code}
                         </span>
                         <span
-                          className={`${ch.color} text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 uppercase`}
+                          className={`${ch.bg} ${ch.text} text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 uppercase`}
                         >
                           <ChannelIcon size={11} />
                           {ch.label}
@@ -293,13 +322,16 @@ export default function PedidosPage() {
 
                       {/* Customer name */}
                       {order.customer_name && (
-                        <p className="font-bold text-gray-800 text-sm mb-2">
+                        <p
+                          className="font-bold text-sm mb-2"
+                          style={{ color: "#191c1e" }}
+                        >
                           {order.customer_name}
                         </p>
                       )}
 
                       {/* Items list */}
-                      <div className="text-sm text-gray-600 mb-2 space-y-0.5">
+                      <div className="text-sm mb-2 space-y-0.5" style={{ color: "#5a4138" }}>
                         {items
                           .slice(0, isExpanded ? items.length : 3)
                           .map((item, i) => (
@@ -307,13 +339,13 @@ export default function PedidosPage() {
                               <span>
                                 {item.quantity}x {item.name}
                               </span>
-                              <span className="text-gray-500 ml-2 whitespace-nowrap">
+                              <span className="ml-2 whitespace-nowrap opacity-70">
                                 R$ {parseFloat(item.unit_price).toFixed(2).replace(".", ",")}
                               </span>
                             </div>
                           ))}
                         {!isExpanded && items.length > 3 && (
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs opacity-60">
                             +{items.length - 3} item(s)
                           </span>
                         )}
@@ -321,9 +353,20 @@ export default function PedidosPage() {
 
                       {/* Observations box */}
                       {itemsWithObs.length > 0 && (
-                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 mb-2 text-xs">
-                          <p className="font-bold text-gray-700 mb-1">ITENS</p>
-                          <ul className="list-disc list-inside text-gray-600 space-y-0.5">
+                        <div
+                          className="rounded-[0.75rem] p-2.5 mb-2 text-xs"
+                          style={{
+                            backgroundColor: "rgba(255, 153, 113, 0.12)",
+                            border: "1px solid rgba(226, 191, 178, 0.15)",
+                          }}
+                        >
+                          <p className="font-bold mb-1" style={{ color: "#5a4138" }}>
+                            ITENS
+                          </p>
+                          <ul
+                            className="list-disc list-inside space-y-0.5"
+                            style={{ color: "#5a4138" }}
+                          >
                             {itemsWithObs.map((item, i) => (
                               <li key={i}>{item.name}</li>
                             ))}
@@ -331,7 +374,11 @@ export default function PedidosPage() {
                           {itemsWithObs.map((item, i) => {
                             const obs = (item.details as Record<string, unknown>)?.observacao;
                             return obs ? (
-                              <p key={i} className="text-red-500 font-semibold mt-1">
+                              <p
+                                key={i}
+                                className="font-semibold mt-1"
+                                style={{ color: "#a33900" }}
+                              >
                                 OBS: {String(obs).toUpperCase()}
                               </p>
                             ) : null;
@@ -341,7 +388,13 @@ export default function PedidosPage() {
 
                       {/* Expanded details */}
                       {isExpanded && (
-                        <div className="border-t border-gray-100 pt-2 mb-2 space-y-1 text-sm text-gray-500">
+                        <div
+                          className="pt-2 mb-2 space-y-1 text-sm"
+                          style={{
+                            borderTop: "1px solid rgba(226, 191, 178, 0.15)",
+                            color: "#5a4138",
+                          }}
+                        >
                           {order.customer_phone && (
                             <div className="flex items-center gap-1.5">
                               <MessageCircle size={13} />
@@ -366,7 +419,13 @@ export default function PedidosPage() {
                                 {parseFloat(order.delivery_fee).toFixed(2)}
                               </div>
                             )}
-                          <div className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">
+                          <div
+                            className="text-xs px-2 py-1 rounded-[0.75rem] inline-block"
+                            style={{
+                              backgroundColor: "#edeef0",
+                              color: "#5a4138",
+                            }}
+                          >
                             {typeLabels[order.type] || order.type}
                           </div>
                         </div>
@@ -377,7 +436,8 @@ export default function PedidosPage() {
                         onClick={() =>
                           setExpandedOrder(isExpanded ? null : order.id)
                         }
-                        className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-0.5 mb-3"
+                        className="text-xs flex items-center gap-0.5 mb-3 transition-colors hover:opacity-80"
+                        style={{ color: "#5a4138" }}
                       >
                         {isExpanded ? (
                           <ChevronUp size={14} />
@@ -389,11 +449,14 @@ export default function PedidosPage() {
 
                       {/* Bottom row: timer + total */}
                       <div className="flex items-center justify-between mb-3">
-                        <div className={`flex items-center gap-1 text-xs font-medium ${timerColor}`}>
+                        <div
+                          className="flex items-center gap-1 text-xs font-medium"
+                          style={timerStyle}
+                        >
                           <Clock size={14} />
                           {timeAgo(order.created_at)}
                         </div>
-                        <span className="font-bold text-gray-900">
+                        <span className="font-bold" style={{ color: "#191c1e" }}>
                           R$ {parseFloat(order.total).toFixed(2).replace(".", ",")}
                         </span>
                       </div>
@@ -402,7 +465,10 @@ export default function PedidosPage() {
                       {col.key === "PENDING" && (
                         <button
                           onClick={() => updateStatus(order.id, "PREPARING")}
-                          className="w-full bg-[#A0522D] hover:bg-[#8B2500] text-white font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
+                          className="w-full text-white font-semibold py-2 rounded-[0.75rem] transition-opacity hover:opacity-90 flex items-center justify-center gap-2 text-sm"
+                          style={{
+                            background: "linear-gradient(135deg, #a33900, #cc4900)",
+                          }}
                         >
                           <Play size={14} fill="currentColor" />
                           Preparar
@@ -411,7 +477,12 @@ export default function PedidosPage() {
                       {col.key === "PREPARING" && (
                         <button
                           onClick={() => updateStatus(order.id, "READY")}
-                          className="w-full bg-white border-2 border-gray-800 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+                          className="w-full font-semibold py-2 rounded-[0.75rem] transition-colors hover:opacity-90 text-sm"
+                          style={{
+                            backgroundColor: "transparent",
+                            border: "1.5px solid rgba(226, 191, 178, 0.35)",
+                            color: "#a33900",
+                          }}
                         >
                           Pronto
                         </button>
@@ -419,7 +490,11 @@ export default function PedidosPage() {
                       {col.key === "READY" && (
                         <button
                           onClick={() => updateStatus(order.id, "DELIVERED")}
-                          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition-colors text-sm"
+                          className="w-full font-semibold py-2 rounded-[0.75rem] transition-colors hover:opacity-90 text-sm"
+                          style={{
+                            backgroundColor: "#b8e6c8",
+                            color: "#1d5a33",
+                          }}
                         >
                           Entregue
                         </button>
@@ -434,23 +509,38 @@ export default function PedidosPage() {
       </div>
 
       {/* Bottom stats bar */}
-      <div className="mt-4 bg-white rounded-xl shadow-sm py-3 px-6 flex items-center justify-center gap-8 flex-wrap">
-        <div className="flex items-center gap-2 text-sm text-gray-700">
-          <span className="w-2 h-2 bg-orange-500 rounded-full" />
-          <span className="font-semibold">TICKET M\u00c9DIO:</span>
+      <div
+        className="mt-4 rounded-[0.75rem] py-3 px-6 flex items-center justify-center gap-8 flex-wrap"
+        style={{ backgroundColor: "#ffffff" }}
+      >
+        <div className="flex items-center gap-2 text-sm" style={{ color: "#5a4138" }}>
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ backgroundColor: "#ff9971" }}
+          />
+          <span className="font-semibold tracking-wide">TICKET M\u00c9DIO:</span>
           <span>R$ {stats.ticketMedio}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-700">
-          <span className="w-2 h-2 bg-blue-500 rounded-full" />
-          <span className="font-semibold">TEMPO M\u00c9DIO PREP:</span>
+        <div className="flex items-center gap-2 text-sm" style={{ color: "#5a4138" }}>
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ backgroundColor: "#6ba3d6" }}
+          />
+          <span className="font-semibold tracking-wide">TEMPO M\u00c9DIO PREP:</span>
           <span>{stats.tempoPrepMedio} MIN</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-700">
-          <span className="w-2 h-2 bg-green-500 rounded-full" />
-          <span className="font-semibold">PEDIDOS CONCLU\u00cdDOS:</span>
+        <div className="flex items-center gap-2 text-sm" style={{ color: "#5a4138" }}>
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ backgroundColor: "#5cb87a" }}
+          />
+          <span className="font-semibold tracking-wide">PEDIDOS CONCLU\u00cdDOS:</span>
           <span>{stats.pedidosConcluidos}</span>
         </div>
-        <div className="ml-auto text-xs text-gray-400 font-mono">
+        <div
+          className="ml-auto text-xs font-mono"
+          style={{ color: "#5a4138", opacity: 0.5 }}
+        >
           SISTEMA PEDAI V2.4.0
         </div>
       </div>

@@ -189,7 +189,7 @@ export default function ConfigPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#A0522D]" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#a33900]" />
       </div>
     );
   }
@@ -197,11 +197,13 @@ export default function ConfigPage() {
   const webhookUrl = whatsappWebhook || `https://n8n.example.com/webhook/${tenant?.id}`;
 
   return (
-    <div className="space-y-6 pb-8">
+    <div className="space-y-6 pb-8" style={{ background: "#f8f9fb" }}>
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Configuracoes do Sistema</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-bold" style={{ color: "#191c1e" }}>
+          Configuracoes do Sistema
+        </h1>
+        <p className="text-sm mt-1" style={{ color: "#5a4138" }}>
           Gerencie os dados vitais e operacionais do seu restaurante.
         </p>
       </div>
@@ -209,31 +211,57 @@ export default function ConfigPage() {
       {/* Row 1: Dados do Restaurante + Horarios */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Dados do Restaurante (wider) */}
-        <div className="lg:col-span-3 bg-white rounded-xl shadow-sm p-6">
-          <h2 className="font-semibold text-gray-900 mb-5 flex items-center gap-2">
-            <Store size={18} className="text-[#A0522D]" />
+        <div
+          className="lg:col-span-3 p-6"
+          style={{ background: "#ffffff", borderRadius: "0.75rem" }}
+        >
+          <h2
+            className="font-semibold mb-5 flex items-center gap-2"
+            style={{ color: "#191c1e" }}
+          >
+            <Store size={18} style={{ color: "#a33900" }} />
             Dados do Restaurante
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                className="block text-sm font-medium mb-1"
+                style={{ color: "#5a4138" }}
+              >
                 Nome de Identificacao (Slug)
               </label>
               <div className="flex">
-                <span className="inline-flex items-center px-3 py-2 bg-gray-50 border border-r-0 border-gray-200 rounded-l-lg text-sm text-gray-500">
+                <span
+                  className="inline-flex items-center px-3 py-2 text-sm"
+                  style={{
+                    background: "#edeef0",
+                    color: "#5a4138",
+                    borderRadius: "0.75rem 0 0 0.75rem",
+                  }}
+                >
                   pedai.com/
                 </span>
                 <input
                   type="text"
                   value={tenant?.slug || ""}
                   disabled
-                  className="flex-1 px-3 py-2 border border-gray-200 rounded-r-lg text-sm bg-gray-50 text-gray-400 focus:outline-none"
+                  className="flex-1 px-3 py-2 text-sm focus:outline-none"
+                  style={{
+                    background: "#edeef0",
+                    border: "none",
+                    borderRadius: "0 0.75rem 0.75rem 0",
+                    color: "#5a4138",
+                    opacity: 0.6,
+                  }}
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
-                <Phone size={14} className="text-gray-400" />
+              <label
+                className="block text-sm font-medium mb-1 flex items-center gap-1.5"
+                style={{ color: "#5a4138" }}
+              >
+                <Phone size={14} style={{ color: "#5a4138" }} />
                 WhatsApp Comercial
               </label>
               <input
@@ -241,12 +269,24 @@ export default function ConfigPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="(45) 99999-9999"
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D]"
+                className="w-full px-3 py-2.5 text-sm focus:outline-none transition-all"
+                style={{
+                  background: "#edeef0",
+                  border: "none",
+                  borderBottom: "2px solid transparent",
+                  borderRadius: "0.75rem",
+                  color: "#191c1e",
+                }}
+                onFocus={(e) => (e.target.style.borderBottomColor = "#a33900")}
+                onBlur={(e) => (e.target.style.borderBottomColor = "transparent")}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
-                <Mail size={14} className="text-gray-400" />
+              <label
+                className="block text-sm font-medium mb-1 flex items-center gap-1.5"
+                style={{ color: "#5a4138" }}
+              >
+                <Mail size={14} style={{ color: "#5a4138" }} />
                 E-mail de Contato
               </label>
               <input
@@ -254,12 +294,24 @@ export default function ConfigPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="contato@restaurante.com"
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D]"
+                className="w-full px-3 py-2.5 text-sm focus:outline-none transition-all"
+                style={{
+                  background: "#edeef0",
+                  border: "none",
+                  borderBottom: "2px solid transparent",
+                  borderRadius: "0.75rem",
+                  color: "#191c1e",
+                }}
+                onFocus={(e) => (e.target.style.borderBottomColor = "#a33900")}
+                onBlur={(e) => (e.target.style.borderBottomColor = "transparent")}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
-                <MapPin size={14} className="text-gray-400" />
+              <label
+                className="block text-sm font-medium mb-1 flex items-center gap-1.5"
+                style={{ color: "#5a4138" }}
+              >
+                <MapPin size={14} style={{ color: "#5a4138" }} />
                 Endereco Completo
               </label>
               <input
@@ -267,16 +319,31 @@ export default function ConfigPage() {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Rua, numero - Bairro - Cidade/UF"
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A0522D] focus:border-[#A0522D]"
+                className="w-full px-3 py-2.5 text-sm focus:outline-none transition-all"
+                style={{
+                  background: "#edeef0",
+                  border: "none",
+                  borderBottom: "2px solid transparent",
+                  borderRadius: "0.75rem",
+                  color: "#191c1e",
+                }}
+                onFocus={(e) => (e.target.style.borderBottomColor = "#a33900")}
+                onBlur={(e) => (e.target.style.borderBottomColor = "transparent")}
               />
             </div>
           </div>
         </div>
 
         {/* Horarios */}
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
-          <h2 className="font-semibold text-gray-900 mb-5 flex items-center gap-2">
-            <Clock size={18} className="text-[#A0522D]" />
+        <div
+          className="lg:col-span-2 p-6"
+          style={{ background: "#ffffff", borderRadius: "0.75rem" }}
+        >
+          <h2
+            className="font-semibold mb-5 flex items-center gap-2"
+            style={{ color: "#191c1e" }}
+          >
+            <Clock size={18} style={{ color: "#a33900" }} />
             Horarios
           </h2>
           <div className="space-y-3">
@@ -284,42 +351,89 @@ export default function ConfigPage() {
               const isOpen = !closedDays.includes(d.key);
               return (
                 <div key={d.key} className="flex items-center justify-between">
-                  <span className="text-sm text-gray-700 w-28">{d.label}</span>
-                  <span className={`text-sm ${isOpen ? "text-gray-600" : "text-gray-300"}`}>
+                  <span
+                    className="text-sm w-28"
+                    style={{ color: "#191c1e" }}
+                  >
+                    {d.label}
+                  </span>
+                  <span
+                    className="text-sm"
+                    style={{ color: isOpen ? "#5a4138" : "#5a413866" }}
+                  >
                     {isOpen ? `${openTime} - ${closeTime}` : "Fechado"}
                   </span>
                   <button
                     onClick={() => toggleClosedDay(d.key)}
                     className="flex-shrink-0"
                   >
-                    <div className={`relative w-10 h-5 rounded-full transition-colors ${
-                      isOpen ? "bg-green-500" : "bg-gray-300"
-                    }`}>
-                      <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-                        isOpen ? "translate-x-5" : "translate-x-0.5"
-                      }`} />
+                    <div
+                      className="relative w-10 h-5 rounded-full transition-colors"
+                      style={{
+                        background: isOpen
+                          ? "linear-gradient(135deg, #a33900, #cc4900)"
+                          : "#edeef0",
+                      }}
+                    >
+                      <div
+                        className={`absolute top-0.5 w-4 h-4 rounded-full transition-transform ${
+                          isOpen ? "translate-x-5" : "translate-x-0.5"
+                        }`}
+                        style={{ background: "#ffffff" }}
+                      />
                     </div>
                   </button>
                 </div>
               );
             })}
-            <div className="pt-3 border-t border-gray-100 grid grid-cols-2 gap-3">
+            <div
+              className="pt-3 grid grid-cols-2 gap-3"
+              style={{ borderTop: "1px solid #edeef0" }}
+            >
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Abertura</label>
+                <label
+                  className="block text-xs mb-1"
+                  style={{ color: "#5a4138" }}
+                >
+                  Abertura
+                </label>
                 <input
                   type="time"
                   value={openTime}
                   onChange={(e) => setOpenTime(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A0522D]"
+                  className="w-full px-2 py-1.5 text-sm focus:outline-none transition-all"
+                  style={{
+                    background: "#edeef0",
+                    border: "none",
+                    borderBottom: "2px solid transparent",
+                    borderRadius: "0.75rem",
+                    color: "#191c1e",
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottomColor = "#a33900")}
+                  onBlur={(e) => (e.target.style.borderBottomColor = "transparent")}
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Fechamento</label>
+                <label
+                  className="block text-xs mb-1"
+                  style={{ color: "#5a4138" }}
+                >
+                  Fechamento
+                </label>
                 <input
                   type="time"
                   value={closeTime}
                   onChange={(e) => setCloseTime(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A0522D]"
+                  className="w-full px-2 py-1.5 text-sm focus:outline-none transition-all"
+                  style={{
+                    background: "#edeef0",
+                    border: "none",
+                    borderBottom: "2px solid transparent",
+                    borderRadius: "0.75rem",
+                    color: "#191c1e",
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottomColor = "#a33900")}
+                  onBlur={(e) => (e.target.style.borderBottomColor = "transparent")}
                 />
               </div>
             </div>
@@ -330,40 +444,70 @@ export default function ConfigPage() {
       {/* Row 2: Taxas de Entrega + Integracoes */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Taxas de Entrega */}
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="font-semibold text-gray-900 mb-5 flex items-center gap-2">
-            <MapPin size={18} className="text-[#A0522D]" />
+        <div className="p-6" style={{ background: "#ffffff", borderRadius: "0.75rem" }}>
+          <h2
+            className="font-semibold mb-5 flex items-center gap-2"
+            style={{ color: "#191c1e" }}
+          >
+            <MapPin size={18} style={{ color: "#a33900" }} />
             Taxas de Entrega
           </h2>
           {deliveryZones.length === 0 ? (
-            <p className="text-sm text-gray-400 mb-4">Nenhuma zona de entrega configurada</p>
+            <p className="text-sm mb-4" style={{ color: "#5a413888" }}>
+              Nenhuma zona de entrega configurada
+            </p>
           ) : (
             <div className="overflow-x-auto mb-4">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-xs text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                    <th className="pb-2 font-medium">Bairro</th>
-                    <th className="pb-2 font-medium text-right">Taxa</th>
-                    <th className="pb-2 w-8"></th>
+                  <tr
+                    className="text-left text-xs uppercase tracking-wider"
+                    style={{ color: "#5a4138" }}
+                  >
+                    <th className="pb-3 font-medium">Bairro</th>
+                    <th className="pb-3 font-medium text-right">Taxa</th>
+                    <th className="pb-3 w-8"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {deliveryZones.map((zone, i) => (
-                    <tr key={i} className="border-b border-gray-50 last:border-b-0">
+                    <tr
+                      key={i}
+                      style={{
+                        background: i % 2 === 0 ? "transparent" : "#f8f9fb",
+                      }}
+                    >
                       <td className="py-2.5">
                         <input
                           type="text"
                           value={zone.neighborhood}
-                          onChange={(e) => updateDeliveryZone(i, "neighborhood", e.target.value)}
+                          onChange={(e) =>
+                            updateDeliveryZone(i, "neighborhood", e.target.value)
+                          }
                           placeholder="Nome do bairro"
-                          className="w-full px-2 py-1 border border-gray-200 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[#A0522D]"
+                          className="w-full px-2 py-1 text-sm focus:outline-none transition-all"
+                          style={{
+                            background: "#edeef0",
+                            border: "none",
+                            borderBottom: "2px solid transparent",
+                            borderRadius: "0.75rem",
+                            color: "#191c1e",
+                          }}
+                          onFocus={(e) =>
+                            (e.target.style.borderBottomColor = "#a33900")
+                          }
+                          onBlur={(e) =>
+                            (e.target.style.borderBottomColor = "transparent")
+                          }
                         />
                       </td>
                       <td className="py-2.5 text-right">
                         {zone.fee === 0 ? (
-                          <span className="text-green-600 font-medium">Gratis</span>
+                          <span className="font-medium" style={{ color: "#2e7d32" }}>
+                            Gratis
+                          </span>
                         ) : (
-                          <span className="text-[#A0522D] font-medium">
+                          <span className="font-medium" style={{ color: "#a33900" }}>
                             R$ {zone.fee.toFixed(0)},00
                           </span>
                         )}
@@ -371,14 +515,36 @@ export default function ConfigPage() {
                           type="number"
                           step="0.50"
                           value={zone.fee || ""}
-                          onChange={(e) => updateDeliveryZone(i, "fee", e.target.value)}
-                          className="w-20 ml-2 px-2 py-1 border border-gray-200 rounded text-sm text-right focus:outline-none focus:ring-1 focus:ring-[#A0522D]"
+                          onChange={(e) =>
+                            updateDeliveryZone(i, "fee", e.target.value)
+                          }
+                          className="w-20 ml-2 px-2 py-1 text-sm text-right focus:outline-none transition-all"
+                          style={{
+                            background: "#edeef0",
+                            border: "none",
+                            borderBottom: "2px solid transparent",
+                            borderRadius: "0.75rem",
+                            color: "#191c1e",
+                          }}
+                          onFocus={(e) =>
+                            (e.target.style.borderBottomColor = "#a33900")
+                          }
+                          onBlur={(e) =>
+                            (e.target.style.borderBottomColor = "transparent")
+                          }
                         />
                       </td>
                       <td className="py-2.5 text-right">
                         <button
                           onClick={() => removeDeliveryZone(i)}
-                          className="text-gray-300 hover:text-red-500 transition"
+                          className="transition"
+                          style={{ color: "#5a413866" }}
+                          onMouseEnter={(e) =>
+                            (e.currentTarget.style.color = "#c62828")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.style.color = "#5a413866")
+                          }
                         >
                           <Trash2 size={14} />
                         </button>
@@ -391,7 +557,8 @@ export default function ConfigPage() {
           )}
           <button
             onClick={addDeliveryZone}
-            className="flex items-center gap-1.5 text-sm text-[#A0522D] hover:text-[#8B4726] font-medium"
+            className="flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-80"
+            style={{ color: "#a33900" }}
           >
             <Plus size={16} />
             Adicionar Bairro
@@ -399,17 +566,32 @@ export default function ConfigPage() {
         </div>
 
         {/* Integracoes & API */}
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="font-semibold text-gray-900 mb-5 flex items-center gap-2">
-            <Link size={18} className="text-[#A0522D]" />
+        <div className="p-6" style={{ background: "#ffffff", borderRadius: "0.75rem" }}>
+          <h2
+            className="font-semibold mb-5 flex items-center gap-2"
+            style={{ color: "#191c1e" }}
+          >
+            <Link size={18} style={{ color: "#a33900" }} />
             Integracoes & API
           </h2>
           <div className="space-y-5">
             {/* n8n Webhook */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-medium text-gray-700">n8n Webhook</label>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                <label
+                  className="text-sm font-medium"
+                  style={{ color: "#5a4138" }}
+                >
+                  n8n Webhook
+                </label>
+                <span
+                  className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5"
+                  style={{
+                    borderRadius: "0.75rem",
+                    background: "#e8f5e9",
+                    color: "#2e7d32",
+                  }}
+                >
                   Ativo
                 </span>
               </div>
@@ -419,11 +601,25 @@ export default function ConfigPage() {
                   value={whatsappWebhook}
                   onChange={(e) => setWhatsappWebhook(e.target.value)}
                   placeholder="https://n8n.example.com/webhook/..."
-                  className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A0522D] font-mono text-xs"
+                  className="flex-1 px-3 py-2 text-xs font-mono focus:outline-none transition-all"
+                  style={{
+                    background: "#edeef0",
+                    border: "none",
+                    borderBottom: "2px solid transparent",
+                    borderRadius: "0.75rem",
+                    color: "#5a4138",
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottomColor = "#a33900")}
+                  onBlur={(e) => (e.target.style.borderBottomColor = "transparent")}
                 />
                 <button
                   onClick={() => copyToClipboard(whatsappWebhook || webhookUrl)}
-                  className="px-2.5 py-2 border border-gray-200 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition"
+                  className="px-2.5 py-2 transition-opacity hover:opacity-70"
+                  style={{
+                    background: "#edeef0",
+                    borderRadius: "0.75rem",
+                    color: "#5a4138",
+                  }}
                   title="Copiar URL"
                 >
                   <Copy size={16} />
@@ -433,33 +629,81 @@ export default function ConfigPage() {
 
             {/* API Key */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block flex items-center gap-1.5">
-                <Key size={14} className="text-gray-400" />
+              <label
+                className="text-sm font-medium mb-2 flex items-center gap-1.5"
+                style={{ color: "#5a4138" }}
+              >
+                <Key size={14} style={{ color: "#5a4138" }} />
                 Chave de API (Master)
               </label>
               <div className="flex gap-2">
-                <div className="flex-1 px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm font-mono flex items-center">
+                <div
+                  className="flex-1 px-3 py-2 text-sm font-mono flex items-center"
+                  style={{
+                    background: "#edeef0",
+                    borderRadius: "0.75rem",
+                  }}
+                >
                   {showApiKey ? (
-                    <span className="text-xs text-gray-600 truncate">{tenant?.id || "pk_live_xxxxxxxxxxxxxxxx"}</span>
+                    <span
+                      className="text-xs truncate"
+                      style={{ color: "#5a4138" }}
+                    >
+                      {tenant?.id || "pk_live_xxxxxxxxxxxxxxxx"}
+                    </span>
                   ) : (
-                    <span className="text-gray-400 tracking-widest">{"*".repeat(24)}</span>
+                    <span
+                      className="tracking-widest"
+                      style={{ color: "#5a4138" }}
+                    >
+                      {"*".repeat(24)}
+                    </span>
                   )}
                 </div>
                 <button
                   onClick={() => setShowApiKey(!showApiKey)}
-                  className="px-2.5 py-2 border border-gray-200 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition"
+                  className="px-2.5 py-2 transition-opacity hover:opacity-70"
+                  style={{
+                    background: "#edeef0",
+                    borderRadius: "0.75rem",
+                    color: "#5a4138",
+                  }}
                   title={showApiKey ? "Ocultar" : "Mostrar"}
                 >
                   {showApiKey ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              <button className="text-xs text-[#A0522D] hover:text-[#8B4726] font-medium mt-2">
+              <button
+                className="text-xs font-medium mt-2 hover:underline"
+                style={{
+                  color: "#a33900",
+                  background: "none",
+                  border: "none",
+                  textDecoration: "none",
+                }}
+              >
                 Regerar Chave
               </button>
             </div>
 
             {/* Connect new tool */}
-            <button className="w-full py-2.5 border border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:text-[#A0522D] hover:border-[#A0522D] transition flex items-center justify-center gap-1.5">
+            <button
+              className="w-full py-2.5 text-sm transition-opacity hover:opacity-80 flex items-center justify-center gap-1.5"
+              style={{
+                background: "transparent",
+                border: "1px dashed rgba(226,191,178,0.15)",
+                borderRadius: "0.75rem",
+                color: "#5a4138",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#a33900";
+                e.currentTarget.style.borderColor = "rgba(163,57,0,0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "#5a4138";
+                e.currentTarget.style.borderColor = "rgba(226,191,178,0.15)";
+              }}
+            >
               <Plus size={16} />
               Conectar nova ferramenta
             </button>
@@ -471,14 +715,24 @@ export default function ConfigPage() {
       <div className="flex items-center justify-end gap-3 pt-2">
         <button
           onClick={handleDiscard}
-          className="px-4 py-2.5 text-sm text-gray-600 hover:text-gray-800 transition"
+          className="px-4 py-2.5 text-sm font-medium transition-opacity hover:opacity-80"
+          style={{
+            color: "#a33900",
+            background: "transparent",
+            border: "none",
+          }}
         >
           Descartar
         </button>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 px-6 py-2.5 bg-[#A0522D] text-white rounded-xl font-medium text-sm hover:bg-[#8B4726] disabled:opacity-50 transition shadow-sm"
+          className="flex items-center gap-2 px-6 py-2.5 text-white font-medium text-sm disabled:opacity-50 transition-opacity hover:opacity-90"
+          style={{
+            background: "linear-gradient(135deg, #a33900, #cc4900)",
+            borderRadius: "0.75rem",
+            border: "none",
+          }}
         >
           {saving ? (
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
@@ -492,7 +746,10 @@ export default function ConfigPage() {
       </div>
 
       {/* Tenant ID info */}
-      <div className="text-xs text-gray-400 text-center pb-4">
+      <div
+        className="text-xs text-center pb-4"
+        style={{ color: "#5a413866" }}
+      >
         Tenant ID: {tenant?.id}
       </div>
     </div>

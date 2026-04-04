@@ -33,13 +33,21 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen bg-[#F5F5F0]">
+    <div className="flex h-screen" style={{ backgroundColor: "#f8f9fb" }}>
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-sm flex flex-col">
-        <div className="p-6">
+      <aside
+        className="w-64 flex flex-col"
+        style={{ backgroundColor: "#ffffff" }}
+      >
+        <div className="px-5 py-7">
           <div className="flex items-center gap-2">
-            <UtensilsCrossed size={24} className="text-[#8B2500]" />
-            <h1 className="text-2xl font-bold text-[#8B2500]">PedAI</h1>
+            <UtensilsCrossed size={24} style={{ color: "#a33900" }} />
+            <h1
+              className="text-2xl font-bold"
+              style={{ color: "#a33900" }}
+            >
+              PedAI
+            </h1>
           </div>
         </div>
 
@@ -50,11 +58,30 @@ export default function AdminLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 py-3 px-4 text-sm transition ${
+                className="flex items-center gap-3 py-3 px-5 text-sm transition-colors"
+                style={
                   active
-                    ? "text-[#C4501A] font-medium bg-orange-50 border-l-3 border-[#C4501A]"
-                    : "text-gray-500 hover:bg-gray-50"
-                }`}
+                    ? {
+                        color: "#cc4900",
+                        fontWeight: 500,
+                        backgroundColor: "rgba(204,73,0,0.05)",
+                        borderLeft: "3px solid #cc4900",
+                      }
+                    : {
+                        color: "#5a4138",
+                        borderLeft: "3px solid transparent",
+                      }
+                }
+                onMouseEnter={(e) => {
+                  if (!active)
+                    (e.currentTarget as HTMLElement).style.backgroundColor =
+                      "#edeef0";
+                }}
+                onMouseLeave={(e) => {
+                  if (!active)
+                    (e.currentTarget as HTMLElement).style.backgroundColor =
+                      "transparent";
+                }}
               >
                 <item.icon size={20} />
                 {item.label}
@@ -69,7 +96,19 @@ export default function AdminLayout({
               await fetch("/api/auth/logout", { method: "POST" });
               window.location.href = "/login";
             }}
-            className="flex items-center gap-3 py-3 px-4 text-sm text-gray-500 hover:bg-gray-50 transition w-full"
+            className="flex items-center gap-3 py-3 px-5 text-sm transition-colors w-full"
+            style={{
+              color: "#5a4138",
+              borderRadius: "0.75rem",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor =
+                "#edeef0";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor =
+                "transparent";
+            }}
           >
             <LogOut size={20} />
             Sair
@@ -80,27 +119,58 @@ export default function AdminLayout({
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top header bar */}
-        <header className="bg-white h-16 flex items-center justify-between px-6 shadow-sm">
+        <header
+          className="h-16 flex items-center justify-between px-6"
+          style={{ backgroundColor: "#ffffff" }}
+        >
           <div className="relative">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search
+              size={18}
+              className="absolute left-3 top-1/2 -translate-y-1/2"
+              style={{ color: "#5a4138" }}
+            />
             <input
               type="text"
               placeholder="Buscar..."
-              className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-200 w-64"
+              className="rounded-xl pl-10 pr-4 py-2 text-sm focus:outline-none"
+              style={{
+                backgroundColor: "#edeef0",
+                color: "#191c1e",
+                border: "none",
+                borderBottom: "2px solid transparent",
+                width: "16rem",
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderBottomColor = "#a33900";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderBottomColor = "transparent";
+              }}
             />
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="text-gray-400 hover:text-gray-600 transition">
+            <button
+              className="transition-colors"
+              style={{ color: "#5a4138" }}
+            >
               <Bell size={20} />
             </button>
-            <div className="w-8 h-8 rounded-full bg-[#C4501A] flex items-center justify-center text-white text-sm font-medium">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium"
+              style={{
+                background: "linear-gradient(135deg, #a33900, #cc4900)",
+              }}
+            >
               U
             </div>
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-0">
+        <main
+          className="flex-1 overflow-auto p-6"
+          style={{ backgroundColor: "#f8f9fb" }}
+        >
           {children}
         </main>
       </div>

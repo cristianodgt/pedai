@@ -67,18 +67,32 @@ function KpiCard({
   iconBg: string;
 }) {
   return (
-    <div className="flex items-center gap-4 bg-white rounded-xl shadow-sm px-5 py-4 flex-1 min-w-[180px]">
+    <div
+      className="flex items-center gap-4 px-5 py-4 flex-1 min-w-[180px]"
+      style={{
+        background: "#ffffff",
+        borderRadius: "0.75rem",
+      }}
+    >
       <div
-        className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
-        style={{ background: iconBg }}
+        className="w-11 h-11 flex items-center justify-center shrink-0"
+        style={{
+          background: iconBg,
+          borderRadius: "50%",
+        }}
       >
         <Icon className="w-5 h-5 text-white" />
       </div>
       <div>
-        <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+        <p
+          className="text-xs font-medium uppercase tracking-wide"
+          style={{ color: "#5a4138" }}
+        >
           {label}
         </p>
-        <p className="text-xl font-bold text-gray-800">{value}</p>
+        <p className="text-xl font-bold" style={{ color: "#191c1e" }}>
+          {value}
+        </p>
       </div>
     </div>
   );
@@ -100,16 +114,43 @@ function TableCard({
   /* --- LIVRE ---------------------------------------------------- */
   if (status === "LIVRE") {
     return (
-      <div className="border-2 border-dashed border-gray-300 rounded-xl p-5 flex flex-col items-center justify-center gap-3 bg-white/60 min-h-[180px]">
-        <span className="text-3xl font-bold text-gray-400">
+      <div
+        className="flex flex-col items-center justify-center gap-3 min-h-[180px] p-5"
+        style={{
+          background: "#edeef0",
+          borderRadius: "0.75rem",
+          outline: "2px dashed rgba(226, 191, 178, 0.15)",
+          outlineOffset: "-2px",
+        }}
+      >
+        <span className="text-3xl font-bold" style={{ color: "#5a4138" }}>
           {String(table.number).padStart(2, "0")}
         </span>
-        <span className="text-xs font-semibold text-gray-400 tracking-widest">
+        <span
+          className="text-xs font-semibold tracking-widest"
+          style={{ color: "#5a4138" }}
+        >
           LIVRE
         </span>
         <button
           onClick={() => onAction(table.id, "abrir")}
-          className="mt-1 px-4 py-1.5 text-sm font-medium rounded-lg border-2 border-[#A0522D] text-[#A0522D] hover:bg-[#A0522D] hover:text-white transition-colors"
+          className="mt-1 px-4 py-1.5 text-sm font-medium transition-colors"
+          style={{
+            borderRadius: "0.75rem",
+            background: "transparent",
+            color: "#a33900",
+            border: "2px solid rgba(226, 191, 178, 0.4)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#a33900";
+            e.currentTarget.style.color = "#ffffff";
+            e.currentTarget.style.borderColor = "#a33900";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "#a33900";
+            e.currentTarget.style.borderColor = "rgba(226, 191, 178, 0.4)";
+          }}
         >
           Abrir Mesa
         </button>
@@ -120,7 +161,13 @@ function TableCard({
   /* --- OCUPADA -------------------------------------------------- */
   if (status === "OCUPADA") {
     return (
-      <div className="rounded-xl p-5 flex flex-col items-center justify-center gap-2 text-white min-h-[180px] bg-[#A0522D] shadow-sm">
+      <div
+        className="flex flex-col items-center justify-center gap-2 text-white min-h-[180px] p-5"
+        style={{
+          background: "linear-gradient(135deg, #a33900, #cc4900)",
+          borderRadius: "0.75rem",
+        }}
+      >
         <span className="text-3xl font-bold">
           {String(table.number).padStart(2, "0")}
         </span>
@@ -128,15 +175,26 @@ function TableCard({
           OCUPADA
         </span>
         <span className="text-lg font-bold">
-          {table.amount !== undefined ? currency(table.amount) : "—"}
+          {table.amount !== undefined ? currency(table.amount) : "\u2014"}
         </span>
         <span className="flex items-center gap-1 text-xs opacity-80">
           <Clock className="w-3.5 h-3.5" />
-          {table.timer ?? "—"}
+          {table.timer ?? "\u2014"}
         </span>
         <button
           onClick={() => onAction(table.id, "comanda")}
-          className="mt-1 px-4 py-1.5 text-sm font-medium rounded-lg bg-white text-[#A0522D] hover:bg-gray-100 transition-colors"
+          className="mt-1 px-4 py-1.5 text-sm font-medium transition-colors"
+          style={{
+            borderRadius: "0.75rem",
+            background: "#ffffff",
+            color: "#a33900",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#edeef0";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "#ffffff";
+          }}
         >
           Ver Comanda
         </button>
@@ -148,22 +206,42 @@ function TableCard({
   if (status === "FECHAMENTO") {
     const isPaid = table.paymentNote?.toLowerCase().includes("pago");
     return (
-      <div className="rounded-xl p-5 flex flex-col items-center justify-center gap-2 min-h-[180px] bg-orange-50 border border-orange-200 shadow-sm">
-        <span className="text-3xl font-bold text-orange-700">
+      <div
+        className="flex flex-col items-center justify-center gap-2 min-h-[180px] p-5"
+        style={{
+          background: "rgba(204, 73, 0, 0.08)",
+          borderRadius: "0.75rem",
+        }}
+      >
+        <span className="text-3xl font-bold" style={{ color: "#191c1e" }}>
           {String(table.number).padStart(2, "0")}
         </span>
-        <span className="text-[10px] font-semibold tracking-widest text-orange-500">
+        <span
+          className="text-[10px] font-semibold tracking-widest"
+          style={{ color: "#cc4900" }}
+        >
           FECHAMENTO
         </span>
-        <span className="text-lg font-bold text-orange-800">
-          {table.amount !== undefined ? currency(table.amount) : "—"}
+        <span className="text-lg font-bold" style={{ color: "#191c1e" }}>
+          {table.amount !== undefined ? currency(table.amount) : "\u2014"}
         </span>
-        <span className="text-xs text-orange-600">
+        <span className="text-xs" style={{ color: "#5a4138" }}>
           {table.paymentNote ?? "Aguardando"}
         </span>
         <button
           onClick={() => onAction(table.id, isPaid ? "liberar" : "fechar")}
-          className="mt-1 px-4 py-1.5 text-sm font-medium rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+          className="mt-1 px-4 py-1.5 text-sm font-medium transition-colors"
+          style={{
+            borderRadius: "0.75rem",
+            background: "#cc4900",
+            color: "#ffffff",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#a33900";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "#cc4900";
+          }}
         >
           {isPaid ? "Liberar Mesa" : "Fechar Conta"}
         </button>
@@ -173,17 +251,33 @@ function TableCard({
 
   /* --- LIMPEZA -------------------------------------------------- */
   return (
-    <div className="rounded-xl p-5 flex flex-col items-center justify-center gap-3 min-h-[180px] bg-gray-100 border border-gray-200 shadow-sm">
-      <span className="text-3xl font-bold text-gray-400">
+    <div
+      className="flex flex-col items-center justify-center gap-3 min-h-[180px] p-5"
+      style={{
+        background: "#edeef0",
+        borderRadius: "0.75rem",
+      }}
+    >
+      <span className="text-3xl font-bold" style={{ color: "#9ca3af" }}>
         {String(table.number).padStart(2, "0")}
       </span>
-      <span className="text-[10px] font-semibold tracking-widest text-gray-400">
+      <span
+        className="text-[10px] font-semibold tracking-widest"
+        style={{ color: "#9ca3af" }}
+      >
         LIMPEZA
       </span>
-      <span className="text-xs text-gray-500">Em andamento</span>
+      <span className="text-xs" style={{ color: "#9ca3af" }}>
+        Em andamento
+      </span>
       <button
         disabled
-        className="mt-1 px-4 py-1.5 text-sm font-medium rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed"
+        className="mt-1 px-4 py-1.5 text-sm font-medium cursor-not-allowed"
+        style={{
+          borderRadius: "0.75rem",
+          background: "#dcdee0",
+          color: "#9ca3af",
+        }}
       >
         Aguarde
       </button>
@@ -199,10 +293,12 @@ function LegendDot({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-2">
       <span
-        className="w-3 h-3 rounded-full inline-block border border-gray-200"
-        style={{ background: color }}
+        className="w-3 h-3 inline-block"
+        style={{ background: color, borderRadius: "50%" }}
       />
-      <span className="text-xs text-gray-600">{label}</span>
+      <span className="text-xs" style={{ color: "#5a4138" }}>
+        {label}
+      </span>
     </div>
   );
 }
@@ -268,46 +364,52 @@ export default function MesasPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" style={{ background: "#f8f9fb", minHeight: "100%" }}>
       {/* KPI row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
           label="Mesas Livres"
           value={String(livres)}
           icon={Armchair}
-          iconBg="#A0522D"
+          iconBg="#a33900"
         />
         <KpiCard
           label="Ocupadas"
           value={String(ocupadas)}
           icon={Users}
-          iconBg="#8B3A2A"
+          iconBg="#cc4900"
         />
         <KpiCard
           label="Aguardando Pgto"
           value={String(aguardando)}
           icon={Receipt}
-          iconBg="#D97706"
+          iconBg="#cc4900"
         />
         <KpiCard
-          label="Ocupação"
+          label="Ocupacao"
           value={`${ocupacaoPct}%`}
           icon={PieChart}
-          iconBg="#A0522D"
+          iconBg="#a33900"
         />
       </div>
 
       {/* Map header */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
+      <div
+        className="p-6"
+        style={{
+          background: "#edeef0",
+          borderRadius: "0.75rem",
+        }}
+      >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-          <h2 className="text-lg font-bold text-gray-800">
-            Mapa de Mesas — Salão Principal
+          <h2 className="text-lg font-bold" style={{ color: "#191c1e" }}>
+            Mapa de Mesas — Salao Principal
           </h2>
           <div className="flex items-center gap-4 flex-wrap">
-            <LegendDot color="#ffffff" label="Livre" />
-            <LegendDot color="#DC2626" label="Ocupada" />
-            <LegendDot color="#F97316" label="Pagamento" />
-            <LegendDot color="#9CA3AF" label="Limpeza" />
+            <LegendDot color="#edeef0" label="Livre" />
+            <LegendDot color="#a33900" label="Ocupada" />
+            <LegendDot color="rgba(204, 73, 0, 0.25)" label="Pagamento" />
+            <LegendDot color="#dcdee0" label="Limpeza" />
           </div>
         </div>
 

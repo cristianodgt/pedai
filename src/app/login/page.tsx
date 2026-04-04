@@ -46,37 +46,73 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F5F0] px-4">
+    <div
+      className="min-h-screen flex flex-col items-center justify-center px-4"
+      style={{ backgroundColor: "#f8f9fb", fontFamily: "'Inter', sans-serif" }}
+    >
       {/* Logo + Title */}
-      <div className="flex flex-col items-center mb-8">
-        <div className="w-14 h-14 rounded-xl bg-[#8B2500] flex items-center justify-center mb-4 shadow-md">
-          <Utensils className="w-7 h-7 text-white" />
+      <div className="flex flex-col items-center mb-10">
+        <div
+          className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+          style={{ backgroundColor: "#8B2500" }}
+        >
+          <Utensils className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-3xl font-bold text-[#8B2500] tracking-tight">
+        <h1
+          className="text-4xl font-bold tracking-tight"
+          style={{ color: "#8B2500" }}
+        >
           PedAI
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-base mt-1" style={{ color: "#5a4138" }}>
           O maestro da sua cozinha inteligente.
         </p>
       </div>
 
       {/* Card */}
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border-t-4 border-[#A0522D] overflow-hidden">
+      <div
+        className="w-full max-w-md rounded-2xl overflow-hidden"
+        style={{
+          backgroundColor: "#ffffff",
+          borderTop: "4px solid #cc4900",
+          border: "1px solid rgba(226, 191, 178, 0.15)",
+          borderTopWidth: "4px",
+          borderTopColor: "#cc4900",
+        }}
+      >
         <div className="p-8">
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* E-mail */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#191c1e" }}
+              >
                 E-mail
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Mail
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5"
+                  style={{ color: "#8B2500" }}
+                />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@email.com"
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#F3F4F6] border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#A0522D] focus:border-transparent outline-none transition"
+                  placeholder="exemplo@restaurante.com"
+                  className="w-full pl-12 pr-4 py-3 rounded-xl text-sm outline-none transition-all"
+                  style={{
+                    backgroundColor: "#F0EEEB",
+                    color: "#191c1e",
+                    border: "none",
+                    borderBottom: "2px solid transparent",
+                  }}
+                  onFocus={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#a33900")
+                  }
+                  onBlur={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "transparent")
+                  }
                   required
                 />
               </div>
@@ -84,17 +120,35 @@ export default function LoginPage() {
 
             {/* Senha */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#191c1e" }}
+              >
                 Senha
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Lock
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5"
+                  style={{ color: "#8B2500" }}
+                />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#F3F4F6] border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#A0522D] focus:border-transparent outline-none transition"
+                  className="w-full pl-12 pr-4 py-3 rounded-xl text-sm outline-none transition-all"
+                  style={{
+                    backgroundColor: "#F0EEEB",
+                    color: "#191c1e",
+                    border: "none",
+                    borderBottom: "2px solid transparent",
+                  }}
+                  onFocus={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#a33900")
+                  }
+                  onBlur={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "transparent")
+                  }
                   required
                 />
               </div>
@@ -107,13 +161,17 @@ export default function LoginPage() {
                   type="checkbox"
                   checked={remember}
                   onChange={(e) => setRemember(e.target.checked)}
-                  className="w-4 h-4 rounded border-gray-300 text-[#A0522D] focus:ring-[#A0522D]"
+                  className="w-4 h-4 rounded"
+                  style={{ accentColor: "#a33900" }}
                 />
-                <span className="text-sm text-gray-600">Lembrar de mim</span>
+                <span className="text-sm" style={{ color: "#5a4138" }}>
+                  Lembrar de mim
+                </span>
               </label>
               <a
                 href="#"
-                className="text-sm text-[#8B2500] hover:text-[#A0522D] font-medium transition"
+                className="text-sm font-semibold transition-colors hover:opacity-80"
+                style={{ color: "#C4501A" }}
               >
                 Esqueci minha senha
               </a>
@@ -121,7 +179,13 @@ export default function LoginPage() {
 
             {/* Error */}
             {error && (
-              <p className="text-red-500 text-sm bg-red-50 p-2.5 rounded-lg">
+              <p
+                className="text-sm p-3 rounded-xl"
+                style={{
+                  color: "#943030",
+                  backgroundColor: "#fdf2f2",
+                }}
+              >
                 {error}
               </p>
             )}
@@ -130,22 +194,29 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#A0522D] text-white py-2.5 rounded-lg font-semibold hover:bg-[#8B2500] transition disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+              className="w-full text-white py-3.5 rounded-xl font-semibold text-base transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+              style={{
+                background: "linear-gradient(135deg, #a33900, #cc4900)",
+              }}
             >
               {loading ? "Entrando..." : "Entrar"}
-              {!loading && <ArrowRight className="w-4 h-4" />}
+              {!loading && <ArrowRight className="w-5 h-5" />}
             </button>
           </form>
 
           {/* Separator */}
-          <div className="my-6 border-t border-gray-200" />
+          <div
+            className="my-6"
+            style={{ borderTop: "1px solid #edeef0" }}
+          />
 
           {/* Sign up */}
-          <p className="text-center text-sm text-gray-500">
-            Ainda não tem uma conta?{" "}
+          <p className="text-center text-sm" style={{ color: "#5a4138" }}>
+            Ainda n&atilde;o tem uma conta?{" "}
             <a
               href="#"
-              className="text-[#8B2500] hover:text-[#A0522D] font-medium transition"
+              className="font-semibold transition-colors hover:opacity-80"
+              style={{ color: "#C4501A" }}
             >
               Solicite acesso
             </a>
@@ -154,27 +225,49 @@ export default function LoginPage() {
       </div>
 
       {/* Footer badges */}
-      <div className="mt-8 flex flex-col items-center gap-4">
-        <div className="flex flex-wrap justify-center gap-6">
-          <div className="flex items-center gap-2 text-gray-400">
-            <TrendingUp className="w-4 h-4" />
-            <span className="text-xs uppercase tracking-wider font-medium">
-              Performance
-            </span>
-            <span className="text-xs text-gray-300">/</span>
-            <span className="text-xs text-gray-500">Operação Ágil</span>
+      <div className="mt-10 flex flex-col items-center gap-5">
+        <div className="flex flex-wrap justify-center gap-8">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "#8B2500" }}
+            >
+              <TrendingUp className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <p
+                className="text-xs font-bold uppercase tracking-wider"
+                style={{ color: "#191c1e" }}
+              >
+                Performance
+              </p>
+              <p className="text-xs" style={{ color: "#5a4138" }}>
+                Operacao Agil
+              </p>
+            </div>
           </div>
-          <div className="flex items-center gap-2 text-gray-400">
-            <Sparkles className="w-4 h-4" />
-            <span className="text-xs uppercase tracking-wider font-medium">
-              IA Integrada
-            </span>
-            <span className="text-xs text-gray-300">/</span>
-            <span className="text-xs text-gray-500">Gestão Inteligente</span>
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "#8B2500" }}
+            >
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <p
+                className="text-xs font-bold uppercase tracking-wider"
+                style={{ color: "#191c1e" }}
+              >
+                IA Integrada
+              </p>
+              <p className="text-xs" style={{ color: "#5a4138" }}>
+                Gestao Inteligente
+              </p>
+            </div>
           </div>
         </div>
-        <p className="text-xs text-gray-400">
-          &copy; 2024 PedAI Culinary Systems. Todos os direitos reservados.
+        <p className="text-xs" style={{ color: "#5a4138", opacity: 0.6 }}>
+          &copy; 2024 PedAI Culinary Systems.
         </p>
       </div>
     </div>
