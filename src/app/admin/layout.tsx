@@ -13,12 +13,16 @@ import {
   Bell,
   Volume2,
   VolumeX,
+  MessageCircle,
+  Armchair,
 } from "lucide-react";
 
 const navItems = [
   { href: "/admin/pedidos", label: "Pedidos", icon: ClipboardList },
   { href: "/admin/pdv", label: "PDV", icon: Monitor },
   { href: "/admin/cardapio", label: "Cardápio", icon: UtensilsCrossed },
+  { href: "/admin/conversas", label: "Mensagens", icon: MessageCircle },
+  { href: "/admin/mesas", label: "Mesas", icon: Armchair },
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/config", label: "Configurações", icon: Settings },
 ];

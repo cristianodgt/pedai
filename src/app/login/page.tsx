@@ -3,21 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Utensils,
+  UtensilsCrossed,
   Mail,
   Lock,
   ArrowRight,
-  TrendingUp,
+  Zap,
   Sparkles,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -54,76 +46,93 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-[#f8f9fb] font-[Inter,sans-serif]">
-      {/* Logo + Title */}
-      <div className="flex flex-col items-center mb-10">
-        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 bg-gradient-to-br from-[#a33900] to-[#cc4900]">
-          <Utensils className="w-8 h-8 text-white" />
+    <div className="flex items-center justify-center min-h-screen bg-[#f3f4f6] font-[Inter,sans-serif] text-[#191c1e]">
+      <div className="w-full max-w-md px-6">
+        {/* Logo + Title */}
+        <div className="mb-10 text-center">
+          <div className="flex justify-center mb-4">
+            <div className="bg-[#a33900] p-3 rounded-full shadow-lg">
+              <UtensilsCrossed className="w-7 h-7 text-white" />
+            </div>
+          </div>
+          <h1 className="text-4xl font-black text-[#a33900] tracking-tighter">
+            PedAI
+          </h1>
+          <p className="text-[#5a4138] font-medium mt-2">
+            O maestro da sua cozinha inteligente.
+          </p>
         </div>
-        <h1 className="text-4xl font-bold tracking-tight text-[#EA580C]">
-          PedAI
-        </h1>
-        <p className="text-base mt-1 text-[#5a4138]">
-          O maestro da sua cozinha inteligente.
-        </p>
-      </div>
 
-      {/* Card */}
-      <Card className="w-full max-w-md border-t-4 border-t-[#cc4900] border-[rgba(226,191,178,0.15)] overflow-hidden">
-        <CardContent className="p-8">
+        {/* Form Card */}
+        <div className="bg-white rounded-[0.75rem] p-8 md:p-12 shadow-[0px_20px_40px_rgba(25,28,30,0.06)] relative overflow-hidden">
+          {/* Top gradient bar */}
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#a33900] to-[#cc4900]" />
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* E-mail */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-[#191c1e]">
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-[#5a4138] mb-2"
+              >
                 E-mail
               </label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#EA580C] z-10 pointer-events-none" />
-                <Input
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#8e7166]" />
+                <input
+                  id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="exemplo@restaurante.com"
-                  className="pl-12"
                   required
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#e7e8ea] border-0 border-b-2 border-transparent focus:border-[#a33900] focus:ring-0 rounded-xl transition-all duration-200 placeholder:text-[#8e7166]/60 text-[#191c1e] font-medium outline-none"
                 />
               </div>
             </div>
 
             {/* Senha */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-[#191c1e]">
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-[#5a4138] mb-2"
+              >
                 Senha
               </label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#EA580C] z-10 pointer-events-none" />
-                <Input
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#8e7166]" />
+                <input
+                  id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="pl-12"
                   required
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#e7e8ea] border-0 border-b-2 border-transparent focus:border-[#a33900] focus:ring-0 rounded-xl transition-all duration-200 placeholder:text-[#8e7166]/60 text-[#191c1e] font-medium outline-none"
                 />
               </div>
             </div>
 
             {/* Remember + Forgot */}
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
+              <div className="flex items-center">
                 <input
+                  id="remember-me"
                   type="checkbox"
                   checked={remember}
                   onChange={(e) => setRemember(e.target.checked)}
-                  className="w-4 h-4 rounded accent-[#a33900]"
+                  className="h-4 w-4 rounded border-[#e2bfb2] text-[#a33900] focus:ring-[#a33900]"
                 />
-                <span className="text-sm text-[#5a4138]">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-xs font-medium text-[#5a4138]"
+                >
                   Lembrar de mim
-                </span>
-              </label>
+                </label>
+              </div>
               <a
                 href="#"
-                className="text-sm font-semibold text-[#EA580C] hover:opacity-80 transition-colors"
+                className="text-xs font-bold text-[#a33900] hover:text-[#cc4900] transition-colors"
               >
                 Esqueci minha senha
               </a>
@@ -131,73 +140,74 @@ export default function LoginPage() {
 
             {/* Error */}
             {error && (
-              <Badge variant="danger" className="w-full justify-start px-3 py-2.5 text-sm rounded-xl">
+              <div className="w-full px-3 py-2.5 text-sm rounded-xl bg-[#ffdad6] text-[#93000a] font-medium">
                 {error}
-              </Badge>
+              </div>
             )}
 
             {/* Submit */}
-            <Button
+            <button
               type="submit"
-              variant="default"
-              size="xl"
               disabled={loading}
-              className="w-full"
+              className="w-full py-4 px-6 bg-gradient-to-br from-[#a33900] to-[#cc4900] text-white font-bold rounded-full shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:pointer-events-none"
             >
-              {loading ? "Entrando..." : "Entrar"}
-              {!loading && <ArrowRight className="w-5 h-5" />}
-            </Button>
+              <span>{loading ? "Entrando..." : "Entrar"}</span>
+              {!loading && (
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              )}
+            </button>
           </form>
 
-          {/* Separator */}
-          <div className="my-6 border-t border-[#edeef0]" />
-
           {/* Sign up */}
-          <p className="text-center text-sm text-[#5a4138]">
-            Ainda n&atilde;o tem uma conta?{" "}
-            <a
-              href="#"
-              className="font-semibold transition-colors hover:opacity-80 text-[#EA580C]"
-            >
-              Solicite acesso
-            </a>
-          </p>
-        </CardContent>
-      </Card>
+          <div className="mt-8 pt-8 border-t border-[#e2bfb2]/10 text-center">
+            <p className="text-sm text-[#5a4138]">
+              Ainda n&atilde;o tem uma conta?{" "}
+              <a
+                href="#"
+                className="text-[#a33900] font-bold hover:underline"
+              >
+                Solicite acesso
+              </a>
+            </p>
+          </div>
+        </div>
 
-      {/* Footer badges */}
-      <div className="mt-10 flex flex-col items-center gap-5">
-        <div className="flex flex-wrap justify-center gap-8">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#a33900] to-[#cc4900]">
-              <TrendingUp className="w-5 h-5 text-white" />
+        {/* Feature cards */}
+        <div className="mt-12 grid grid-cols-2 gap-4">
+          <div className="bg-[#f3f4f6] p-4 rounded-xl flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-[#e7e8ea] flex items-center justify-center">
+              <Zap className="w-5 h-5 text-[#a33900]" />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-[#191c1e]">
+              <p className="text-[10px] font-bold text-[#5a4138] uppercase tracking-wider">
                 Performance
               </p>
-              <p className="text-xs text-[#5a4138]">
-                Operacao Agil
+              <p className="text-xs font-semibold text-[#191c1e]">
+                Operação Ágil
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#a33900] to-[#cc4900]">
-              <Sparkles className="w-5 h-5 text-white" />
+          <div className="bg-[#f3f4f6] p-4 rounded-xl flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-[#e7e8ea] flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-[#a33900]" />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-[#191c1e]">
+              <p className="text-[10px] font-bold text-[#5a4138] uppercase tracking-wider">
                 IA Integrada
               </p>
-              <p className="text-xs text-[#5a4138]">
-                Gestao Inteligente
+              <p className="text-xs font-semibold text-[#191c1e]">
+                Gestão Inteligente
               </p>
             </div>
           </div>
         </div>
-        <p className="text-xs text-[#5a4138] opacity-60">
-          &copy; 2024 PedAI Culinary Systems.
-        </p>
+
+        {/* Copyright */}
+        <footer className="mt-16 text-center">
+          <p className="text-xs text-[#8e7166] font-medium">
+            &copy; 2024 PedAI Culinary Systems. Todos os direitos reservados.
+          </p>
+        </footer>
       </div>
     </div>
   );
