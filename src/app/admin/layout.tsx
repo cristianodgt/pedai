@@ -39,43 +39,39 @@ export default function AdminLayout({
         className="w-64 flex flex-col"
         style={{ backgroundColor: "#ffffff" }}
       >
-        <div className="px-5 py-7">
-          <div className="flex items-center gap-2">
-            <UtensilsCrossed size={24} style={{ color: "#a33900" }} />
-            <h1
-              className="text-2xl font-bold"
-              style={{ color: "#a33900" }}
-            >
-              PedAI
-            </h1>
-          </div>
+        <div className="px-6 py-6">
+          <h1
+            className="text-xl font-bold"
+            style={{ color: "#EA580C" }}
+          >
+            PedAI
+          </h1>
         </div>
 
-        <nav className="flex-1 py-2">
+        <nav className="flex-1">
           {navItems.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-3 py-3 px-5 text-sm transition-colors"
+                className="flex items-center gap-3 py-3 px-6 text-sm transition-colors"
                 style={
                   active
                     ? {
-                        color: "#cc4900",
+                        color: "#EA580C",
                         fontWeight: 500,
-                        backgroundColor: "rgba(204,73,0,0.05)",
-                        borderLeft: "3px solid #cc4900",
+                        borderLeft: "3px solid #EA580C",
                       }
                     : {
-                        color: "#5a4138",
+                        color: "#6b7280",
                         borderLeft: "3px solid transparent",
                       }
                 }
                 onMouseEnter={(e) => {
                   if (!active)
                     (e.currentTarget as HTMLElement).style.backgroundColor =
-                      "#edeef0";
+                      "#f3f4f6";
                 }}
                 onMouseLeave={(e) => {
                   if (!active)
@@ -96,14 +92,11 @@ export default function AdminLayout({
               await fetch("/api/auth/logout", { method: "POST" });
               window.location.href = "/login";
             }}
-            className="flex items-center gap-3 py-3 px-5 text-sm transition-colors w-full"
-            style={{
-              color: "#5a4138",
-              borderRadius: "0.75rem",
-            }}
+            className="flex items-center gap-3 py-3 px-6 text-sm transition-colors w-full"
+            style={{ color: "#6b7280" }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.backgroundColor =
-                "#edeef0";
+                "#f3f4f6";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.backgroundColor =
@@ -123,46 +116,63 @@ export default function AdminLayout({
           className="h-16 flex items-center justify-between px-6"
           style={{ backgroundColor: "#ffffff" }}
         >
+          {/* Left: Search */}
           <div className="relative">
             <Search
               size={18}
               className="absolute left-3 top-1/2 -translate-y-1/2"
-              style={{ color: "#5a4138" }}
+              style={{ color: "#9ca3af" }}
             />
             <input
               type="text"
-              placeholder="Buscar..."
-              className="rounded-xl pl-10 pr-4 py-2 text-sm focus:outline-none"
+              placeholder="Buscar pedido..."
+              className="rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none"
               style={{
-                backgroundColor: "#edeef0",
+                backgroundColor: "#f3f4f6",
                 color: "#191c1e",
                 border: "none",
-                borderBottom: "2px solid transparent",
-                width: "16rem",
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderBottomColor = "#a33900";
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderBottomColor = "transparent";
+                width: "18rem",
               }}
             />
           </div>
 
+          {/* Middle: AO VIVO */}
+          <div className="flex items-center gap-2">
+            <span
+              className="w-2.5 h-2.5 rounded-full"
+              style={{ backgroundColor: "#22c55e" }}
+            />
+            <span
+              className="text-sm font-semibold"
+              style={{ color: "#22c55e" }}
+            >
+              AO VIVO
+            </span>
+          </div>
+
+          {/* Right: Bell + user info + avatar */}
           <div className="flex items-center gap-4">
             <button
               className="transition-colors"
-              style={{ color: "#5a4138" }}
+              style={{ color: "#6b7280" }}
             >
               <Bell size={20} />
             </button>
+            <div className="flex flex-col items-end">
+              <span className="text-sm font-bold" style={{ color: "#191c1e" }}>
+                Cozinha Central
+              </span>
+              <span className="text-xs" style={{ color: "#9ca3af" }}>
+                GERENTE DE TURNO
+              </span>
+            </div>
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium"
+              className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-medium"
               style={{
-                background: "linear-gradient(135deg, #a33900, #cc4900)",
+                background: "linear-gradient(135deg, #92400e, #b45309)",
               }}
             >
-              U
+              C
             </div>
           </div>
         </header>
