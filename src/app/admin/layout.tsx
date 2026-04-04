@@ -129,7 +129,7 @@ export default function AdminLayout({
           {/* Right side */}
           <div className="flex items-center gap-4">
             {/* Notifications bell */}
-            <button className="relative text-zinc-500 hover:text-zinc-800 transition-colors">
+            <button onClick={() => window.location.href='/admin/pedidos'} className="relative text-zinc-500 hover:text-zinc-800 transition-colors">
               <Bell size={20} />
               <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500" />
             </button>
@@ -139,7 +139,9 @@ export default function AdminLayout({
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center text-white text-sm font-bold">
                 C
               </div>
-              <Settings size={18} className="text-zinc-400" />
+              <button onClick={() => window.location.href='/admin/config'}>
+                <Settings size={18} className="text-zinc-400 hover:text-zinc-700 transition-colors" />
+              </button>
             </div>
           </div>
         </header>

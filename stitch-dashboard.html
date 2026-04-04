@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PedAI Dashboard - Gestão em Tempo Real</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c1e",
+                        "tertiary-container": "#0076d2",
+                        "on-primary-container": "#fffbff",
+                        "on-surface-variant": "#5a4138",
+                        "inverse-surface": "#2e3132",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "background": "#f8f9fb",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d9dadc",
+                        "on-secondary-fixed-variant": "#793110",
+                        "inverse-primary": "#ffb599",
+                        "surface": "#f8f9fb",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "tertiary-fixed": "#d4e3ff",
+                        "primary-fixed": "#ffdbce",
+                        "surface-container-low": "#f3f4f6",
+                        "primary-fixed-dim": "#ffb599",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "surface-container": "#edeef0",
+                        "surface-container-high": "#e7e8ea",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#ff9971",
+                        "tertiary": "#005da8",
+                        "primary-container": "#cc4900",
+                        "outline": "#8e7166",
+                        "surface-container-highest": "#e1e2e4",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb599",
+                        "secondary": "#974726",
+                        "on-surface": "#191c1e",
+                        "surface-tint": "#a73a00",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f8f9fb",
+                        "on-tertiary-container": "#fdfcff",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f3",
+                        "secondary-fixed": "#ffdbce",
+                        "on-primary-fixed": "#370e00",
+                        "on-secondary-fixed": "#370e00",
+                        "surface-variant": "#e1e2e4",
+                        "primary": "#a33900",
+                        "outline-variant": "#e2bfb2",
+                        "on-secondary-container": "#772f0f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface-container-low text-on-background">
+<!-- SideNavBar Implementation -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-gray-100 dark:bg-zinc-900 flex flex-col py-6">
+<div class="px-6 mb-10">
+<h1 class="text-2xl font-black text-orange-600 dark:text-orange-500 tracking-tighter">PedAI</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span>PDV</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Cardápio</span>
+</a>
+<!-- Active State: Dashboard -->
+<a class="flex items-center gap-3 px-4 py-3 text-orange-600 dark:text-orange-500 font-bold border-r-4 border-orange-600 bg-orange-50 dark:bg-orange-950/20 transition-all opacity-90 scale-[0.99]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Configurações</span>
+</a>
+</nav>
+<div class="mt-auto px-4">
+<button class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200 w-full rounded-xl">
+<span class="material-symbols-outlined">logout</span>
+<span>Sair</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar Implementation -->
+<header class="sticky top-0 z-40 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-zinc-800/50 shadow-sm dark:shadow-none flex items-center justify-between px-8 py-4">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary" placeholder="Pesquisar métricas ou produtos..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-tertiary/10 text-tertiary rounded-full text-xs font-semibold">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+</span>
+                    Live Refresh
+                </div>
+<div class="flex items-center gap-4 text-zinc-500">
+<button class="hover:text-orange-500 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="professional chef headshot with white uniform and confident smile in a modern restaurant kitchen setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIdaLOBIpAbvwFooAbOCxnYh-2iS7p5ngBu2UlO3AI6APIAFv32GBfyffo4thqwWfnNSlt40D0YLxkXkG8UlkwlY_b8I-vl-j29Wb1jyddmzBKsnGz7PXs0jdTe_PzPCo8BXCCD4La5tfdE7It5mIZJTaEZVW9HYEtdyMDQhXe18LArhmDGC3Sa691ixwbT3HzWSSw9VnYE7JPJ4SK8E50aJeNCG1k4HgHnNjo77XnxBMwmny9gHV-5jSXYCFOmbTHMzE_vhU_1Ag"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-8 space-y-8">
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- KPI Card 1: Pedidos Hoje -->
+<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:translate-y-[-2px]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-primary-fixed rounded-xl text-primary">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-lg">+12.5%</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Pedidos hoje</p>
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight mt-1">142</h2>
+</div>
+<!-- KPI Card 2: Faturamento Hoje -->
+<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:translate-y-[-2px]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-secondary-fixed rounded-xl text-secondary">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-lg">+8.2%</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Faturamento hoje</p>
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight mt-1">R$ 4.280</h2>
+</div>
+<!-- KPI Card 3: Faturamento Semana -->
+<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:translate-y-[-2px]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-tertiary-fixed rounded-xl text-tertiary">
+<span class="material-symbols-outlined">calendar_view_week</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-2 py-1 rounded-lg">Estável</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Faturamento semana</p>
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight mt-1">R$ 28.150</h2>
+</div>
+<!-- KPI Card 4: Faturamento Mês -->
+<div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:translate-y-[-2px]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-orange-100 rounded-xl text-orange-700">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded-lg">-2.4%</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Faturamento mês</p>
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight mt-1">R$ 112.400</h2>
+</div>
+</div>
+<!-- Main Charts & Insights (Bento Grid) -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Bar Chart: Orders per Hour -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest p-8 rounded-xl">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="text-lg font-bold text-on-surface">Fluxo de Pedidos</h3>
+<p class="text-sm text-on-surface-variant">Volume de pedidos por hora (Hoje)</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-xs font-semibold bg-surface-container text-on-surface rounded-lg">Exportar</button>
+</div>
+</div>
+<div class="h-64 flex items-end justify-between gap-2 px-4">
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-orange-100 rounded-t-lg transition-all hover:bg-orange-200" style="height: 15%"></div>
+<span class="text-[10px] font-bold text-zinc-400">11h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-orange-200 rounded-t-lg transition-all hover:bg-orange-300" style="height: 45%"></div>
+<span class="text-[10px] font-bold text-zinc-400">12h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary rounded-t-lg transition-all hover:opacity-90" style="height: 100%"></div>
+<span class="text-[10px] font-bold text-zinc-400">13h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-orange-300 rounded-t-lg transition-all hover:bg-orange-400" style="height: 75%"></div>
+<span class="text-[10px] font-bold text-zinc-400">14h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-orange-100 rounded-t-lg" style="height: 25%"></div>
+<span class="text-[10px] font-bold text-zinc-400">15h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-orange-100 rounded-t-lg" style="height: 20%"></div>
+<span class="text-[10px] font-bold text-zinc-400">16h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-orange-200 rounded-t-lg" style="height: 50%"></div>
+<span class="text-[10px] font-bold text-zinc-400">17h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-orange-400 rounded-t-lg" style="height: 85%"></div>
+<span class="text-[10px] font-bold text-zinc-400">18h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary-container rounded-t-lg" style="height: 95%"></div>
+<span class="text-[10px] font-bold text-zinc-400">19h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary rounded-t-lg" style="height: 90%"></div>
+<span class="text-[10px] font-bold text-zinc-400">20h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-orange-200 rounded-t-lg" style="height: 40%"></div>
+<span class="text-[10px] font-bold text-zinc-400">21h</span>
+</div>
+</div>
+</div>
+<!-- Pie Chart: Channel Breakdown (Asymmetric Layout) -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest p-8 rounded-xl flex flex-col">
+<h3 class="text-lg font-bold text-on-surface mb-6">Canais de Venda</h3>
+<div class="flex-1 flex items-center justify-center relative py-4">
+<!-- Simulated Donut Chart using SVG -->
+<svg class="w-48 h-48 transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#edeef0" stroke-width="12"></circle>
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#a33900" stroke-dasharray="251.2" stroke-dashoffset="113" stroke-width="12"></circle> <!-- 55% WhatsApp -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#005da8" stroke-dasharray="251.2" stroke-dashoffset="213" stroke-width="12"></circle> <!-- 15% iFood -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#ff9971" stroke-dasharray="251.2" stroke-dashoffset="188" stroke-width="12"></circle> <!-- 25% PDV -->
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface-variant">TOTAL</span>
+<span class="text-xl font-black text-on-surface">142</span>
+</div>
+</div>
+<div class="mt-6 space-y-3">
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-medium text-on-surface">WhatsApp</span>
+</div>
+<span class="font-bold">55%</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary-container"></div>
+<span class="font-medium text-on-surface">Balcão/PDV</span>
+</div>
+<span class="font-bold">30%</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+<span class="font-medium text-on-surface">iFood</span>
+</div>
+<span class="font-bold">15%</span>
+</div>
+</div>
+</div>
+<!-- Top 10 Products Table -->
+<div class="col-span-12 bg-surface-container-lowest rounded-xl overflow-hidden">
+<div class="p-8 flex items-center justify-between border-b border-surface-container">
+<h3 class="text-lg font-bold text-on-surface">Top 10 Produtos Mais Vendidos</h3>
+<button class="text-sm font-semibold text-primary hover:underline">Ver relatório completo</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+<tr>
+<th class="px-8 py-4">Produto</th>
+<th class="px-8 py-4">Categoria</th>
+<th class="px-8 py-4">Qtd. Vendida</th>
+<th class="px-8 py-4">Receita Brutal</th>
+<th class="px-8 py-4">Status Estoque</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="gourmet artisan burger with melted cheese and fresh greens on a sesame seed bun" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR-NwmpRauq_DZYWahL8wQv_OTalqrKIu916f07EiDAb2eztcbR0QbRWqmX14PaYlEMj3oK99YvYCKZcUtANZmBJ-QZp3RiFJhoevsNnovZL9RAaeG4XxXx2ofkvZpY-yKHK0pbdX8NxQ_2rIDxaF7m8ssdnRB_7L6Sv4bWtZS8-1XSFYWGk3AcNlIUVglmyTnj1cEQD8295AA8-1w_OebrfJHHwks0iCbEzyivOqNnB_3HPzE1UhcOhrPr11d0mb0iJzXoFVMpMc"/>
+</div>
+<span class="font-semibold text-on-surface">Burger Artesanal Clássico</span>
+</td>
+<td class="px-8 py-5 text-sm font-medium text-on-surface-variant">Hambúrgueres</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">84 unidades</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">R$ 3.192,00</td>
+<td class="px-8 py-5">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold rounded-full uppercase">Em Alta</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="slice of spicy pepperoni pizza with stretching mozzarella cheese and fresh basil garnish" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ5PyrOJtXQ4tDCAx4aJ-O4OCQ7NPbTyTHtgYkYI7x8FuI9EZdGnW6anZ2VZTzz_gq9VYNyh-QAg7HfcBjC_ryNtiEA8bv07x7DIhuvkKVMOWwkzZ75tk11GuUAKPJ2fxataFkcMj_p5MTler88dp-E3T20BRikq64AK2o3PYecyjfuWQwrV1PjwUGbwbMcPmwqHmFQEalOI2voaxCe_IfJdBRMvDXFIumyxNwhV-k0kRE2sIYHODs6EDt_nRAIyrunZPU2UgYnEw"/>
+</div>
+<span class="font-semibold text-on-surface">Pizza Pepperoni Família</span>
+</td>
+<td class="px-8 py-5 text-sm font-medium text-on-surface-variant">Pizzas</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">62 unidades</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">R$ 2.418,00</td>
+<td class="px-8 py-5">
+<span class="px-3 py-1 bg-secondary-container text-white text-[10px] font-bold rounded-full uppercase">Crítico</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="vibrant mediterranean salad bowl with roasted chickpeas, cucumber, and feta cheese" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsSryT1e9TkeZ0adw9eKmWGLlKodoYNeP1C9BSbnF_7FfNuZauyDuVSh_4Btm97qp8U1K3yUdleyImQJhdwDRYzuywmYvk5QGc1pbB5Wo5JdXjvfPO5Oiqu3ZFlVXjKhCy5vEbsbC6GW2ZRneR__kbCh3SXqs3doIOEcI7yEsK4xfXU5ZhMWZ2mfXgiLzbaUqChOZbXeOIMTFh3XadhmmKDmNYthiuvpAcjwCGW5XtMXbbnA5CLUKwKHcfh7KTOsKuytbAOQjGBqQ"/>
+</div>
+<span class="font-semibold text-on-surface">Salada Mediterrânea</span>
+</td>
+<td class="px-8 py-5 text-sm font-medium text-on-surface-variant">Saudável</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">45 unidades</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">R$ 1.575,00</td>
+<td class="px-8 py-5">
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-bold rounded-full uppercase">Normal</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="decadent chocolate fudge doughnut with colourful sprinkles on a marble background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9fdngZyA9sVF4_fN2aliVT-qIf6i8btxhCbGCd2A0LzeHYi_QfU6W1wKH4EgOrsjl8X2jehVQ25cqBjqYPDd2elfLJtiDB6A5q7nAugz4Uj9oIRZuvL1MqqSzb4ANDY_Vox99wzBBSGW-0Xcf8XAwK8yWXueBgdrsz0DY7fW3-Upadpzn5ocI35_O37j8m8l7ew42Rx3jaYbEA06el1EADJ-uRYCger9L886pGeLCH45DSlhOQeicVfS_2DEM6aluoBw1nM4S0Hg"/>
+</div>
+<span class="font-semibold text-on-surface">Combo Sobremesa Kids</span>
+</td>
+<td class="px-8 py-5 text-sm font-medium text-on-surface-variant">Sobremesas</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">38 unidades</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">R$ 950,00</td>
+<td class="px-8 py-5">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold rounded-full uppercase">Em Alta</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) - Contextual for Dashboard -->
+<button class="fixed bottom-8 right-8 bg-primary text-white p-4 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="ml-2 font-bold pr-2">Novo Pedido PDV</span>
+</button>
+</body></html>

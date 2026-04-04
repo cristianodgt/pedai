@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#974726",
+                    "on-surface-variant": "#5a4138",
+                    "surface-container-low": "#f3f4f6",
+                    "surface-container": "#edeef0",
+                    "secondary-container": "#ff9971",
+                    "outline": "#8e7166",
+                    "on-tertiary-fixed": "#001c39",
+                    "on-tertiary": "#ffffff",
+                    "background": "#f8f9fb",
+                    "tertiary-fixed-dim": "#a4c9ff",
+                    "primary-fixed": "#ffdbce",
+                    "surface": "#f8f9fb",
+                    "on-secondary-fixed-variant": "#793110",
+                    "primary-fixed-dim": "#ffb599",
+                    "on-tertiary-container": "#fdfcff",
+                    "primary-container": "#cc4900",
+                    "error-container": "#ffdad6",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#004883",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#ffb599",
+                    "surface-bright": "#f8f9fb",
+                    "inverse-surface": "#2e3132",
+                    "surface-container-high": "#e7e8ea",
+                    "tertiary": "#005da8",
+                    "error": "#ba1a1a",
+                    "on-background": "#191c1e",
+                    "on-primary-fixed-variant": "#7f2b00",
+                    "on-primary-fixed": "#370e00",
+                    "tertiary-container": "#0076d2",
+                    "tertiary-fixed": "#d4e3ff",
+                    "on-surface": "#191c1e",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#d9dadc",
+                    "surface-container-highest": "#e1e2e4",
+                    "surface-variant": "#e1e2e4",
+                    "on-secondary-fixed": "#370e00",
+                    "on-primary-container": "#fffbff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#a73a00",
+                    "secondary-fixed-dim": "#ffb599",
+                    "primary": "#a33900",
+                    "secondary-fixed": "#ffdbce",
+                    "inverse-on-surface": "#f0f1f3",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#e2bfb2",
+                    "on-secondary-container": "#772f0f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<!-- SideNavBar Shell -->
+<nav class="fixed left-0 top-0 h-screen w-64 bg-gray-100 dark:bg-zinc-900 flex flex-col py-6 antialiased font-inter">
+<div class="px-6 mb-8 flex items-center gap-2">
+<span class="text-2xl font-black text-orange-600 dark:text-orange-500 tracking-tighter">PedAI</span>
+</div>
+<div class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-orange-600 dark:text-orange-500 font-bold border-r-4 border-orange-600 bg-orange-50 dark:bg-orange-950/20 active:opacity-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="point_of_sale">point_of_sale</span>
+<span>PDV</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span>Cardápio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Configurações</span>
+</a>
+</div>
+<div class="mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sair</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar Shell -->
+<header class="sticky top-0 z-40 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-zinc-800/50 flex items-center justify-between px-8 py-4 ml-64 max-w-[calc(100%-16rem)]">
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-zinc-400">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="bg-surface-container-high border-none rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary w-64 transition-all" placeholder="Buscar pedido..." type="text"/>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full border border-green-100 animate-pulse">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+<span class="text-xs font-bold uppercase tracking-wider">Ao Vivo</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-zinc-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-zinc-800">
+<div class="text-right">
+<p class="text-xs font-semibold">Cozinha Central</p>
+<p class="text-[10px] text-zinc-500 uppercase tracking-tighter">Gerente de Turno</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="close up headshot of a professional chef in white uniform with blurred kitchen background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZU8FqBPcB1D6JuD6aDvOyd9LqCcRtYVtoVYcTGszOm28dAs_L0lNQWbk5KEl_hmL3xtHXizNggjPc3iC3Kj6MPrr51XAg25XHFXWTJBt8_tMEcPLbeZer6LptKbXGs9MlMBIOCrFBolE9nwEHWb2ff5fHdAwhdOFu381k9M-7aGXhAZgy1A0gnpRlbRosSpOzAME7j6bB0nFYn8RFZgHhobe6IO_2DM0lU6tJBoZwAT5RLbXPhSmqPbKYG54N4SuJOqybnDFIWns"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-8 min-h-[calc(100vh-76px)]">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="text-3xl font-extrabold tracking-tight text-on-surface mb-1">Fila de Pedidos</h1>
+<p class="text-on-surface-variant text-sm">Gerencie o fluxo da sua cozinha em tempo real.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-lowest text-on-surface border border-outline-variant/15 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filtrar
+                </button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 flex items-center gap-2 hover:scale-[1.02] transition-transform">
+<span class="material-symbols-outlined text-sm">add</span> Novo Pedido
+                </button>
+</div>
+</div>
+<!-- Kanban Board -->
+<div class="grid grid-cols-3 gap-6 h-full items-start">
+<!-- Column: Pendente -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
+<h2 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant">Pendente</h2>
+<span class="text-xs bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant font-bold">04</span>
+</div>
+</div>
+<div class="bg-surface-container-low/50 rounded-2xl p-3 flex flex-col gap-3 min-h-[600px] border border-transparent hover:border-outline-variant/20 transition-all">
+<!-- Kanban Card 1 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-300 text-sm group-hover:text-zinc-400 transition-colors">drag_indicator</span>
+<span class="text-[10px] font-black text-on-surface-variant">#9402</span>
+<span class="bg-tertiary-container text-on-tertiary-container text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">WhatsApp</span>
+</div>
+<span class="text-[10px] font-bold text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">schedule</span> 12 min
+                            </span>
+</div>
+<h3 class="font-bold text-sm mb-1 text-on-surface">Ricardo Oliveira</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2 mb-3">2x Combo Smash Burger, 1x Coca-Cola 2L</p>
+<div class="flex justify-between items-center pt-3 border-t border-surface-container">
+<span class="text-sm font-extrabold text-primary">R$ 84,90</span>
+<button class="text-[10px] font-bold text-on-surface-variant uppercase hover:text-primary transition-colors">Ver detalhes</button>
+</div>
+</div>
+<!-- Kanban Card 2 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-300 text-sm group-hover:text-zinc-400 transition-colors">drag_indicator</span>
+<span class="text-[10px] font-black text-on-surface-variant">#9403</span>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">PDV</span>
+</div>
+<span class="text-[10px] font-bold text-zinc-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">schedule</span> 2 min
+                            </span>
+</div>
+<h3 class="font-bold text-sm mb-1 text-on-surface">Ana Luiza Silveira</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2 mb-3">1x Pizza Calabresa G, 1x Suco Natural Laranja</p>
+<div class="flex justify-between items-center pt-3 border-t border-surface-container">
+<span class="text-sm font-extrabold text-primary">R$ 62,00</span>
+<button class="text-[10px] font-bold text-on-surface-variant uppercase hover:text-primary transition-colors">Ver detalhes</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Column: Preparando -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<h2 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant">Preparando</h2>
+<span class="text-xs bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant font-bold">02</span>
+</div>
+</div>
+<div class="bg-surface-container-low/50 rounded-2xl p-3 flex flex-col gap-3 min-h-[600px] border border-primary/10 transition-all">
+<!-- Kanban Card 3 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border-l-4 border-l-primary cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-300 text-sm group-hover:text-zinc-400 transition-colors">drag_indicator</span>
+<span class="text-[10px] font-black text-on-surface-variant">#9398</span>
+<span class="bg-error-container text-on-error-container text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">iFood</span>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">schedule</span> 18 min
+                            </span>
+</div>
+<h3 class="font-bold text-sm mb-1 text-on-surface">Carlos Eduardo</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2 mb-3">3x Temaki Salmão Grelhado, 1x Porção Hot Roll</p>
+<div class="flex justify-between items-center pt-3 border-t border-surface-container">
+<span class="text-sm font-extrabold text-primary">R$ 112,50</span>
+<div class="flex gap-1">
+<div class="w-4 h-4 bg-primary rounded-full animate-bounce"></div>
+<div class="w-4 h-4 bg-primary/40 rounded-full"></div>
+<div class="w-4 h-4 bg-primary/10 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Kanban Card 4 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border-l-4 border-l-primary cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow group opacity-75">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-300 text-sm group-hover:text-zinc-400 transition-colors">drag_indicator</span>
+<span class="text-[10px] font-black text-on-surface-variant">#9400</span>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">PDV</span>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">schedule</span> 15 min
+                            </span>
+</div>
+<h3 class="font-bold text-sm mb-1 text-on-surface">Mariana Costa</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2 mb-3">1x Poke Tradicional, 1x Água s/ Gás</p>
+<div class="flex justify-between items-center pt-3 border-t border-surface-container">
+<span class="text-sm font-extrabold text-primary">R$ 48,00</span>
+<button class="bg-surface-container text-on-surface-variant text-[10px] font-bold px-3 py-1 rounded-full uppercase">Expedir</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Column: Pronto -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<h2 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant">Pronto</h2>
+<span class="text-xs bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant font-bold">00</span>
+</div>
+</div>
+<div class="bg-surface-container-low/50 rounded-2xl p-3 flex flex-col items-center justify-center min-h-[600px] border-2 border-dashed border-outline-variant/30 transition-all group">
+<div class="text-center p-8">
+<div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-zinc-400 text-3xl">restaurant</span>
+</div>
+<p class="text-on-surface-variant font-semibold text-sm">Nenhum pedido pronto</p>
+<p class="text-[10px] text-zinc-400 mt-1 uppercase tracking-tighter">Arraste para cá quando finalizar</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Float Analytics (Bento Style Sidebar) -->
+<div class="fixed right-8 bottom-8 w-80 space-y-4">
+<div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-2xl shadow-black/5 border border-white">
+<h4 class="text-xs font-black uppercase text-on-surface-variant tracking-widest mb-4">Métricas de Hoje</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container rounded-2xl">
+<p class="text-[10px] uppercase font-bold text-zinc-500 mb-1">Pedidos</p>
+<p class="text-2xl font-black text-primary">124</p>
+</div>
+<div class="p-4 bg-surface-container rounded-2xl">
+<p class="text-[10px] uppercase font-bold text-zinc-500 mb-1">Tempo Médio</p>
+<p class="text-2xl font-black text-secondary">18m</p>
+</div>
+</div>
+<div class="mt-4 p-4 bg-gradient-to-br from-tertiary to-tertiary-container rounded-2xl text-white">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold uppercase">Faturamento Live</span>
+<span class="material-symbols-outlined text-sm">trending_up</span>
+</div>
+<p class="text-xl font-black">R$ 4.280,00</p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

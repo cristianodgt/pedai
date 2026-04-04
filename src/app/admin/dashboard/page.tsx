@@ -337,7 +337,22 @@ export default function DashboardPage() {
                 Volume de pedidos por hora (Hoje)
               </p>
             </div>
-            <button className="px-3 py-1 text-xs font-semibold bg-[#edeef0] text-[#191c1e] rounded-lg hover:bg-[#e1e2e4] transition-colors">
+            <button
+              onClick={() => {
+                const rows = [["Hora", "Pedidos"]].concat(
+                  stats.today.byHour.map((v, i) => [`${i}h`, String(v)])
+                );
+                const csv = rows.map((r) => r.join(",")).join("\n");
+                const blob = new Blob([csv], { type: "text/csv" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "pedidos-por-hora.csv";
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="px-3 py-1 text-xs font-semibold bg-[#edeef0] text-[#191c1e] rounded-lg hover:bg-[#e1e2e4] transition-colors"
+            >
               Exportar
             </button>
           </div>
@@ -367,7 +382,10 @@ export default function DashboardPage() {
             <h3 className="text-lg font-bold text-[#191c1e]">
               Top 10 Produtos Mais Vendidos
             </h3>
-            <button className="text-sm font-semibold text-[#a33900] hover:underline">
+            <button
+              onClick={() => window.location.href='/admin/pedidos'}
+              className="text-sm font-semibold text-[#a33900] hover:underline"
+            >
               Ver relatorio completo
             </button>
           </div>

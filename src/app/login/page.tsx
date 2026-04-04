@@ -132,6 +132,7 @@ export default function LoginPage() {
               </div>
               <a
                 href="#"
+                onClick={(e) => { e.preventDefault(); alert("Entre em contato com o administrador do sistema."); }}
                 className="text-xs font-bold text-[#a33900] hover:text-[#cc4900] transition-colors"
               >
                 Esqueci minha senha
@@ -164,6 +165,7 @@ export default function LoginPage() {
               Ainda n&atilde;o tem uma conta?{" "}
               <a
                 href="#"
+                onClick={(e) => { e.preventDefault(); alert("Entre em contato com o administrador para solicitar acesso."); }}
                 className="text-[#a33900] font-bold hover:underline"
               >
                 Solicite acesso

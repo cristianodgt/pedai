@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f3f4f6",
+                    "surface-dim": "#d9dadc",
+                    "tertiary-fixed-dim": "#a4c9ff",
+                    "tertiary": "#005da8",
+                    "on-tertiary-container": "#fdfcff",
+                    "on-surface-variant": "#5a4138",
+                    "on-primary-container": "#fffbff",
+                    "secondary-fixed-dim": "#ffb599",
+                    "on-secondary-fixed-variant": "#793110",
+                    "inverse-on-surface": "#f0f1f3",
+                    "outline": "#8e7166",
+                    "background": "#f8f9fb",
+                    "surface-variant": "#e1e2e4",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e1e2e4",
+                    "secondary-container": "#ff9971",
+                    "on-surface": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#370e00",
+                    "primary-fixed-dim": "#ffb599",
+                    "error-container": "#ffdad6",
+                    "secondary": "#974726",
+                    "tertiary-fixed": "#d4e3ff",
+                    "on-secondary-container": "#772f0f",
+                    "primary": "#a33900",
+                    "outline-variant": "#e2bfb2",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#004883",
+                    "on-primary-fixed-variant": "#7f2b00",
+                    "inverse-primary": "#ffb599",
+                    "primary-container": "#cc4900",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#ffdbce",
+                    "surface-container": "#edeef0",
+                    "on-primary-fixed": "#370e00",
+                    "tertiary-container": "#0076d2",
+                    "on-error": "#ffffff",
+                    "surface": "#f8f9fb",
+                    "surface-bright": "#f8f9fb",
+                    "error": "#ba1a1a",
+                    "on-background": "#191c1e",
+                    "secondary-fixed": "#ffdbce",
+                    "inverse-surface": "#2e3132",
+                    "surface-container-high": "#e7e8ea",
+                    "surface-tint": "#a73a00",
+                    "on-tertiary-fixed": "#001c39"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chat-scroll::-webkit-scrollbar { width: 4px; }
+        .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .tonal-blocks { background-color: #f3f4f6; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased overflow-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-screen w-64 border-r-0 tonal-blocks bg-gray-100 dark:bg-zinc-900 flex flex-col h-full py-6 z-50">
+<div class="px-6 mb-8">
+<h1 class="text-2xl font-black text-orange-600 dark:text-orange-500 tracking-tighter">PedAI</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span>PDV</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Cardápio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-orange-600 dark:text-orange-500 font-bold border-r-4 border-orange-600 bg-orange-50 dark:bg-orange-950/20 transition-all" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span>Mensagens</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Configurações</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="flex items-center gap-3 px-4 py-3 w-full text-zinc-500 dark:text-zinc-400 font-medium hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span>Sair</span>
+</button>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="ml-64 h-screen flex flex-col relative">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-gray-200/50 flex items-center justify-between px-8 py-4">
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-high rounded-xl px-4 py-2 flex items-center gap-3 w-96">
+<span class="material-symbols-outlined text-zinc-400">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full" placeholder="Buscar conversas..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-sm font-semibold text-on-surface">Monitoramento WhatsApp (IA)</span>
+<div class="flex items-center gap-3">
+<button class="p-2 text-zinc-500 hover:text-orange-600 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden">
+<img class="h-full w-full object-cover" data-alt="Professional male restaurant manager with a friendly smile wearing a crisp white shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSlcgn8036y06CwpMkTiGVnXbwnmWMIEeR213FXqomC7GVSAcd3eGkXmrw0S_rMr9U7my-cK8dJQWdAB60bftpHCJzFUDy0cI_STrLTnZuptmY4oS8dJ12RVcYEXp_VyAo5BiQprKGnb4js7P4vewAjxlRCBb45WqwaOzZBaRtH_DrtIyzsj0ymO2y10ubnP55RZM0ybb-QKBttJ_d6alM6kL_t3bP4UPoCZUb1fNUISK2wuFbGj3qOD837MGRdAAhPylcmJrSbIo"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Three Pane Content Area -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Left Column: Conversas -->
+<section class="w-80 flex flex-col bg-surface-container-low">
+<div class="p-4 flex items-center justify-between">
+<h2 class="font-bold text-on-surface uppercase tracking-wider text-xs">Conversas Ativas</h2>
+<span class="bg-primary-container/10 text-primary font-bold text-[10px] px-2 py-0.5 rounded-full">12 NOVAS</span>
+</div>
+<div class="flex-1 overflow-y-auto chat-scroll px-2 space-y-1">
+<!-- Chat Item (Active) -->
+<button class="w-full text-left p-3 rounded-xl bg-surface-container-lowest border-b-2 border-primary/20 transition-all flex gap-3">
+<div class="relative flex-shrink-0">
+<img class="h-12 w-12 rounded-full object-cover" data-alt="Portrait of a young woman with curly hair looking directly at the camera in soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmwMz_vI14WO7EBypBKrlTHhUOQWua89YVmu6C7N3JMjPJIDn7pQoFkN4uBdpsZhA515akume07bDxlQ6_aW6MP6hox-agoFzfz-oPgznkUigMHY558Lr7r9x7j-XUPzxZCj0qQRX6EYyalhqDvoHMVrNFc9DpBmms8n2t07p0hkGGcUAC9z346zkoqBc1dHZQSDWkRCj56Dh0FcOR_CmvbxoWL4g5xUymJlycVVps9nEah5PJjVdG87ENQ-HSm_AF1_uw9P60w5s"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<span class="font-bold text-sm truncate">Beatriz Silveira</span>
+<span class="text-[10px] text-zinc-400">14:20</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate mb-2">Pode confirmar se o pedido já saiu?</p>
+<div class="flex items-center gap-1.5">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">AI Ativo</span>
+<span class="bg-green-100 text-green-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] fill-current">chat</span> WhatsApp
+                                </span>
+</div>
+</div>
+</button>
+<!-- Chat Item 2 -->
+<button class="w-full text-left p-3 rounded-xl hover:bg-surface-container-high transition-all flex gap-3">
+<div class="relative flex-shrink-0">
+<img class="h-12 w-12 rounded-full object-cover grayscale" data-alt="Close up portrait of a smiling middle aged man with glasses and short hair in a bright office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3ix1pfBTZWUz4a5ux2M_k6nnV0E0jbuZq3UBvQh2G8FdiJzHmBSFTEArHkUJ3MsaNomIspQTjPtFUFhJ-IhXObj__PyvJwfa99d5Ot4gcMtkPC-PTN5LEyZSQUqM7_ReECYTlDneyLsIE_5PXTPfNCP96W4yy0C97OmZgF8ya_HGldKXWEhi52PWReQy3ESHgrKwjri4h5ZVskQaO15BBOgqKB1_yZ1--PswGL7lPxdJNoaNsp_MnPbC_R3zbTeyjzLbdWpcbzpA"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<span class="font-bold text-sm truncate">Marcos Andrade</span>
+<span class="text-[10px] text-zinc-400">Ontem</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate mb-2">Obrigado pela atenção!</p>
+<div class="flex items-center gap-1.5">
+<span class="bg-surface-container-high text-on-surface-variant text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Aguardando Humano</span>
+</div>
+</div>
+</button>
+<!-- Chat Item 3 -->
+<button class="w-full text-left p-3 rounded-xl hover:bg-surface-container-high transition-all flex gap-3">
+<div class="relative flex-shrink-0">
+<img class="h-12 w-12 rounded-full object-cover" data-alt="Happy young woman with long dark hair smiling broadly in outdoor sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2hH4C0AlgwJRzOzqZRBdP9JSLzgbmReFijMyO-15DifMCCSsHbMeHwV27jqN_7QaUM4Szfxem151lHcnz1oaToywSXJf5hemyYr5PSF0Q5UESpttDjJ2V0Qsn9BHkaBEgr18_0fphx9BTAGrCztdl9ux3C_TN5EcIkx0YyZtGmtYOHgGCJyrHsY01ODVLhbk_ySPt9v9xf56tNxD9OQgR6y2Qn-XPeuDe_PokpxyeI71k8d7CJmuqYshOVveRZi-BaaVoTQROVNI"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<span class="font-bold text-sm truncate">Juliana Costa</span>
+<span class="text-[10px] text-zinc-400">10:45</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate mb-2">Qual o valor da taxa de entrega para o centro?</p>
+<div class="flex items-center gap-1.5">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">AI Ativo</span>
+</div>
+</div>
+</button>
+</div>
+</section>
+<!-- Center Column: Chat -->
+<section class="flex-1 flex flex-col bg-surface-container-lowest relative z-10">
+<!-- Chat Header -->
+<div class="px-6 py-4 flex items-center justify-between border-b border-surface-container">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full bg-surface-container overflow-hidden">
+<img class="h-full w-full object-cover" data-alt="Portrait of Beatriz Silveira, client, young woman with curly hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKAsaMUk67lVKpOlnpM9JL1rBes3oZ-kX5V0Q8ssG4Ed3a2t2PCtEgaPbVYmhooxWtlQjLpnMtze1WLoDyZMt4cotOgzc6vwd3vQSNW6Tsm9aOaXU19JlrtECa7jAtMmcApnsxe1hT9aqsv2V4FdJmkwi1wc8wx2BGi06rocGAK1R-c3iwha4PZO4R4ybZYXYR1tvM_tjretW45w9_Q9Md84tuoA5w7VUx79v7AMckIejlKj6fdDBEFtrRMgNwYql_Bg94pJIjJBY"/>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">Beatriz Silveira</h3>
+<p class="text-xs text-on-surface-variant flex items-center gap-1">
+                                (11) 98765-4321 • <span class="text-green-600 font-bold uppercase tracking-tighter">WhatsApp Business</span>
+</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined text-zinc-500">search</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined text-zinc-500">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Messages -->
+<div class="flex-1 overflow-y-auto chat-scroll p-6 space-y-6">
+<div class="flex justify-center">
+<span class="text-[10px] font-bold bg-surface-container px-3 py-1 rounded-full text-zinc-500 uppercase tracking-widest">Hoje</span>
+</div>
+<!-- Cliente Message -->
+<div class="flex flex-col items-start max-w-[80%]">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-[10px] font-bold text-zinc-400 uppercase">Cliente</span>
+<span class="text-[9px] text-zinc-300">14:15</span>
+</div>
+<div class="bg-surface-container text-on-surface p-4 rounded-2xl rounded-tl-none leading-relaxed text-sm">
+                            Olá, fiz um pedido há 40 minutos e ainda não recebi atualização. Poderia verificar?
+                        </div>
+</div>
+<!-- IA Message -->
+<div class="flex flex-col items-end ml-auto max-w-[80%]">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-[10px] font-bold text-primary uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">smart_toy</span> IA PedAI
+                            </span>
+<span class="text-[9px] text-zinc-300">14:15</span>
+</div>
+<div class="bg-primary text-white p-4 rounded-2xl rounded-tr-none leading-relaxed text-sm shadow-md shadow-primary/10">
+                            Olá, Beatriz! Verifiquei aqui no sistema. Seu pedido <span class="font-bold underline">#PED000001</span> já foi preparado e está em rota de entrega com nosso motoboy João. Previsão de chegada em 12 minutos!
+                        </div>
+</div>
+<!-- Cliente Message -->
+<div class="flex flex-col items-start max-w-[80%]">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-[10px] font-bold text-zinc-400 uppercase">Cliente</span>
+<span class="text-[9px] text-zinc-300">14:20</span>
+</div>
+<div class="bg-surface-container text-on-surface p-4 rounded-2xl rounded-tl-none leading-relaxed text-sm">
+                            Pode confirmar se o pedido já saiu mesmo? Aqui no app ainda aparece "Em Preparação".
+                        </div>
+</div>
+<!-- Pending AI Reply (Typing) -->
+<div class="flex items-center gap-2 text-primary animate-pulse">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+<span class="text-xs font-semibold">IA está analisando...</span>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-4 bg-surface-container-lowest border-t border-surface-container">
+<div class="bg-surface-container rounded-2xl p-2 flex items-end gap-2">
+<button class="p-2 text-zinc-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<textarea class="flex-1 bg-transparent border-none focus:ring-0 resize-none py-2 text-sm chat-scroll" placeholder="Escreva uma mensagem..." rows="1"></textarea>
+<button class="p-2 bg-primary text-white rounded-xl hover:scale-105 transition-all shadow-sm">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Right Column: Detalhes -->
+<section class="w-80 border-l border-surface-container bg-surface-container-low overflow-y-auto chat-scroll">
+<div class="p-6 space-y-8">
+<!-- Customer Profile Card -->
+<div class="text-center">
+<div class="relative inline-block mb-4">
+<img class="h-24 w-24 rounded-3xl object-cover shadow-xl border-4 border-white" data-alt="Portrait of Beatriz Silveira, client" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNyVXLCV4LlZotuI3awaGt0Yeu3i0cA2VQweuRt4prosyCV0dl8javJm-d-OSuiG00KYJsqX-Lw5czUr6Vl7BXKICg8eARk_xhGiu81xFfinD6l3XAAZNyGv5_0JjtFwijrsXX2865MkngpSGEZ-wtb6ZsOABf9wsmWabrLrT9eItlMSv1pShJudqSeFAn56-2Q_VYuG0smj4-gquzZDYU7nODhZCGexOt2yN2U3szTT5Ic4NRB9N7OPnyEYMuVRZbl8cx3gmPKnc"/>
+<div class="absolute -bottom-2 -right-2 bg-green-500 text-white p-1.5 rounded-full border-4 border-surface-container-low">
+<span class="material-symbols-outlined text-sm block">verified</span>
+</div>
+</div>
+<h4 class="font-black text-lg text-on-surface tracking-tight">Beatriz Silveira</h4>
+<p class="text-xs text-on-surface-variant font-medium">(11) 98765-4321</p>
+</div>
+<!-- Customer Info -->
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary text-sm">location_on</span>
+<span class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Endereço</span>
+</div>
+<p class="text-xs text-on-surface font-medium leading-relaxed">Rua das Flores, 123 - Apto 45<br/>Vila Mariana, São Paulo - SP</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary text-sm">shopping_bag</span>
+<span class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Último Pedido</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-on-surface">#PED000001</span>
+<span class="bg-orange-100 text-orange-700 text-[9px] font-bold px-2 py-0.5 rounded-full">EM ROTA</span>
+</div>
+</div>
+</div>
+<!-- AI Controls -->
+<div class="space-y-4 pt-4 border-t border-surface-container-high">
+<div class="flex items-center justify-between p-4 bg-tertiary-fixed rounded-2xl">
+<div>
+<p class="text-[10px] font-bold text-on-tertiary-fixed-variant uppercase tracking-widest mb-0.5">Assistente IA</p>
+<p class="text-sm font-bold text-on-tertiary-fixed">IA Ativa</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-zinc-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="w-full py-4 bg-primary hover:bg-primary-container text-white font-black text-sm uppercase tracking-widest rounded-2xl shadow-lg shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">pan_tool</span>
+                            Intervir agora
+                        </button>
+<p class="text-[10px] text-center text-zinc-400 font-medium px-4">
+                            Ao intervir, a IA será desativada temporariamente para este atendimento.
+                        </p>
+</div>
+<!-- History Graph / Analytics (Bento style) -->
+<div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Satisfação Cliente</span>
+<span class="text-green-600 font-bold text-xs">94%</span>
+</div>
+<div class="flex items-end gap-1 h-12">
+<div class="w-full bg-green-100 h-1/2 rounded-t-sm"></div>
+<div class="w-full bg-green-200 h-2/3 rounded-t-sm"></div>
+<div class="w-full bg-green-300 h-3/4 rounded-t-sm"></div>
+<div class="w-full bg-green-400 h-full rounded-t-sm"></div>
+<div class="w-full bg-green-500 h-5/6 rounded-t-sm"></div>
+<div class="w-full bg-green-300 h-1/2 rounded-t-sm"></div>
+<div class="w-full bg-green-200 h-1/3 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

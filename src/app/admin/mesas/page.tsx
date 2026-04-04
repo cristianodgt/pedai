@@ -201,6 +201,9 @@ function TableCard({
 export default function MesasPage() {
   const [tables, setTables] = useState<Table[]>(initialTables);
   const [activeArea, setActiveArea] = useState("Salão Principal");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newTableNumber, setNewTableNumber] = useState("");
+  const [comandaTableId, setComandaTableId] = useState<number | null>(null);
 
   /* derived KPIs */
   const livres = tables.filter((t) => t.status === "LIVRE").length;
@@ -211,6 +214,10 @@ export default function MesasPage() {
 
   /* actions */
   function handleAction(id: number, action: string) {
+    if (action === "comanda") {
+      setComandaTableId(id);
+      return;
+    }
     setTables((prev) =>
       prev.map((t) => {
         if (t.id !== id) return t;
@@ -222,11 +229,6 @@ export default function MesasPage() {
               amount: 0,
               timer: "00h 00m",
             };
-          case "comanda":
-            return {
-              ...t,
-              status: "FECHAMENTO" as TableStatus,
-            };
           case "fechar":
             return {
               ...t,
@@ -234,12 +236,28 @@ export default function MesasPage() {
               amount: undefined,
               timer: undefined,
             };
+          case "payment":
+            return {
+              ...t,
+              status: "FECHAMENTO" as TableStatus,
+            };
           default:
             return t;
         }
       })
     );
   }
+
+  function handleAddTable() {
+    const num = parseInt(newTableNumber, 10);
+    if (!num || num <= 0) return;
+    const newId = Math.max(...tables.map((t) => t.id)) + 1;
+    setTables((prev) => [...prev, { id: newId, number: num, status: "LIVRE" }]);
+    setNewTableNumber("");
+    setShowAddModal(false);
+  }
+
+  const comandaTable = tables.find((t) => t.id === comandaTableId);
 
   /* team avatars (mock initials) */
   const teamMembers = ["RC", "JS", "ML", "AF"];
@@ -375,7 +393,7 @@ export default function MesasPage() {
               </p>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-[#a33900] border border-[#e2bfb2] rounded-full hover:bg-[#a33900] hover:text-white transition-colors">
+          <button onClick={() => window.print()} className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-[#a33900] border border-[#e2bfb2] rounded-full hover:bg-[#a33900] hover:text-white transition-colors">
             <Printer className="w-4 h-4" />
             Imprimir Mapa
           </button>
@@ -383,9 +401,94 @@ export default function MesasPage() {
       </div>
 
       {/* ---- FAB BUTTON ---- */}
-      <button className="fixed bottom-8 right-8 w-16 h-16 bg-[#a33900] text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-[#cc4900] transition-colors z-50">
+      <button
+        onClick={() => setShowAddModal(true)}
+        className="fixed bottom-8 right-8 w-16 h-16 bg-[#a33900] text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-[#cc4900] transition-colors z-50"
+      >
         <Plus className="w-7 h-7" />
       </button>
+
+      {/* ---- ADD TABLE MODAL ---- */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
+            <h2 className="text-lg font-bold text-[#191c1e] mb-4">Adicionar Mesa</h2>
+            <label className="block text-sm font-semibold text-[#5a4138] mb-2">
+              Número da Mesa
+            </label>
+            <input
+              type="number"
+              min={1}
+              value={newTableNumber}
+              onChange={(e) => setNewTableNumber(e.target.value)}
+              placeholder="Ex: 11"
+              className="w-full px-4 py-3 border border-[#e2bfb2] rounded-xl text-[#191c1e] outline-none focus:border-[#a33900] mb-6"
+              autoFocus
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={() => { setShowAddModal(false); setNewTableNumber(""); }}
+                className="flex-1 py-2.5 rounded-full border border-[#e2bfb2] text-[#5a4138] font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleAddTable}
+                className="flex-1 py-2.5 rounded-full bg-[#a33900] text-white font-semibold hover:bg-[#cc4900] transition-colors"
+              >
+                Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ---- COMANDA MODAL ---- */}
+      {comandaTableId !== null && comandaTable && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
+            <h2 className="text-lg font-bold text-[#191c1e] mb-1">
+              Comanda — Mesa {pad(comandaTable.number)}
+            </h2>
+            <p className="text-xs text-[#5a4138] mb-5">Em atendimento</p>
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between text-sm">
+                <span className="text-[#191c1e] font-medium">1x Prato Principal</span>
+                <span className="font-bold">R$ 45,00</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-[#191c1e] font-medium">2x Bebida</span>
+                <span className="font-bold">R$ 18,00</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-[#191c1e] font-medium">1x Sobremesa</span>
+                <span className="font-bold">R$ 22,00</span>
+              </div>
+              <div className="border-t border-[#edeef0] pt-3 flex justify-between font-bold text-[#191c1e]">
+                <span>Total</span>
+                <span>{comandaTable.amount !== undefined && comandaTable.amount > 0 ? currency(comandaTable.amount) : "R$ 85,00"}</span>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setComandaTableId(null)}
+                className="flex-1 py-2.5 rounded-full border border-[#e2bfb2] text-[#5a4138] font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Fechar
+              </button>
+              <button
+                onClick={() => {
+                  handleAction(comandaTableId, "payment");
+                  setComandaTableId(null);
+                }}
+                className="flex-1 py-2.5 rounded-full bg-[#a33900] text-white font-semibold hover:bg-[#cc4900] transition-colors"
+              >
+                Fechar Conta
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

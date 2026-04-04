@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#191c1e",
+                    "tertiary-container": "#0076d2",
+                    "on-primary-container": "#fffbff",
+                    "on-surface-variant": "#5a4138",
+                    "inverse-surface": "#2e3132",
+                    "tertiary-fixed-dim": "#a4c9ff",
+                    "background": "#f8f9fb",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#d9dadc",
+                    "on-secondary-fixed-variant": "#793110",
+                    "inverse-primary": "#ffb599",
+                    "surface": "#f8f9fb",
+                    "on-primary-fixed-variant": "#7f2b00",
+                    "tertiary-fixed": "#d4e3ff",
+                    "primary-fixed": "#ffdbce",
+                    "surface-container-low": "#f3f4f6",
+                    "primary-fixed-dim": "#ffb599",
+                    "on-tertiary-fixed-variant": "#004883",
+                    "surface-container": "#edeef0",
+                    "surface-container-high": "#e7e8ea",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#ff9971",
+                    "tertiary": "#005da8",
+                    "primary-container": "#cc4900",
+                    "outline": "#8e7166",
+                    "surface-container-highest": "#e1e2e4",
+                    "on-tertiary-fixed": "#001c39",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb599",
+                    "secondary": "#974726",
+                    "on-surface": "#191c1e",
+                    "surface-tint": "#a73a00",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#f8f9fb",
+                    "on-tertiary-container": "#fdfcff",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f0f1f3",
+                    "secondary-fixed": "#ffdbce",
+                    "on-primary-fixed": "#370e00",
+                    "on-secondary-fixed": "#370e00",
+                    "surface-variant": "#e1e2e4",
+                    "primary": "#a33900",
+                    "outline-variant": "#e2bfb2",
+                    "on-secondary-container": "#772f0f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-blocks { background-color: #f3f4f6; }
+    </style>
+</head>
+<body class="bg-surface-container-low font-body text-on-surface antialiased">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-screen w-64 border-r-0 bg-gray-100 dark:bg-zinc-900 flex flex-col py-6">
+<div class="px-6 mb-10">
+<h1 class="text-2xl font-black text-orange-600 dark:text-orange-500 tracking-tighter">PedAI</h1>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="point_of_sale">point_of_sale</span>
+<span>PDV</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span>Cardápio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-orange-600 dark:text-orange-500 font-bold border-r-4 border-orange-600 bg-orange-50 dark:bg-orange-950/20" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Configurações</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 font-medium hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sair</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="sticky top-0 z-40 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-zinc-800/50 flex items-center justify-between px-8 py-4">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-sm">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-high border-none rounded-full text-sm focus:ring-2 focus:ring-primary" placeholder="Buscar configurações..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-zinc-500 hover:text-orange-500 transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="flex items-center gap-3">
+<span class="text-sm font-semibold text-on-surface">Admin Restaurante</span>
+<img alt="Restaurant Logo" class="w-8 h-8 rounded-full bg-surface-container" data-alt="Professional headshot of a restaurant manager in a clean white uniform smiling at the camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeI1ygEbSFUREScbVqXiBmy1zfAdU4QlE8vS4Uzwh0RUfMyRPdw_aj3d82bVjRMfDXT7QeJ9a6UobfZl-PIW4SqegRBpDVZowKy1Zcio9uIaKqIs-F245YyPrItaoeXV8QZgDjUHVKQFS2VRylBOF6O2fSr6Pj9w8TWbDT24_zxBXq-ZwExXtJKfX-vY2zu5a45SVbUGBU7Izw9MFExx_s9jJSSeX0_O4kHO7Cu-uEz8hVmKEQ6Hiy232szjCUEYZgA4aUnMA3E08"/>
+</div>
+</div>
+</header>
+<!-- Content Page -->
+<div class="p-8 max-w-6xl mx-auto space-y-8">
+<div class="flex flex-col gap-1">
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface">Configurações do Sistema</h2>
+<p class="text-on-surface-variant body-md">Gerencie os dados vitais e operacionais do seu restaurante.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Section: Dados do Restaurante (Editorial Style) -->
+<section class="md:col-span-7 bg-surface-container-lowest rounded-full p-8 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="storefront">storefront</span>
+<h3 class="headline-sm font-bold">Dados do Restaurante</h3>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="space-y-1">
+<label class="label-md font-semibold text-on-surface-variant">Nome de Identificação (Slug)</label>
+<div class="flex">
+<span class="inline-flex items-center px-4 rounded-l-xl border-none bg-surface-container text-zinc-500 text-sm">pedai.com/</span>
+<input class="flex-1 border-none bg-surface-container-high rounded-r-xl focus:ring-2 focus:ring-primary text-sm p-3" type="text" value="artisan-burger-house"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="label-md font-semibold text-on-surface-variant">WhatsApp Comercial</label>
+<input class="w-full border-none bg-surface-container-high rounded-xl focus:ring-2 focus:ring-primary text-sm p-3" type="text" value="(11) 98765-4321"/>
+</div>
+<div class="space-y-1">
+<label class="label-md font-semibold text-on-surface-variant">E-mail de Contato</label>
+<input class="w-full border-none bg-surface-container-high rounded-xl focus:ring-2 focus:ring-primary text-sm p-3" type="email" value="contato@artisanburger.com"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="label-md font-semibold text-on-surface-variant">Endereço Completo</label>
+<textarea class="w-full border-none bg-surface-container-high rounded-xl focus:ring-2 focus:ring-primary text-sm p-3" rows="2">Av. Paulista, 1000 - Bela Vista, São Paulo - SP, 01310-100</textarea>
+</div>
+</div>
+</section>
+<!-- Section: Horários de Funcionamento (Glassmorphism inspired) -->
+<section class="md:col-span-5 bg-surface-container-lowest rounded-full p-8 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="schedule">schedule</span>
+<h3 class="headline-sm font-bold">Horários</h3>
+</div>
+<div class="space-y-4">
+<!-- Toggle Row Item -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low">
+<span class="text-sm font-medium">Segunda-feira</span>
+<div class="flex items-center gap-4">
+<span class="text-xs text-on-surface-variant">18:00 - 23:00</span>
+<button class="w-10 h-5 bg-primary rounded-full relative transition-colors">
+<span class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low">
+<span class="text-sm font-medium">Terça-feira</span>
+<div class="flex items-center gap-4">
+<span class="text-xs text-on-surface-variant">18:00 - 23:00</span>
+<button class="w-10 h-5 bg-primary rounded-full relative transition-colors">
+<span class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low">
+<span class="text-sm font-medium">Quarta-feira</span>
+<div class="flex items-center gap-4">
+<span class="text-xs text-on-surface-variant">18:00 - 23:00</span>
+<button class="w-10 h-5 bg-primary rounded-full relative transition-colors">
+<span class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low opacity-60">
+<span class="text-sm font-medium">Quinta-feira</span>
+<div class="flex items-center gap-4">
+<span class="text-xs text-on-surface-variant italic">Fechado</span>
+<button class="w-10 h-5 bg-surface-dim rounded-full relative transition-colors">
+<span class="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low">
+<span class="text-sm font-medium">Sexta-feira</span>
+<div class="flex items-center gap-4">
+<span class="text-xs text-on-surface-variant">18:00 - 01:00</span>
+<button class="w-10 h-5 bg-primary rounded-full relative transition-colors">
+<span class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Entrega (Taxas por Bairro) -->
+<section class="md:col-span-6 bg-surface-container-lowest rounded-full p-8 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+<h3 class="headline-sm font-bold">Taxas de Entrega</h3>
+</div>
+<button class="bg-primary-fixed text-on-primary-fixed px-4 py-2 rounded-full text-xs font-bold hover:opacity-90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Adicionar Bairro
+                        </button>
+</div>
+<div class="space-y-1">
+<div class="grid grid-cols-12 gap-4 px-4 py-2 border-b border-outline-variant/10 text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+<div class="col-span-7">Bairro</div>
+<div class="col-span-3 text-right">Taxa</div>
+<div class="col-span-2"></div>
+</div>
+<!-- List Item -->
+<div class="grid grid-cols-12 gap-4 items-center px-4 py-3 hover:bg-surface-container-low transition-colors rounded-xl">
+<div class="col-span-7 text-sm font-medium">Bela Vista</div>
+<div class="col-span-3 text-right text-sm font-bold text-primary">R$ 5,00</div>
+<div class="col-span-2 text-right">
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-4 items-center px-4 py-3 hover:bg-surface-container-low transition-colors rounded-xl">
+<div class="col-span-7 text-sm font-medium">Jardim Paulista</div>
+<div class="col-span-3 text-right text-sm font-bold text-primary">R$ 8,00</div>
+<div class="col-span-2 text-right">
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-4 items-center px-4 py-3 hover:bg-surface-container-low transition-colors rounded-xl">
+<div class="col-span-7 text-sm font-medium">Consolação</div>
+<div class="col-span-3 text-right text-sm font-bold text-primary">Grátis</div>
+<div class="col-span-2 text-right">
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Integrações (Dev Focused) -->
+<section class="md:col-span-6 bg-surface-container-lowest rounded-full p-8 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="integration_instructions">integration_instructions</span>
+<h3 class="headline-sm font-bold">Integrações &amp; API</h3>
+</div>
+<div class="space-y-6">
+<div class="p-5 rounded-2xl bg-surface-container border-l-4 border-primary">
+<div class="flex items-center justify-between mb-2">
+<span class="label-md font-bold text-on-surface">n8n Webhook</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold">ATIVO</span>
+</div>
+<div class="relative group">
+<input class="w-full bg-surface-container-high border-none rounded-lg text-xs font-mono p-3 pr-10" readonly="" type="text" value="https://n8n.seurestaurante.com/webhook/orders-sync"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<div class="space-y-4">
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<label class="label-md font-semibold text-on-surface-variant">Chave de API (Master)</label>
+<button class="text-xs text-primary font-bold hover:underline">Regerar Chave</button>
+</div>
+<div class="relative">
+<input class="w-full border-none bg-surface-container-high rounded-xl focus:ring-2 focus:ring-primary text-sm p-3" type="password" value="sk_live_pedai_782394523hdksjfh238"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400">
+<span class="material-symbols-outlined text-sm">visibility_off</span>
+</button>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/10">
+<button class="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-outline text-on-surface-variant hover:bg-surface-container transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-sm">add_link</span>
+                                Conectar nova ferramenta
+                            </button>
+</div>
+</div>
+</section>
+</div>
+<!-- Action Bar -->
+<div class="flex items-center justify-end gap-4 pt-6 border-t border-outline-variant/20">
+<button class="px-8 py-3 rounded-full text-on-surface-variant font-bold hover:bg-surface-container transition-all">Descartar</button>
+<button class="px-10 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-full font-bold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">Salvar Alterações</button>
+</div>
+</div>
+</main>
+<!-- Contextual FAB Suppression: No FAB on Settings Page -->
+</body></html>

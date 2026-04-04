@@ -80,6 +80,7 @@ export default function CardapioPage() {
   const [itemPrice, setItemPrice] = useState("");
   const [itemChannels, setItemChannels] = useState<string[]>(["WHATSAPP", "PDV"]);
   const [itemImage, setItemImage] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const [saving, setSaving] = useState(false);
 
@@ -180,6 +181,7 @@ export default function CardapioPage() {
     setItemPrice("");
     setItemChannels(["WHATSAPP", "PDV"]);
     setItemImage("");
+    setUploadingImage(false);
     setItemModal(true);
   };
 
@@ -191,8 +193,26 @@ export default function CardapioPage() {
     setItemPrice(String(item.price));
     setItemChannels(item.channels);
     setItemImage(item.image || "");
+    setUploadingImage(false);
     setItemModal(true);
   };
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImage(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      if (res.ok) {
+        const { url } = await res.json();
+        setItemImage(url);
+      }
+    } finally {
+      setUploadingImage(false);
+    }
+  }
 
   const saveItem = async () => {
     if (!itemName.trim() || !itemPrice) return;
@@ -940,25 +960,25 @@ export default function CardapioPage() {
 
               <div>
                 <label className="block text-sm font-medium mb-2 text-[#5a4138]">
-                  Imagem (URL)
+                  Imagem
                 </label>
-                <div className="flex gap-3 items-center">
-                  <input
-                    type="url"
-                    value={itemImage}
-                    onChange={(e) => setItemImage(e.target.value)}
-                    placeholder="https://exemplo.com/foto-do-item.jpg"
-                    className="flex-1 h-12 px-4 rounded-xl outline-none text-sm transition bg-[#e7e8ea] text-[#191c1e] border-b-2 border-b-transparent focus:border-b-[#a33900] placeholder:text-zinc-400"
-                  />
+                <div className="border-2 border-dashed border-[#e2bfb2] rounded-xl p-4 text-center cursor-pointer hover:border-[#a33900] transition-colors">
+                  <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" id="image-upload" />
+                  <label htmlFor="image-upload" className="cursor-pointer flex flex-col items-center gap-2">
+                    {uploadingImage ? (
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#a33900]" />
+                    ) : itemImage ? (
+                      <img src={itemImage} className="w-20 h-20 object-cover rounded-xl" alt="Preview" />
+                    ) : (
+                      <>
+                        <Upload size={24} className="text-[#5a4138] opacity-50" />
+                        <span className="text-sm text-[#5a4138]">Clique para enviar foto</span>
+                        <span className="text-xs text-zinc-400">JPG, PNG, WebP — máx 5MB</span>
+                      </>
+                    )}
+                  </label>
                   {itemImage && (
-                    <div className="w-12 h-12 rounded-xl bg-[#edeef0] overflow-hidden shrink-0">
-                      <img
-                        src={itemImage}
-                        alt="Preview"
-                        className="w-full h-full object-cover"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                      />
-                    </div>
+                    <button onClick={() => setItemImage("")} className="mt-2 text-xs text-[#ba1a1a] hover:underline">Remover imagem</button>
                   )}
                 </div>
               </div>

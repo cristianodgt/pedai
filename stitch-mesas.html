@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-container": "#fffbff",
+                      "tertiary-fixed-dim": "#a4c9ff",
+                      "secondary-fixed": "#ffdbce",
+                      "primary-fixed": "#ffdbce",
+                      "tertiary-fixed": "#d4e3ff",
+                      "surface-container": "#edeef0",
+                      "on-secondary": "#ffffff",
+                      "secondary": "#974726",
+                      "surface-container-high": "#e7e8ea",
+                      "outline": "#8e7166",
+                      "on-secondary-container": "#772f0f",
+                      "on-surface-variant": "#5a4138",
+                      "on-tertiary-fixed-variant": "#004883",
+                      "on-secondary-fixed": "#370e00",
+                      "on-tertiary-container": "#fdfcff",
+                      "surface-dim": "#d9dadc",
+                      "surface": "#f8f9fb",
+                      "tertiary": "#005da8",
+                      "primary": "#a33900",
+                      "primary-container": "#cc4900",
+                      "surface-bright": "#f8f9fb",
+                      "on-surface": "#191c1e",
+                      "background": "#f8f9fb",
+                      "surface-container-lowest": "#ffffff",
+                      "error": "#ba1a1a",
+                      "inverse-on-surface": "#f0f1f3",
+                      "tertiary-container": "#0076d2",
+                      "inverse-primary": "#ffb599",
+                      "on-primary-fixed": "#370e00",
+                      "on-error-container": "#93000a",
+                      "secondary-container": "#ff9971",
+                      "surface-tint": "#a73a00",
+                      "on-secondary-fixed-variant": "#793110",
+                      "primary-fixed-dim": "#ffb599",
+                      "on-primary-fixed-variant": "#7f2b00",
+                      "outline-variant": "#e2bfb2",
+                      "surface-container-low": "#f3f4f6",
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "inverse-surface": "#2e3132",
+                      "surface-container-highest": "#e1e2e4",
+                      "on-tertiary-fixed": "#001c39",
+                      "secondary-fixed-dim": "#ffb599",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#e1e2e4",
+                      "on-background": "#191c1e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Inter"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .status-pulse {
+            animation: pulse-orange 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-orange {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body">
+<!-- Sidebar Navigation (Mandatory Shared Component) -->
+<aside class="fixed left-0 h-full w-64 bg-slate-50 dark:bg-slate-950 flex flex-col py-6 px-4 gap-4 z-40">
+<div class="flex items-center gap-3 px-2 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div>
+<h2 class="font-bold text-orange-600 leading-tight">PedAI Terminal</h2>
+<p class="text-xs text-on-surface-variant">Main Kitchen</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-orange-500 hover:translate-x-1 transition-transform duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined">restaurant</span>
+                Live Orders
+            </a>
+<!-- Active State: Dine-in -->
+<a class="flex items-center gap-3 px-4 py-3 text-orange-700 dark:text-orange-400 bg-white dark:bg-slate-900 rounded-lg shadow-sm font-bold hover:translate-x-1 transition-transform duration-200 text-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">table_restaurant</span>
+                Dine-in
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-orange-500 hover:translate-x-1 transition-transform duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-orange-500 hover:translate-x-1 transition-transform duration-200 text-sm font-medium" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Inventory
+            </a>
+</nav>
+<button class="mt-4 bg-primary text-white py-3 px-4 rounded-full font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+            New Manual Order
+        </button>
+<div class="mt-auto flex flex-col gap-1 border-t border-outline-variant/10 pt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-orange-500 text-sm font-medium" href="#">
+<span class="material-symbols-outlined">help</span>
+                Help
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-orange-500 text-sm font-medium" href="#">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Top App Bar (Mandatory Shared Component) -->
+<header class="fixed top-0 left-64 right-0 h-16 bg-white/80 backdrop-blur-md z-30 flex justify-between items-center px-8 shadow-sm">
+<div class="flex items-center gap-4">
+<h1 class="text-2xl font-black tracking-tighter text-orange-600">Dine-in</h1>
+<div class="h-6 w-px bg-outline-variant/30"></div>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 rounded-full text-sm font-bold bg-white text-orange-600 shadow-sm border border-orange-100">Salão Principal</button>
+<button class="px-4 py-1.5 rounded-full text-sm font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">Varanda</button>
+<button class="px-4 py-1.5 rounded-full text-sm font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">VIP</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container rounded-full cursor-pointer transition-colors">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</div>
+<span class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container rounded-full cursor-pointer transition-colors">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="Professional restaurant manager portrait with a friendly expression in a modern kitchen setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAZHo3_yp-7XTxjJk4cDtn1jYBPEKD5hA0iti8KOowZmFwt74__U4490lH3TkrTBnB4vBG0kPYDpSZenXzKSZpzvIjuJsHMme10wA9z2lkESfhv9IL2nqgpwXmwNqEiBC82gH8Muczk-xWT4urxXyMOVweWIAERU2kjIfUrBXptskeoA5iHU1Sp3WlSfZn5xff30cLDaKeDD3TlZP3Q0lr1ugr7z9sFifAfehuaH3BTiT3j0mVIOSYTIfqy4wBUOKaD6lYjQlT3g0"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 pt-20 p-8 min-h-screen">
+<!-- Summary Stats Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<div class="bg-surface-container-lowest p-6 rounded-full shadow-sm flex items-center justify-between">
+<div>
+<p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Mesas Livres</p>
+<p class="text-3xl font-black text-on-surface">12</p>
+</div>
+<div class="w-12 h-12 bg-surface-container-low rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">event_seat</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-full shadow-sm flex items-center justify-between">
+<div>
+<p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Ocupadas</p>
+<p class="text-3xl font-black text-primary">08</p>
+</div>
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-full shadow-sm flex items-center justify-between">
+<div>
+<p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Aguardando Pgto</p>
+<p class="text-3xl font-black text-secondary">03</p>
+</div>
+<div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">payments</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-full shadow-sm flex items-center justify-between border-l-4 border-primary">
+<div>
+<p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Ocupação</p>
+<p class="text-3xl font-black text-on-surface">64%</p>
+</div>
+<div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">pie_chart</span>
+</div>
+</div>
+</div>
+<!-- Table Grid Section -->
+<div class="bg-surface-container-low p-8 rounded-full">
+<div class="flex justify-between items-center mb-8">
+<h3 class="text-lg font-bold text-on-surface">Mapa de Mesas — Salão Principal</h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+<div class="w-3 h-3 rounded-full border border-outline"></div> Livre
+                    </div>
+<div class="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+<div class="w-3 h-3 rounded-full bg-primary"></div> Ocupada
+                    </div>
+<div class="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+<div class="w-3 h-3 rounded-full bg-secondary-container"></div> Pagamento
+                    </div>
+<div class="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+<div class="w-3 h-3 rounded-full bg-surface-dim"></div> Limpeza
+                    </div>
+</div>
+</div>
+<!-- Table Map Grid (Asymmetric/Bento style layout) -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+<!-- Table Card: Occupied -->
+<div class="group bg-primary text-white p-6 rounded-full shadow-lg relative overflow-hidden transition-all hover:scale-[1.02]">
+<div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-8 -mt-8"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<span class="text-3xl font-black">01</span>
+<span class="material-symbols-outlined text-white/80">group</span>
+</div>
+<div class="space-y-1 mb-6 relative z-10">
+<p class="text-xs font-bold uppercase tracking-widest text-white/80">Ocupada</p>
+<p class="text-xl font-bold">R$ 342,90</p>
+<p class="text-xs text-white/70 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 01h 15m
+                        </p>
+</div>
+<button class="w-full bg-white/20 backdrop-blur-md py-2 rounded-full text-sm font-bold hover:bg-white/30 transition-colors">
+                        Ver Comanda
+                    </button>
+</div>
+<!-- Table Card: Free -->
+<div class="group bg-surface-container-lowest border-2 border-dashed border-outline-variant/50 p-6 rounded-full hover:border-primary/50 transition-all hover:shadow-md cursor-pointer flex flex-col justify-center items-center text-center">
+<span class="text-3xl font-black text-on-surface-variant mb-2">02</span>
+<p class="text-xs font-bold uppercase text-on-surface-variant mb-4">Livre</p>
+<button class="w-full bg-surface-container-low text-on-surface-variant py-2 rounded-full text-sm font-bold group-hover:bg-primary group-hover:text-white transition-all">
+                        Abrir Mesa
+                    </button>
+</div>
+<!-- Table Card: Awaiting Payment -->
+<div class="bg-secondary-container text-on-secondary-container p-6 rounded-full shadow-md status-pulse">
+<div class="flex justify-between items-start mb-4">
+<span class="text-3xl font-black">03</span>
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="space-y-1 mb-6">
+<p class="text-xs font-bold uppercase tracking-widest text-on-secondary-fixed-variant">Fechamento</p>
+<p class="text-xl font-bold">R$ 189,00</p>
+<p class="text-xs text-on-secondary-fixed-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">notifications_active</span> Aguardando
+                        </p>
+</div>
+<button class="w-full bg-on-secondary-container text-white py-2 rounded-full text-sm font-bold hover:opacity-90 transition-opacity">
+                        Fechar Conta
+                    </button>
+</div>
+<!-- Table Card: Occupied -->
+<div class="bg-primary text-white p-6 rounded-full shadow-lg transition-all hover:scale-[1.02]">
+<div class="flex justify-between items-start mb-4">
+<span class="text-3xl font-black">04</span>
+<span class="material-symbols-outlined text-white/80">group</span>
+</div>
+<div class="space-y-1 mb-6">
+<p class="text-xs font-bold uppercase tracking-widest text-white/80">Ocupada</p>
+<p class="text-xl font-bold">R$ 1.205,40</p>
+<p class="text-xs text-white/70 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 02h 40m
+                        </p>
+</div>
+<button class="w-full bg-white/20 backdrop-blur-md py-2 rounded-full text-sm font-bold hover:bg-white/30 transition-colors">
+                        Ver Comanda
+                    </button>
+</div>
+<!-- Table Card: Cleaning -->
+<div class="bg-surface-dim text-on-surface-variant p-6 rounded-full opacity-80 border border-outline-variant/20">
+<div class="flex justify-between items-start mb-4">
+<span class="text-3xl font-black">05</span>
+<span class="material-symbols-outlined">cleaning_services</span>
+</div>
+<div class="space-y-1 mb-6">
+<p class="text-xs font-bold uppercase tracking-widest">Limpeza</p>
+<p class="text-xl font-bold">—</p>
+<p class="text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">sync</span> Em andamento
+                        </p>
+</div>
+<button class="w-full bg-on-surface-variant/10 py-2 rounded-full text-sm font-bold cursor-not-allowed">
+                        Aguarde
+                    </button>
+</div>
+<!-- Repeating for Grid density -->
+<div class="group bg-surface-container-lowest border-2 border-dashed border-outline-variant/50 p-6 rounded-full hover:border-primary/50 transition-all hover:shadow-md cursor-pointer flex flex-col justify-center items-center text-center">
+<span class="text-3xl font-black text-on-surface-variant mb-2">06</span>
+<p class="text-xs font-bold uppercase text-on-surface-variant mb-4">Livre</p>
+<button class="w-full bg-surface-container-low text-on-surface-variant py-2 rounded-full text-sm font-bold group-hover:bg-primary group-hover:text-white transition-all">
+                        Abrir Mesa
+                    </button>
+</div>
+<div class="bg-primary text-white p-6 rounded-full shadow-lg transition-all hover:scale-[1.02]">
+<div class="flex justify-between items-start mb-4">
+<span class="text-3xl font-black">07</span>
+<span class="material-symbols-outlined text-white/80">group</span>
+</div>
+<div class="space-y-1 mb-6">
+<p class="text-xs font-bold uppercase tracking-widest text-white/80">Ocupada</p>
+<p class="text-xl font-bold">R$ 56,00</p>
+<p class="text-xs text-white/70 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 00h 15m
+                        </p>
+</div>
+<button class="w-full bg-white/20 backdrop-blur-md py-2 rounded-full text-sm font-bold hover:bg-white/30 transition-colors">
+                        Ver Comanda
+                    </button>
+</div>
+<div class="bg-secondary-container text-on-secondary-container p-6 rounded-full shadow-md">
+<div class="flex justify-between items-start mb-4">
+<span class="text-3xl font-black">08</span>
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="space-y-1 mb-6">
+<p class="text-xs font-bold uppercase tracking-widest text-on-secondary-fixed-variant">Fechamento</p>
+<p class="text-xl font-bold">R$ 42,50</p>
+<p class="text-xs text-on-secondary-fixed-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Pago em Dinheiro
+                        </p>
+</div>
+<button class="w-full bg-on-secondary-container text-white py-2 rounded-full text-sm font-bold hover:opacity-90 transition-opacity">
+                        Liberar Mesa
+                    </button>
+</div>
+<div class="group bg-surface-container-lowest border-2 border-dashed border-outline-variant/50 p-6 rounded-full hover:border-primary/50 transition-all hover:shadow-md cursor-pointer flex flex-col justify-center items-center text-center">
+<span class="text-3xl font-black text-on-surface-variant mb-2">09</span>
+<p class="text-xs font-bold uppercase text-on-surface-variant mb-4">Livre</p>
+<button class="w-full bg-surface-container-low text-on-surface-variant py-2 rounded-full text-sm font-bold group-hover:bg-primary group-hover:text-white transition-all">
+                        Abrir Mesa
+                    </button>
+</div>
+<div class="group bg-surface-container-lowest border-2 border-dashed border-outline-variant/50 p-6 rounded-full hover:border-primary/50 transition-all hover:shadow-md cursor-pointer flex flex-col justify-center items-center text-center">
+<span class="text-3xl font-black text-on-surface-variant mb-2">10</span>
+<p class="text-xs font-bold uppercase text-on-surface-variant mb-4">Livre</p>
+<button class="w-full bg-surface-container-low text-on-surface-variant py-2 rounded-full text-sm font-bold group-hover:bg-primary group-hover:text-white transition-all">
+                        Abrir Mesa
+                    </button>
+</div>
+</div>
+</div>
+<!-- Float Zone Info Card -->
+<div class="mt-12 bg-surface-container-lowest p-8 rounded-full shadow-sm flex items-center gap-8 border border-outline-variant/10">
+<div class="flex -space-x-3">
+<img class="w-12 h-12 rounded-full border-2 border-white object-cover" data-alt="Close-up of a perfectly set restaurant table with glowing candlelight and elegant wine glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1Pfh1_kjvx1cvctW_E73zeH4fcqYbdVCblTlBpkx5ViKK8E5cWsC5OoyxJ4hoyh031r7GXFqiz0-eVcZWWBjzB-Zk6F03elf8m3WKD5GYCxI5zlFc2_XckASmq68uZguCy9h6fvYcCBTkierZjgriFshVd9d4Ct2kilqMRhYOf7QWVAIBCTzA4MF4ZgueQPq8wMqxmaK9rWStfkybep4Afku-0rjbHMwVjVp1z4ALZu_U4y_y02PVSMbKw_CSAczT40UeN_7Qls0"/>
+<img class="w-12 h-12 rounded-full border-2 border-white object-cover" data-alt="Vibrant restaurant interior with modern industrial decor and warm pendant lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNNDMDNXo5mcn6z0btLoL0TCE9rZcaxLk8gf7r5JrxpIkAqu7KFt_Kg-697oM1ujNIVjWIQwwy0mqyJWW2RYPGB7npn9qBLxnvSL9Cv6mjYgWsc50uKWScIkS79d0PpwiK-zvSkHqTQqqsu8ah8y_Id_QVikRQ9vVzOYLaneSDrtFbySI6WdoPpLj_ISeDuTN6hXvCo5z5AAj_ryuNq1QbIIEE6JJqphan5W_InoOi2JOHbVq2HfCeLpvrI8r91-yRf6OWY8Mn46k"/>
+<div class="w-12 h-12 rounded-full border-2 border-white bg-primary text-white flex items-center justify-center font-bold text-xs">+3</div>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-on-surface">Equipe de Atendimento — Salão Principal</h4>
+<p class="text-sm text-on-surface-variant">4 garçons ativos • Média de permanência: 52min</p>
+</div>
+<button class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-surface-container text-on-surface font-bold text-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">print</span> Imprimir Mapa
+            </button>
+</div>
+</main>
+<!-- Contextual FAB (Mandatory Policy Application) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</body></html>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Save,
   Store,
@@ -21,10 +21,11 @@ import {
   Smartphone,
   AlertTriangle,
   CheckCircle2,
+  Loader2,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
-/*  Mock data                                                          */
+/*  Default data                                                        */
 /* ------------------------------------------------------------------ */
 
 const initialSchedule = [
@@ -82,6 +83,11 @@ function Toggle({ active, onToggle }: { active: boolean; onToggle: () => void })
 /* ------------------------------------------------------------------ */
 
 export default function ConfigPage() {
+  // Loading / saving states
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
   // Restaurant info
   const [name, setName] = useState("Sabor & Arte Restaurante");
   const [phone, setPhone] = useState("(11) 98765-4321");
@@ -101,6 +107,48 @@ export default function ConfigPage() {
 
   // Notifications
   const [notifications, setNotifications] = useState(initialNotifications);
+
+  /* Load tenant data on mount */
+  useEffect(() => {
+    fetch("/api/config")
+      .then(r => r.json())
+      .then(data => {
+        if (data.tenant) {
+          setName(data.tenant.name || "");
+          setPhone(data.tenant.phone || "");
+          setAddress(data.tenant.address || "");
+          const s = data.tenant.settings || {};
+          if (s.schedule) setSchedule(s.schedule);
+          if (s.zones) setZones(s.zones);
+          if (s.notifications) setNotifications(s.notifications);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  /* Save handler */
+  async function handleSave() {
+    setSaving(true);
+    try {
+      const res = await fetch("/api/config", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          phone,
+          address,
+          settings: { schedule, zones, notifications },
+        }),
+      });
+      if (res.ok) {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+      }
+    } finally {
+      setSaving(false);
+    }
+  }
 
   /* Schedule helpers */
   function toggleScheduleDay(index: number) {
@@ -150,6 +198,28 @@ export default function ConfigPage() {
   const inputClass =
     "w-full px-4 py-3 text-sm rounded-xl bg-[#e7e8ea] text-[#191c1e] placeholder-[#8e7166] outline-none focus:ring-2 focus:ring-[#a33900]/30 transition-all";
 
+  /* Loading skeleton */
+  if (loading) {
+    return (
+      <div className="space-y-8 pb-10 animate-pulse">
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <div className="h-7 w-48 bg-[#e7e8ea] rounded-lg" />
+            <div className="h-4 w-72 bg-[#e7e8ea] rounded-lg" />
+          </div>
+          <div className="h-10 w-36 bg-[#e7e8ea] rounded-xl" />
+        </div>
+        {[1, 2, 3].map((n) => (
+          <div key={n} className="bg-white rounded-xl shadow-sm p-6 space-y-4">
+            <div className="h-5 w-40 bg-[#e7e8ea] rounded-lg" />
+            <div className="h-12 w-full bg-[#e7e8ea] rounded-xl" />
+            <div className="h-12 w-full bg-[#e7e8ea] rounded-xl" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8 pb-10">
       {/* ── Page Header ─────────────────────────────────── */}
@@ -162,10 +232,30 @@ export default function ConfigPage() {
         </div>
         <button
           type="button"
-          className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-medium text-sm bg-gradient-to-br from-[#a33900] to-[#cc4900] shadow-md hover:shadow-lg hover:brightness-110 transition-all"
+          onClick={handleSave}
+          disabled={saving}
+          className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-medium text-sm shadow-md hover:shadow-lg transition-all ${
+            saved
+              ? "bg-[#2e7d32] hover:brightness-110"
+              : "bg-gradient-to-br from-[#a33900] to-[#cc4900] hover:brightness-110"
+          } disabled:opacity-70 disabled:cursor-not-allowed`}
         >
-          <Save size={16} />
-          Salvar Alterações
+          {saving ? (
+            <>
+              <Loader2 size={16} className="animate-spin" />
+              Salvando...
+            </>
+          ) : saved ? (
+            <>
+              <CheckCircle2 size={16} />
+              Salvo!
+            </>
+          ) : (
+            <>
+              <Save size={16} />
+              Salvar Alterações
+            </>
+          )}
         </button>
       </div>
 
